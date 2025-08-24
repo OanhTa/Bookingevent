@@ -1,0 +1,39 @@
+<p-menubar [model]="items">
+  <!-- Logo -->
+  <ng-template pTemplate="start">
+    <div class="d-flex align-items-center gap-2">
+      <button class="btn btn-success p-2">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <div class="d-flex align-items-center gap-2 fw-bold fs-4">
+        <span class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+          B
+        </span>
+        Barren
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="item" let-item>
+    <a class="d-flex align-items-center text-decoration-none px-2">
+      <i [class]="item.icon + ' me-2'"></i>
+      <span>{{ item.label }}</span>
+    </a>
+  </ng-template>
+
+  <ng-template pTemplate="end">
+    <div class="d-flex align-items-center gap-3">
+      <button class="btn btn-success d-flex align-items-center">
+        <i class="fa-solid fa-calendar me-2"></i>
+        Create Event
+      </button>
+      <img src="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+           class="rounded-circle"
+           alt="avatar"
+           width="32" height="32">
+      <button class="btn btn-link p-2">
+        <i class="fa-solid fa-gear"></i>
+      </button>
+    </div>
+  </ng-template>
+</p-menubar>
