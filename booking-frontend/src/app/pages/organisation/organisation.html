@@ -1,0 +1,28 @@
+<app-header></app-header>
+
+<div class="sidebar-tabs">
+  <div class="tablist">
+    <div class="menu-item" 
+       *ngFor="let tab of tabs; let i = index"
+        [class.active]="activeTab === i"
+        (click)="activeTab = i">
+        <i class="{{ tab.icon }}"></i>
+        <span>{{ tab.label }}</span>
+    </div>
+  </div>
+
+  <div class="tabcontent">
+    <div *ngIf="activeTab === 0">
+        <app-role-table/>
+        <app-user-table/>
+    </div>
+
+    <div *ngIf="activeTab === 1">
+      <p>Content for Onyama Limba</p>
+    </div>
+
+    <div *ngIf="activeTab === 2">
+      <p>Content for Ioni Bowcher</p>
+    </div>
+  </div>
+</div>

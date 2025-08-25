@@ -1,0 +1,39 @@
+.sidebar-tabs {
+  display: flex;
+  height: 100vh;
+  border: 1px solid #ddd;
+}
+
+.tablist {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  border-right: 1px solid #ddd;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  cursor: pointer;
+  color: #333;
+  font-size: 16px;
+  transition: background 0.2s;
+}
+
+.menu-item i {
+  margin-right: 24px;
+  font-size: 18px;
+}
+
+.menu-item.active {
+  background: #e6f4ea;
+  color: #4CAF50; /* xanh lá */
+  font-weight: 600;
+}
+
+.lock-icon {
+  margin-left: auto;
+  font-size: 14px;
+  color: #aaa;
+}

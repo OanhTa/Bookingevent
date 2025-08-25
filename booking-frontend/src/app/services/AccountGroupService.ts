@@ -21,8 +21,8 @@ export class AccountGroupServices{
 
 }
 export class AccountGroup{
-    AccountGroupId!: string;
-    FormName!:string;
-    Action!: string;
-    AllowAction!: boolean;
+    id!: string;
+    name!:string;
+    enable!: string;
+    note!: boolean;
 }
