@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Header } from '../../components/header/header';
 import { RouterModule } from '@angular/router';
+import { SidebarRight } from './sidebar-right/sidebar-right';
 
 @Component({
   selector: 'app-admin',
   standalone: true,
   imports: [
-    Header,
     RouterOutlet,
-    RouterModule
+    RouterModule,
+    SidebarRight
   ],
   templateUrl: './admin.html',
   styleUrls: ['./admin.css']

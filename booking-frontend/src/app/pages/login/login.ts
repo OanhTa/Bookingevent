@@ -2,13 +2,16 @@ import { Component } from '@angular/core';
 import { PasswordModule } from 'primeng/password';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
-import { AuthServices, LoginRequest } from '../../services/AuthServices';
-import { AccountServices } from '../../services/AccountServices';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { ChangeDetectorRef } from '@angular/core';
+import { AuthServices,  } from '../../services/AuthServices';
+import { UserServices } from '../../services/UserServices';
+import { LoginResponseDto } from '../../models/LoginResponseDto';
+import { LoginRequestDto } from '../../models/LoginRequestDto';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, PasswordModule, InputTextModule],
+  imports: [FormsModule, PasswordModule, InputTextModule, RouterModule],
   standalone: true,
   templateUrl: './login.html',
   styleUrl: './login.css'
@@ -16,41 +19,29 @@ import { Router } from '@angular/router';
 export class Login {
   email!: string;
   password!: string;
+  errorMessage: string = '';
 
-  constructor(private authServices: AuthServices, private accountServices: AccountServices, private router: Router) {}
+  constructor(private authServices: AuthServices, private userServices: UserServices, private router: Router, private cdr: ChangeDetectorRef) {}
 
   onSubmit() {
-    const body: LoginRequest = { email : this.email, password: this.password };
+    const body: LoginRequestDto = { email : this.email, password: this.password };
     this.authServices.login(body).subscribe({
-      next: (res) => {
-         this.accountServices.updateToken(res).subscribe({
-          next: (updateRes) => {
-            localStorage.setItem('accessToken', updateRes.token); 
-            localStorage.setItem('account', JSON.stringify(updateRes.account));
-            localStorage.setItem('accountGroup', updateRes.account.accountGroup.name);
+      next: (res: LoginResponseDto) => {
+    
+        localStorage.setItem('accessToken', res.token);
+        localStorage.setItem('userId', res.userId);
+        localStorage.setItem('fullName', res.fullName);
+        localStorage.setItem('roles', JSON.stringify(res.roles));
 
-            const group = updateRes.account.accountGroup.name;
-                  switch(group) {
-                    case 'Admin':
-                      this.router.navigate(['/admin']);
-                      break;
-                    case 'Organizer':
-                      this.router.navigate(['/manager']);
-                      break;
-                    case 'User':
-                      this.router.navigate(['/home']);
-                      break;
-                    default:
-                      this.router.navigate(['/']);
-                  }
-          },
-          error: (err) => {
-            console.error('Cập nhật token thất bại', err);
-          }
-        });
+        if (res.roles.includes('Administrator')) {
+          this.router.navigate(['/admin']);
+        } else {
+          this.router.navigate(['/']);
+        }
       },
       error: (err) => {
-        console.error('Đăng nhập thất bại', err);
+        this.errorMessage = err.error?.message || 'Đăng nhập thất bại';
+        this.cdr.detectChanges();
       }
     });
   }

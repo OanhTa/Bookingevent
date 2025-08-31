@@ -7,8 +7,7 @@
 .tablist {
   display: flex;
   flex-direction: column;
-  width: 200px;
-  border-right: 1px solid #ddd;
+  width: 250px;
 }
 
 .menu-item {
@@ -16,7 +15,7 @@
   align-items: center;
   padding: 12px 16px;
   cursor: pointer;
-  color: #333;
+  color: #5c5b5b;
   font-size: 16px;
   transition: background 0.2s;
 }

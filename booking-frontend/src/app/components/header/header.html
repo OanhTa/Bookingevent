@@ -1,13 +1,13 @@
 <p-menubar [model]="items">
   <!-- Logo -->
   <ng-template pTemplate="start">
-    <div class="flex items-center gap-2">
-      <div class="flex items-center gap-2 font-bold text-xl">
+    <div class="flex items-center gap-2 py-4">
+      <a routerLink="/" class="link flex items-center gap-2 font-bold text-xl">
         <span class="bg-green-600 text-white rounded-full flex items-center justify-center w-8 h-8">
           B
         </span>
         Barren
-      </div>
+      </a>
     </div>
   </ng-template>
 
@@ -20,9 +20,11 @@
 
   <ng-template pTemplate="end">
     <div class="flex items-center gap-3">
-      <button class="bg-green-600 text-white flex items-center px-3 py-2 rounded hover:bg-green-700">
-        <i class="fa-solid fa-calendar mr-2"></i>
+      <button class="bg-green-600 text-white flex items-center px-3 py-2 rounded hover:bg-green-700">  
+        <a routerLink="/create">
+          <i class="fa-solid fa-calendar mr-2"></i>
         Create Event
+        </a>
       </button>
       <img src="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
            class="rounded-full"

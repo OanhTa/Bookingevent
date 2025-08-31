@@ -1,7 +1,7 @@
 <app-header></app-header>
 
-<div class="sidebar-tabs">
-  <div class="tablist">
+<div class="sidebar-tabs bg-gray-100">
+  <div class="tablist bg-white">
     <div class="menu-item" 
        *ngFor="let tab of tabs; let i = index"
         [class.active]="activeTab === i"
@@ -11,14 +11,14 @@
     </div>
   </div>
 
-  <div class="tabcontent">
+  <div class="tabcontent flex-1">
     <div *ngIf="activeTab === 0">
-        <app-role-table/>
-        <app-user-table/>
+        <!-- <app-role-table/>
+        <app-user-table/> -->
     </div>
 
     <div *ngIf="activeTab === 1">
-      <p>Content for Onyama Limba</p>
+      <app-event/>
     </div>
 
     <div *ngIf="activeTab === 2">

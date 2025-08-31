@@ -1,6 +1,7 @@
 <div class="flex items-center justify-center min-h-screen bg-gray-100">
     <div class="w-full max-w-sm mx-auto p-6 bg-white rounded-2xl shadow-md">
     <h2 class="text-2xl font-bold text-center mb-6">Login</h2>
+    
     <form (ngSubmit)="onSubmit()">
         <div class="flex flex-col gap-4">
             <!-- Email -->
@@ -28,13 +29,21 @@
                     inputStyleClass="w-full"
                 ></p-password>
             </div>
-
+            <div class="text-red-500">
+                {{ errorMessage }}
+            </div>
             <button
                 type="submit"
                 label="Login"
                 class="w-full !bg-green-600 hover:!bg-green-700 p-2 text-white font-semibold rounded-lg"
             >Login</button>
+
+            <p class="mt-4 text-center text-sm">
+                Chưa có tài khoản?
+                <a routerLink="/register" class="text-blue-500 hover:underline">Đăng ký ngay</a>
+            </p>
         </div >
     </form>
   </div>
 </div>
+<router-outlet></router-outlet>

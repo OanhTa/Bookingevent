@@ -1,0 +1,40 @@
+// src/app/services/audit-log.services.ts
+import { HttpClient } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { environment } from "../environments/environments";
+import { Injectable } from "@angular/core";
+
+export class AuditLog {
+  id!: string;
+  action!: string;
+  entity!: string;
+  entityId!: string;
+  performedBy!: string;
+  timestamp!: string;
+  description!: string;
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuditLogServices {
+  private apiUrl = `${environment.apiUrl}/AuditLog`;
+
+  constructor(private httpClient: HttpClient) {}
+
+  getAll(): Observable<AuditLog[]> {
+    return this.httpClient.get<AuditLog[]>(`${this.apiUrl}`);
+  }
+
+  getById(id: string): Observable<AuditLog> {
+    return this.httpClient.get<AuditLog>(`${this.apiUrl}/${id}`);
+  }
+
+  add(auditLog: AuditLog): Observable<AuditLog> {
+    return this.httpClient.post<AuditLog>(`${this.apiUrl}`, auditLog);
+  }
+
+  delete(id: string): Observable<void> {
+    return this.httpClient.delete<void>(`${this.apiUrl}/${id}`);
+  }
+}

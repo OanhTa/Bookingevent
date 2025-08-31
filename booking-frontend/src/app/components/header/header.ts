@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MenubarModule } from 'primeng/menubar';
 import { BadgeModule } from 'primeng/badge';
 import { AvatarModule } from 'primeng/avatar';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -11,12 +12,14 @@ import { AvatarModule } from 'primeng/avatar';
     CommonModule,
     MenubarModule,
     BadgeModule,
-    AvatarModule
+    AvatarModule,
+    RouterModule
   ],
   templateUrl: './header.html',
   styleUrl: './header.css'
 })
 export class Header {
+    @Input() showHeaderEnd: boolean = true;
     items: any[] = [
     {
       label: 'My Home',

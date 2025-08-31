@@ -1,0 +1,51 @@
+<div class="card m-5">
+  <div class="flex justify-between items-center mb-4">
+      <h2 class="text-2xl font-bold">Audit Log</h2>
+      <div class="flex gap-4">
+        <p-select 
+          [options]="actions" 
+          [(ngModel)]="selectedAction" 
+          placeholder="Chọn hành động" 
+          styleClass="w-64">
+        </p-select>
+      </div>
+  </div>
+  
+  <!-- Table -->
+  <p-table [value]="logs" [paginator]="true" [rows]="5" sortMode="multiple">
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="action">
+          Hành động
+          <p-sortIcon field="action"></p-sortIcon>
+        </th>
+        <th pSortableColumn="entity">
+          Đối tượng
+          <p-sortIcon field="entity"></p-sortIcon>
+        </th>
+        <th pSortableColumn="timestamp">
+          Thời gian
+          <p-sortIcon field="timestamp"></p-sortIcon>
+        </th>
+        <th>Trạng thái</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-log>
+      <tr>
+        <td>{{ log.action }}</td>
+        <td>{{ log.entity }}</td>
+        <td>{{ log.timestamp | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+        <td>
+          <span 
+            [ngClass]="{
+              'text-green-600 font-semibold': log.status === 'Success',
+              'text-red-600 font-semibold': log.status === 'Failed'
+            }">
+            {{ log.description }}
+          </span>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

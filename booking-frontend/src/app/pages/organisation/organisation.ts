@@ -2,22 +2,21 @@ import { Component } from '@angular/core';
 import { Header } from '../../components/header/header';
 import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
-import { RoleTable } from '../../components/table/role-table/role-table';
-import { UserTable } from '../../components/table/user-table/user-table';
+import { EventComponent } from '../../components/event/event';
 
 @Component({
-  selector: 'app-admin',
+  selector: 'app-organisation',
   standalone: true,
   imports: [
     CommonModule,
     Header,
-    RoleTable,
-    UserTable
+    EventComponent
+
   ],
   templateUrl: './organisation.html',
   styleUrls: ['./organisation.css']
 })
-export class Admin{
+export class Organisation{
   tabs = [
   { label: 'Dashboard', icon: 'fa fa-tachometer' },
   { label: 'Events', icon: 'fa fa-calendar'},

@@ -1,0 +1,146 @@
+<app-header></app-header>
+<div class="min-h-screen bg-gray-50 p-8">
+  <!-- Stepper -->
+  <div class="flex justify-center mb-10">
+    <div class="flex items-center gap-8">
+      <div class="flex flex-col items-center">
+        <div class="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white">1</div>
+        <span class="text-sm mt-2">Details</span>
+      </div>
+      <div class="h-0.5 w-16 bg-gray-300"></div>
+      <div class="flex flex-col items-center">
+        <div class="w-10 h-10 rounded-full border flex items-center justify-center text-gray-500">2</div>
+        <span class="text-sm mt-2">Tickets</span>
+      </div>
+      <div class="h-0.5 w-16 bg-gray-300"></div>
+      <div class="flex flex-col items-center">
+        <div class="w-10 h-10 rounded-full border flex items-center justify-center text-gray-500">3</div>
+        <span class="text-sm mt-2">Setting</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form -->
+  <div class="max-w-4xl mx-auto bg-white rounded-lg shadow p-8">
+    <h2 class="text-xl font-semibold mb-6">Details</h2>
+
+    <!-- Event name -->
+    <div class="mb-6">
+        <label class="block text-sm font-medium mb-2">Give your event a name*</label>
+        <input type="text"
+                placeholder="Enter event name here"
+                class="w-full border rounded-md p-3 focus:outline-green-500" />
+        <p class="text-xs text-gray-500 mt-1">
+            Your event name appears on the event page and is used in many places.
+        </p>
+    </div>
+
+    <!-- Category -->
+    <div class="mb-6">
+        <label class="block text-sm font-medium mb-2">Choose a category for your event*</label>
+        <select class="w-full border rounded-md p-3 focus:outline-green-500">
+            <option>Select category</option>
+            <option>Workshop</option>
+            <option>Seminar</option>
+            <option>Concert</option>
+        </select>
+    </div>
+
+    <!-- Date, Time, Duration -->
+    <div class="mb-6 grid grid-cols-3 gap-4">
+        <div>
+            <label class="block text-sm font-medium mb-2">Event Date*</label>
+            <input type="date" class="w-full border rounded-md p-3 focus:outline-green-500" />
+        </div>
+        <div>
+            <label class="block text-sm font-medium mb-2">Time*</label>
+            <input type="time" class="w-full border rounded-md p-3 focus:outline-green-500" />
+        </div>
+        <div>
+            <label class="block text-sm font-medium mb-2">Duration*</label>
+            <input type="number" placeholder="1h"
+                class="w-full border rounded-md p-3 focus:outline-green-500" />
+        </div>
+    </div>
+
+    <!-- Upload image -->
+    <div class="mb-6">
+        <label class="block text-sm font-medium mb-2">Add a few images to your event banner</label>
+        <div class="border-2 border-dashed rounded-md flex flex-col items-center justify-center p-6">
+            <img src="https://placehold.co/600x200?text=Banner+Preview"
+                alt="banner preview"
+                class="mb-4 rounded-md object-cover" />
+            <button class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">
+            Change Image
+            </button>
+        </div>
+    </div>
+
+    <!-- Description -->
+    <div class="mb-6">
+        <label class="block text-sm font-medium mb-2">Please describe your event</label>
+        <textarea rows="6"
+                    placeholder="Write a few sentences to describe your event..."
+                    class="w-full border rounded-md p-3 focus:outline-green-500"></textarea>
+    </div>
+
+    <!-- Venue -->
+    <div class="mb-6">
+        <label class="block text-sm font-medium mb-2">Where is your event taking place?*</label>
+        <div class="mb-4">
+            <img src="https://maps.googleapis.com/maps/api/staticmap?center=Hanoi,VN&zoom=12&size=600x200&key=YOUR_KEY"
+                alt="map"
+                class="w-full rounded-md border" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-sm font-semibold mb-1">Venue*</label>
+            <input type="text" placeholder="Enter venue" class="w-full border rounded-md p-2 focus:ring focus:ring-green-200">
+        </div>
+
+ 
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+                <label class="block text-sm font-semibold mb-1">Address line 1*</label>
+                <input type="text" placeholder="Address line 1" class="w-full border rounded-md p-2 focus:ring focus:ring-green-200">
+            </div>
+            <div>
+                <label class="block text-sm font-semibold mb-1">Address line 2*</label>
+                <input type="text" placeholder="Address line 2" class="w-full border rounded-md p-2 focus:ring focus:ring-green-200">
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+                <label class="block text-sm font-semibold mb-1">Country*</label>
+                <select class="w-full border rounded-md p-2 focus:ring focus:ring-green-200">
+                    <option>Australia</option>
+                    <option>United States</option>
+                    <option>Vietnam</option>
+                </select>
+                </div>
+                <div>
+                <label class="block text-sm font-semibold mb-1">State*</label>
+                <input type="text" placeholder="Enter state" class="w-full border rounded-md p-2 focus:ring focus:ring-green-200">
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div>
+                <label class="block text-sm font-semibold mb-1">City/Suburb*</label>
+                <input type="text" placeholder="City/Suburb" class="w-full border rounded-md p-2 focus:ring focus:ring-green-200">
+            </div>
+            <div>
+                <label class="block text-sm font-semibold mb-1">Zip/Post Code*</label>
+                <input type="text" placeholder="Zip code" class="w-full border rounded-md p-2 focus:ring focus:ring-green-200">
+            </div>
+        </div>
+
+        <div class="flex justify-center">
+            <button class="bg-green-500 text-white font-semibold px-6 py-2 rounded-md hover:bg-green-600">
+            Next
+            </button>
+        </div>
+    </div>
+</div>
+</div>

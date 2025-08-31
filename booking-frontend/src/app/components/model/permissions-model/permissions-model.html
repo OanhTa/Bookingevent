@@ -1,0 +1,69 @@
+<!-- Modal -->
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+  <div class="bg-white rounded-lg w-2/3 max-w-3xl p-6 relative">
+
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-bold">Permissions - Admin</h2>
+      <button class="text-gray-500 hover:text-gray-800" (click)="close()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="flex mb-3 gap-2">
+      <input 
+        type="text" 
+        [(ngModel)]="groupSearch" 
+        placeholder="Search group..." 
+        class="flex-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400"
+      />
+      <button 
+        (click)="searchGroup()"
+        class="px-3 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+      >
+        Search
+      </button>
+    </div>
+    <p class="">Permission Group</p>
+    <!-- Content -->
+    <div class="flex gap-6 p-5 rounded border">
+      <!-- Left: Permission Groups -->
+      <div class="w-1/2 pr-4">
+        <div *ngFor="let group of permissionGroups"
+             [class.font-bold]="selectedGroup === group"
+            [ngClass]="{
+                'bg-green-500 text-white': selectedGroup === group,
+                'border border-gray-300 tex-border-gray-300 bg-white': selectedGroup !== group
+              }"
+              class="cursor-pointer rounded p-3 my-2"
+             (click)="selectGroup(group)">
+          {{ group.displayName }}
+        </div>
+      </div>
+
+      <!-- Right: Permissions -->
+      <div class="w-4/5 pr-4 max-h-60 overflow-y-auto scroll-left">
+        
+        <div class="content-ltr ml-5" *ngFor="let group of groupedPermissions | keyvalue">
+          <h3 class="font-bold mb-2">{{ group.key }}</h3>
+          <ul>
+            <li *ngFor="let perm of group.value" class="flex items-center space-x-2 mb-1">
+              <input
+                type="checkbox"
+                [(ngModel)]="perm.isGranted"
+                (change)="onPermissionChange(perm)"
+              />
+              <label>{{ perm.action }}</label>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="flex justify-end gap-3 mt-6">
+      <button class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400" (click)="close()">Cancel</button>
+      <button class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600" (click)="save()">Save</button>
+    </div>
+
+  </div>
+</div>

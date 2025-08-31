@@ -1,16 +1,28 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { providePrimeNG } from 'primeng/config';
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import Aura from '@primeuix/themes/aura';
+import { authInterceptor } from './services/AuthInterceptor';
+import { MessageService } from 'primeng/api';
+import { auditInterceptor } from './services/auditInterceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
+    provideHttpClient(
+      withInterceptors(
+        [
+          authInterceptor, 
+          auditInterceptor
+        ]
+      ), 
+      withFetch()
+    ),
     provideRouter(routes), provideClientHydration(withEventReplay()),
     provideAnimationsAsync(),
     providePrimeNG({
@@ -18,7 +30,6 @@ export const appConfig: ApplicationConfig = {
                 preset: Aura
             }
         }),
-    provideHttpClient(),
-    provideHttpClient(withFetch())
+    MessageService
   ]
 };
