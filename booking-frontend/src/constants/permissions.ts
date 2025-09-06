@@ -1,4 +1,4 @@
-export const Permissions = {
+export const PermissionsConst = {
   Identity: {
     Users: {
       Create: "Identity.Users.Create",

@@ -29,4 +29,23 @@ export class RoleService {
   getAllRole(): Observable<Role[]> {
     return this.http.get<Role[]>(this.baseUrl);
   }
+  getRoleById(id: string): Observable<Role> {
+    return this.http.get<Role>(`${this.baseUrl}/${id}`);
+  }
+
+  createRole(role: Partial<Role>): Observable<Role> {
+    return this.http.post<Role>(this.baseUrl, role);
+  }
+
+  updateRole(id: string, role: Partial<Role>): Observable<void> {
+    return this.http.put<void>(`${this.baseUrl}/${id}`, role);
+  }
+
+  deleteRole(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
+
+  assignPermissions(roleId: string, permissionIds: string[]): Observable<any> {
+    return this.http.post(`${this.baseUrl}/${roleId}/permissions`, permissionIds);
+  }
 }

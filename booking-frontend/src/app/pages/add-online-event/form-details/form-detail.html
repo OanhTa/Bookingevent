@@ -1,75 +1,60 @@
-<div class="max-w-4xl mx-auto bg-white rounded-lg shadow p-8">
-    <h2 class="text-xl font-semibold mb-6">Details</h2>
+<form [formGroup]="detailForm" class="max-w-4xl mx-auto bg-white rounded-lg shadow p-8">
+  <h2 class="text-xl font-semibold mb-6">Chi tiết</h2>
 
-    <div class="mb-6">
-      <label class="block text-sm font-medium mb-2">Give your event a name*</label>
-      <input type="text" placeholder="Enter event name" 
+  <!-- Event name -->
+  <div class="mb-6">
+    <label class="block text-sm font-medium mb-2">Đưa ra tên sự kiện*</label>
+    <input type="text" formControlName="name" class="w-full border rounded-md p-3 focus:outline-green-500" />
+  </div>
+
+  <!-- Category -->
+  <div class="mb-6">
+    <label class="block text-sm font-medium mb-2">Chọn danh mục*</label>
+    <select formControlName="categoryId" class="w-full border rounded-md p-3 focus:outline-green-500">
+      <option *ngFor="let cat of categories$ | async" [value]="cat.id">
+        {{ cat.name }}
+      </option>
+    </select>
+  </div>
+
+  <!-- Date / Time / Duration -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+    <div>
+      <label class="block text-sm font-medium mb-2">Ngày diễn ra sự kiện*</label>
+      <input type="date" formControlName="date"
              class="w-full border rounded-md p-3 focus:outline-green-500" />
     </div>
-
-    <div class="mb-6">
-      <label class="block text-sm font-medium mb-2">Choose a category*</label>
-      <select class="w-full border rounded-md p-3 focus:outline-green-500">
-        <option>Select category</option>
-        <option>Workshop</option>
-        <option>Seminar</option>
-        <option>Concert</option>
-      </select>
+    <div>
+      <label class="block text-sm font-medium mb-2">Thời gian*</label>
+      <input type="time" formControlName="time"
+             class="w-full border rounded-md p-3 focus:outline-green-500" />
     </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-      <div>
-        <label class="block text-sm font-medium mb-2">Event Date*</label>
-        <input type="date" class="w-full border rounded-md p-3 focus:outline-green-500" />
-      </div>
-      <div>
-        <label class="block text-sm font-medium mb-2">Time*</label>
-        <input type="time" class="w-full border rounded-md p-3 focus:outline-green-500" />
-      </div>
-      <div>
-        <label class="block text-sm font-medium mb-2">Duration*</label>
-        <input type="text" placeholder="1h" class="w-full border rounded-md p-3 focus:outline-green-500" />
-      </div>
-    </div>
-
-    <div class="mb-6">
-      <label class="block text-sm font-medium mb-2">Add a banner image*</label>
-      <div class="border-2 border-dashed rounded-lg p-4 flex flex-col items-center justify-center">
-        <div class="bg-gray-200 w-full h-40 flex items-center justify-center">
-          <span class="text-gray-500">Banner Preview</span>
-        </div>
-        <button class="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
-          Change Image
-        </button>
-      </div>
-    </div>
-
-    <!-- Description -->
-    <div class="mb-6">
-      <label class="block text-sm font-medium mb-2">Please describe your event*</label>
-      <textarea rows="4" class="w-full border rounded-md p-3 focus:outline-green-500"></textarea>
-    </div>
-
-    <!-- Event type -->
-    <div class="mb-6">
-      <label class="block text-sm font-medium mb-4">What type of online event are you hosting?*</label>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="border rounded-lg p-4 flex flex-col items-center cursor-pointer hover:border-green-500">
-          <div class="w-16 h-10 bg-gray-200 mb-2"></div>
-          <span class="text-sm">Webinar</span>
-        </div>
-        <div class="border rounded-lg p-4 flex flex-col items-center cursor-pointer hover:border-green-500">
-          <div class="w-16 h-10 bg-gray-200 mb-2"></div>
-          <span class="text-sm">Workshop</span>
-        </div>
-        <div class="border rounded-lg p-4 flex flex-col items-center cursor-pointer hover:border-green-500">
-          <div class="w-16 h-10 bg-gray-200 mb-2"></div>
-          <span class="text-sm">Online Classes</span>
-        </div>
-        <div class="border rounded-lg p-4 flex flex-col items-center cursor-pointer hover:border-green-500">
-          <div class="w-16 h-10 bg-gray-200 mb-2"></div>
-          <span class="text-sm">Talk Show</span>
-        </div>
-      </div>
+    <div>
+      <label class="block text-sm font-medium mb-2">*Khoảng thời gian</label>
+      <input type="text" formControlName="duration" placeholder="1h"
+             class="w-full border rounded-md p-3 focus:outline-green-500" />
     </div>
   </div>
+
+  <!-- Banner -->
+  <div class="mb-6">
+    <label class="block text-sm font-medium mb-2">Thêm ảnh đại diện*</label>
+    <div class="border-2 border-dashed rounded-lg p-4 flex flex-col items-center justify-center">
+      <div class="bg-gray-200 w-full h-40 flex items-center justify-center">
+        <span class="text-gray-500">Xem trước ảnh</span>
+      </div>
+      <input type="file" (change)="onFileSelected($event)" hidden #bannerInput />
+      <button type="button" (click)="bannerInput.click()"
+              class="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+        Thay đổi ảnh
+      </button>
+    </div>
+  </div>
+
+  <!-- Description -->
+  <div class="mb-6">
+    <label class="block text-sm font-medium mb-2">Nhập mô tả cho sự kiện*</label>
+    <textarea rows="4" formControlName="description"
+              class="w-full border rounded-md p-3 focus:outline-green-500"></textarea>
+  </div>
+</form>

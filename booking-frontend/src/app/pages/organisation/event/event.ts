@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { EventItem } from './eventItem/event-item';
+import { EventService } from '../../../services/EventServer';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -13,23 +15,30 @@ import { EventItem } from './eventItem/event-item';
   templateUrl: './event.html',
 })
 export class EventComponent implements OnInit {
-  ngOnInit(): void {
-        
-  }
   searchText = '';
   selectedFilter: 'all' | 'online' | 'venue' = 'all';
+  events: any[] = [];
+    
+  constructor(
+    private eventService: EventService,
+    private cdr: ChangeDetectorRef,
+    private route: ActivatedRoute,
+  ) {}
 
-  events = [
-    {
-      title: 'Tutorial on Canvas Painting for Beginners',
-      status: 'Publish',
-      startDate: '30 Jun, 2022 10:00 AM',
-      ticket: 250,
-      sold: 20,
-      type: 'venue'
-    }
-  ];
+  ngOnInit(): void {
+    this.route.paramMap.subscribe(paramMap => {
+       const orgId = this.route.snapshot.paramMap.get('id')!;
 
+        this.eventService.getEventsByOrg(orgId).subscribe({
+          next: (res) => {
+            this.events = res,
+            this.cdr.detectChanges();
+          }
+        })
+    });
+
+  }
+  
   get totalEvents() {
     return this.events.length;
   }

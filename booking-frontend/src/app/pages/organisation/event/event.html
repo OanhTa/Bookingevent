@@ -1,11 +1,11 @@
 <div class="p-6">
   <div class="flex items-center mb-5">
-    <i class="fas fa-calendar-alt text-2xl mr-2"></i>
-    <h1 class="text-2xl font-bold">Events</h1>
+    <i class="fas fa-calendar-alt text-xl mr-2"></i>
+    <h1 class="text-xl font-bold">Sự kiện</h1>
   </div>
 
   <div class="bg-white rounded-lg shadow p-4 mb-5">
-    <h2 class="text-lg font-semibold">Events ({{ totalEvents }})</h2>
+    <h2 class="text-lg font-semibold">Sự kiện ({{ totalEvents }})</h2>
 
     <div class="flex gap-3 justify-between mt-5">
       <div class="relative w-full md:w-72">
@@ -23,21 +23,21 @@
           [ngClass]="selectedFilter === 'all' ? 'bg-green-500 text-white' : 'border'"
           class="px-4 py-2 rounded-md text-sm font-medium"
         >
-          All Event ({{ totalEvents }})
+          Tất cả ({{ totalEvents }})
         </button>
         <button
           (click)="filter('online')"
           [ngClass]="selectedFilter === 'online' ? 'bg-green-500 text-white' : 'border'"
           class="px-4 py-2 rounded-md text-sm font-medium"
         >
-          Online Event ({{ onlineEvents }})
+          Trực tuyến({{ onlineEvents }})
         </button>
         <button
           (click)="filter('venue')"
           [ngClass]="selectedFilter === 'venue' ? 'bg-green-500 text-white' : 'border'"
           class="px-4 py-2 rounded-md text-sm font-medium"
         >
-          Venue Event ({{ venueEvents }})
+          Trực tiếp ({{ venueEvents }})
         </button>
       </div>
     </div>
@@ -45,6 +45,8 @@
 
   <div>
     <app-event-item  
-    ></app-event-item>
+      *ngFor="let ev of events" 
+      [event]="ev">
+  </app-event-item>
   </div>
 </div>

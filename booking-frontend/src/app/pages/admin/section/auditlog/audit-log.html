@@ -1,0 +1,60 @@
+
+<h2 class="text-xl font-bold m-2">Nhật ký hệ thống</h2>
+
+<div class="bg-white m-2 p-5 rounded-lg">
+  <div class="mb-10">
+    <app-filter-form 
+      [fields]="filterFields"
+      (submitFilter)="onFilterSubmit($event)">
+    </app-filter-form>
+  </div>
+
+  <p-table
+    [value]="logs"
+    [paginator]="true"
+    [rows]="5"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [rowsPerPageOptions]="[5, 10, 20]"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Actions</th>
+        <th class="min-w-[600px]">HTTP Request</th>
+        <th>User</th>
+        <th>IP Address </th>
+        <th>Date</th>
+        <th>Duration </th>
+        <th>Application name </th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-log>
+      <tr>
+        <td>
+          <button class="btn">
+            <i class="fa fa-eye"></i> Xem 
+          </button>
+        </td>
+        <td>
+          <span
+            class="px-2 py-1 rounded text-white"
+            [ngClass]="{
+              'bg-green-500': log.statusCode >= 200 && log.statusCode < 300,
+              'bg-orange-500': log.statusCode >= 300 && log.statusCode < 400,
+              'bg-red-500': log.statusCode >= 400
+            }"
+          >
+            {{ log.statusCode }}
+          </span>
+          <span class="px-2 py-1 rounded bg-gray-200 ml-2">{{ log.httpMethod }}</span>
+          <span class="ml-2">{{ log.url }}</span>
+        </td>
+        <td>{{ log.userName }}</td>
+        <td>{{ log.clientIpAddress }}</td>
+        <td>{{ log.executionTime }}</td>
+        <td>{{ log.executionDuration }}</td>
+        <td>{{ log.applicationName }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

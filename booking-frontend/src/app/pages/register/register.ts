@@ -6,17 +6,23 @@ import { AuthServices } from '../../services/AuthServices';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
-import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.html',
   styleUrls: ['./register.css'],
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, CardModule, ButtonModule, RouterModule, ToastModule],
+  imports: [
+    CommonModule, 
+    ReactiveFormsModule, 
+    FormsModule, 
+    CardModule, 
+    ButtonModule, 
+    RouterModule
+  ],
 })
 export class Register{
 
-registerForm!: FormGroup;
+  registerForm!: FormGroup;
 
   constructor(
     private fb: FormBuilder,

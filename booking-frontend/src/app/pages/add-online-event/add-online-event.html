@@ -5,15 +5,35 @@
 
   <div class="p-4">
     <div *ngIf="activeStep === 1">
-      <app-form-detail/>
+      <app-form-detail [parentForm]="eventForm"/>
     </div>
     <div *ngIf="activeStep === 2">
-      <app-form-ticket/>
+      <app-form-ticket [parentForm]="eventForm"/>
     </div>
-    <div *ngIf="activeStep === 3">👉 Form Setting</div>
+    <div *ngIf="activeStep === 3">
+
+    </div>
   </div>
   <div class="flex justify-center gap-3 mt-6">
-    <button (click)="prevStep()" [disabled]="activeStep === 1" class="px-4 py-2 bg-gray-300 rounded">Previous</button>
-    <button (click)="nextStep()" [disabled]="activeStep === 3" class="px-4 py-2 bg-green-500 text-white rounded">Next</button>
+    <button 
+      (click)="prevStep()" 
+      [disabled]="activeStep === 1" 
+      class="px-4 py-2 bg-gray-300 rounded">
+      Quay lại
+    </button>
+
+    <button 
+      *ngIf="activeStep < 3" 
+      (click)="nextStep()" 
+      class="px-4 py-2 bg-green-500 text-white rounded">
+      Tiếp tục
+    </button>
+
+    <button 
+      *ngIf="activeStep === 3" 
+      (click)="onSave()" 
+      class="px-4 py-2 bg-green-500 text-white rounded">
+      Gửi
+    </button>
   </div>
 </div>

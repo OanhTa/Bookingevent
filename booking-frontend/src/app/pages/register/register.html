@@ -1,74 +1,70 @@
 <div class="flex items-center justify-center min-h-screen bg-gray-100">
   <form [formGroup]="registerForm" (ngSubmit)="submitDetails()" class="register-form">
-    <p-card header="Register" [style]="{ width: '380px' }" class="p-shadow-4 mb-2">
+    <p-card header="Đăng ký" [style]="{ width: '380px' }" class="p-shadow-4 mb-2">
       <!-- FullName -->
       <div class="field">
-        <label for="userName">Full Name</label>
+        <label for="userName">Họ và tên*</label>
         <input
           type="text"
           pInputText
           formControlName="userName"
           class="w-full"
-          placeholder="Type your name"
         />
         <small *ngIf="userName.invalid && (userName.dirty || userName.touched)" class="block p-error">
-          <div *ngIf="userName.errors?.['required']">Name is required.</div>
-          <div *ngIf="userName.errors?.['pattern']">Enter a valid Name</div>
+          <div *ngIf="userName.errors?.['required']">Tên bắt buộc.</div>
+          <div *ngIf="userName.errors?.['pattern']">Nhập tên đúng</div>
         </small>
       </div>
 
       <!-- Email -->
       <div class="field">
-        <label for="email">Email</label>
+        <label for="email">Email*</label>
         <input
           type="text"
           pInputText
           formControlName="email"
           class="w-full"
-          placeholder="Type your email"
         />
         <small *ngIf="email.invalid && (email.dirty || email.touched)" class="block p-error">
-          <div *ngIf="email.errors?.['required']">Email is required.</div>
-          <div *ngIf="email.errors?.['email']">Email should be valid</div>
+          <div *ngIf="email.errors?.['required']">Email là bắt buộc.</div>
+          <div *ngIf="email.errors?.['email']">Email phải tồn tại</div>
         </small>
       </div>
 
       <!-- Password -->
       <div class="field">
-        <label for="password">Password</label>
+        <label for="password">Mật khẩu*</label>
         <input
           type="password"
           pInputText
           formControlName="password"
           class="w-full"
-          placeholder="Type your password"
         />
         <small *ngIf="password.invalid && (password.dirty || password.touched)" class="block p-error">
-          <div *ngIf="password.errors?.['required']">Password is required.</div>
+          <div *ngIf="password.errors?.['required']">Mật khẩu là yêu cầu.</div>
         </small>
       </div>
 
       <!-- Confirm Password -->
       <div class="field">
-        <label for="confirmPassword">Confirm Password</label>
+        <label for="confirmPassword">Nhập lại mật khẩu*</label>
         <input
           type="password"
           pInputText
           formControlName="confirmPassword"
           class="w-full"
-          placeholder="Confirm Password"
         />
         <small *ngIf="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)" class="block p-error">
-          <div *ngIf="confirmPassword.errors?.['required']">Confirm the password</div>
+          <div *ngIf="confirmPassword.errors?.['required']">Mật khẩu là yêu cầu.</div>
         </small>
         <small class="block p-error" *ngIf="registerForm.errors?.['passwordMismatch'] && confirmPassword.valid && password.valid">
-          Password should match
+          Mật khẩu phải khớp
         </small>
       </div>
 
       <!-- Button -->
       <p-button
-        label="Register"
+        label="Đăng ký"
         styleClass="w-full mt-3"
         [disabled]="registerForm.invalid"
         type="submit"
@@ -76,10 +72,9 @@
 
       <!-- Footer -->
       <div class="text-center mt-3">
-        Already a member? <a routerLink="/login" class="link">Login</a>
+        Bạn đã có tài khoản? <a routerLink="/login" class="link">Đăng nhập</a>
       </div>
     </p-card>
   </form>
 </div>
 <router-outlet></router-outlet>
-<p-toast></p-toast>

@@ -1,0 +1,64 @@
+<div class="p-4 rounded m-5">
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-2xl font-bold">Quản lý quyền</h2>
+    <button (click)="openAdd()" class="bg-green-600 text-white p-2 text-sm rounded hover:bg-green-700">+ Tạo quyền</button>
+  </div>
+
+  <div class="p-4 mb-4 border rounded-md bg-white shadow-sm">
+      <app-search></app-search>
+  </div>
+
+  <table class="bg-white w-full table-auto border border-gray-200">
+      <thead>
+        <tr>
+          <th class="p-4 text-left w-1/4">Hành động</th>
+          <th class="p-4 text-left w-2/4">Tên quyền</th>
+          <th class="p-4 text-left w-1/4">Số lượng</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let role of roles; trackBy: trackByRoleId" class="border-t border-gray-200 hover:bg-gray-50">
+          <td class="p-4 relative">
+            <button (click)="toggleDropdown(role.id)" class="border border-gray-400 hover:bg-gray-100 px-2 py-1 rounded"><i class="fa-solid fa-gear"></i> Hành động</button>
+            <div *ngIf="dropdownOpen === role.id" class="absolute left-0 mt-1 bg-white border border-gray-300 rounded shadow w-40 z-10">
+              <ul>
+                <li class="p-4 hover:bg-gray-100 cursor-pointer" (click)="openEdit(role)">Sửa</li>
+                <li class="p-4 hover:bg-gray-100 cursor-pointer" (click)="showDeletePopup(role)">Xóa</li>
+                <li class="p-4 hover:bg-gray-100 cursor-pointer" (click)="openPermissionsModal(role)">Phân quyền</li>
+                <li class="p-4 hover:bg-gray-100 cursor-pointer">Di chuyển người dùng</li>
+              </ul>
+            </div>
+          </td>
+          <td class="p-4">{{ role.name }}</td>
+          <td class="p-4">{{ role.userCount }}</td>
+        </tr>
+      </tbody>
+  </table>
+
+</div>
+
+<ng-container *ngIf="showModal">
+  <app-permissions-modal
+    [selected]="roleSelect"
+    [checkPermissions]="rolePermission"
+    [entityType]="'role'"
+    (cancel)="showModal = false">
+  </app-permissions-modal>
+</ng-container>
+
+<app-modal-form
+  *ngIf="showModalForm"
+  [title]="modalTitle"
+  [fields]="modalFields"
+  [formData]="modelFormData"
+  (save)="onSave($event)"
+  (close)="showModalForm=false"
+></app-modal-form>
+
+<app-popup
+  [show]="showConfirm"
+  title="Confirm"
+  message="Do you want to delete this record?"
+  (confirm)="onDeleteConfirmed()"
+  (cancel)="onDeleteCancelled()">
+</app-popup>

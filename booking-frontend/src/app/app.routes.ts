@@ -11,16 +11,17 @@ import { Organisation } from './pages/organisation/organisation';
 import { AddEvent } from './pages/add-event/add-event';
 import { AddOnnlineEvent } from './pages/add-online-event/add-online-event';
 import { AddVenueEvent } from './pages/add-venue-event/add-venue-event';
-import { UserTable } from './pages/admin/table/user-table/user-table';
-import { RoleTable2 } from './pages/admin/table/role-table/role-table';
-import { AuditLogComponent } from './pages/admin/table/auditlog/audit-log';
+import { UserTable } from './pages/admin/section/user/user-table';
+import { RoleTable2 } from './pages/admin/section/role/role-table';
+import { AuditLogComponent } from './pages/admin/section/auditlog/audit-log';
 
 export const routes: Routes = [
     { path: '', component: Home},
-    // { path: 'admin', component: Admin, canActivate: [AuthGuard], data: { accountGroup: 'Admin' } },
     { 
         path: 'admin', 
         component: Admin,  
+        canActivate: [AuthGuard],
+        data: { role: 'Administrator' },
         children: [
             { path: 'dashbord', component: AuditLogComponent },
             { path: 'users', component: UserTable },
@@ -28,7 +29,7 @@ export const routes: Routes = [
             { path: '', redirectTo: 'users', pathMatch: 'full' } 
         ]
     },
-    { path: 'organisation', component: Organisation},
+    { path: 'organisation/:id', component: Organisation},
     { path: 'login', component: Login},
     { path: 'register', component: Register},
     { path: 'create', component: AddEvent},

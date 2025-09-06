@@ -8,7 +8,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import Aura from '@primeuix/themes/aura';
 import { authInterceptor } from './services/AuthInterceptor';
 import { MessageService } from 'primeng/api';
-import { auditInterceptor } from './services/auditInterceptor';
+import { APP_INIT_PROVIDERS } from './app.initializer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,7 +18,6 @@ export const appConfig: ApplicationConfig = {
       withInterceptors(
         [
           authInterceptor, 
-          auditInterceptor
         ]
       ), 
       withFetch()
@@ -30,6 +29,7 @@ export const appConfig: ApplicationConfig = {
                 preset: Aura
             }
         }),
-    MessageService
+    MessageService,
+    ...APP_INIT_PROVIDERS
   ]
 };

@@ -1,0 +1,32 @@
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+  <ng-container *ngFor="let field of fields">
+    <!-- text -->
+    <div *ngIf="field.type === 'text'">
+      <label class="block text-sm font-medium mb-1">{{ field.label }}</label>
+      <input [(ngModel)]="filterData[field.key]"  type="text" class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-green-300" />
+    </div>
+
+    <!-- date -->
+    <div *ngIf="field.type === 'date'">
+      <label class="block text-sm font-medium mb-1">{{ field.label }}</label>
+      <p-datepicker [(ngModel)]="filterData[field.key]" [showIcon]="true" inputId="buttondisplay" [showOnFocus]="false" />
+    </div>
+
+    <!-- select -->
+    <div *ngIf="field.type === 'select'">
+      <label class="block text-sm font-medium mb-1">{{ field.label }}</label>
+      <p-select [(ngModel)]="filterData[field.key]"  [options]="field.options" optionLabel="name" optionValue="code" placeholder="-" class="w-full"/>
+    </div>
+
+    <div *ngIf="field.type === 'number'">
+      <label class="block text-sm font-medium mb-1">{{ field.label }}</label>
+      <p-inputnumber [(ngModel)]="filterData[field.key]"  mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0" [max]="100" class="w-full"/>
+    </div>
+  </ng-container>
+</div>
+
+<!-- Buttons -->
+<div class="flex gap-4 mt-4 justify-end">
+  <button class="bg-green-600 text-white px-4 py-2 rounded-lg" (click)="onSubmit()">Refresh</button>
+  <button class="border border-green-600 text-green-600 px-4 py-2 rounded-lg">Export to Excel</button>
+</div>

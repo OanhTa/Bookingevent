@@ -1,0 +1,23 @@
+<ul class="menu">
+  <li *ngIf="!(organisations$ | async)?.length">
+    <div class="animate-pulse h-6 bg-gray-200 rounded mb-2 w-3/4"></div>
+    <div class="animate-pulse h-4 bg-gray-200 rounded w-1/2"></div>
+  </li>
+  <li *ngFor="let org of organisations$ | async" class="menu-item">
+    <a [routerLink]="['/organisation', org.organisationId]" class="flex items-center px-2 py-1.5 hover:bg-gray-100 rounded">
+      <i class="pi pi-building mr-2"></i>
+      <div class="flex flex-col">
+        <span class="font-semibold">{{ org.organisation.name }}</span>
+        <span class="text-sm text-gray-500">{{ org.roleInOrg }}</span>
+      </div>
+    </a>
+  </li>
+
+   <li class="menu-item border-t mt-2 pt-2">
+    <a [routerLink]="['/organisation/create']"
+       class="flex items-center px-2 py-1.5 text-green-600 hover:bg-green-50 rounded">
+      <i class="pi pi-plus-circle mr-2"></i>
+      <span class="font-semibold">Tạo tổ chức mới</span>
+    </a>
+  </li>
+</ul>

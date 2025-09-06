@@ -1,20 +1,21 @@
 <app-header></app-header>
 
-<div class="sidebar-tabs bg-gray-100">
-  <div class="tablist bg-white">
+<div class="flex h-[calc(100vh-64px)]"> 
+  <!-- Sidebar -->
+  <div class="tablist bg-white w-60 border-r border-gray-200 flex-shrink-0">
     <div class="menu-item" 
-       *ngFor="let tab of tabs; let i = index"
-        [class.active]="activeTab === i"
-        (click)="activeTab = i">
+         *ngFor="let tab of tabs; let i = index"
+         [class.active]="activeTab === i"
+         (click)="activeTab = i">
         <i class="{{ tab.icon }}"></i>
         <span>{{ tab.label }}</span>
     </div>
   </div>
 
-  <div class="tabcontent flex-1">
+ 
+  <div class="flex-1 overflow-y-auto custom-scroll p-4 bg-gray-50">
     <div *ngIf="activeTab === 0">
-        <!-- <app-role-table/>
-        <app-user-table/> -->
+      <app-dashboard/>
     </div>
 
     <div *ngIf="activeTab === 1">
@@ -22,7 +23,7 @@
     </div>
 
     <div *ngIf="activeTab === 2">
-      <p>Content for Ioni Bowcher</p>
+    
     </div>
   </div>
 </div>

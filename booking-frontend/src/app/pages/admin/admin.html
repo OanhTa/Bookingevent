@@ -9,21 +9,27 @@
 
     <a class="menu-item" [routerLink]="['/admin/dashbord']" routerLinkActive="active">
       <i class="fas fa-tachometer-alt"></i>
-      <span>Dashboard</span>
+      <span>Tổng quan</span>
     </a>
     <a class="menu-item" [routerLink]="['/admin/users']" routerLinkActive="active">
       <i class="fas fa-user"></i>
-      <span>Users Manager</span>
+      <span>Quản lý người dùng</span>
     </a>
     <a class="menu-item" [routerLink]="['/admin/roles']" routerLinkActive="active">
       <i class="fas fa-shield-alt"></i>
-      <span>Roles Manager</span>
+      <span>Quản lý quyền</span>
+    </a>
+
+    <a class="menu-item" [routerLink]="['/admin/settings']" routerLinkActive="active">
+      <i class="fas fa-cog"></i>
+      <span>Cài đặt</span>
     </a>
   </div>
 
-  <div class="tabcontent flex-1 rounded-2xl bg-gray-50 shadow-md p-4">
+  <div class="tabcontent flex-1 rounded-2xl bg-gray-50 shadow-md p-4 overflow-auto custom-scroll">
     <router-outlet></router-outlet>
   </div>
+
 
   <div class="w-16">
     <app-sidebar-right></app-sidebar-right>

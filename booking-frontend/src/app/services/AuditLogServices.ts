@@ -4,14 +4,22 @@ import { Observable } from "rxjs";
 import { environment } from "../environments/environments";
 import { Injectable } from "@angular/core";
 
-export class AuditLog {
-  id!: string;
-  action!: string;
-  entity!: string;
-  entityId!: string;
-  performedBy!: string;
-  timestamp!: string;
-  description!: string;
+export interface AuditLog {
+  id?: string;
+  userName?: string;
+  applicationName?: string;
+  httpMethod?: string;
+  url?: string;
+  clientIpAddress?: string;
+  statusCode?: number;
+  executionTime?: string;
+  executionDuration?: number;
+  hasException?: boolean;
+  exceptionMessage?: string;
+  action?: string;
+  entity?: string;
+  entityId?: string;
+  description?: string;
 }
 
 @Injectable({
@@ -24,6 +32,10 @@ export class AuditLogServices {
 
   getAll(): Observable<AuditLog[]> {
     return this.httpClient.get<AuditLog[]>(`${this.apiUrl}`);
+  }
+
+  getSearch(audit: AuditLog): Observable<AuditLog[]> {
+    return this.httpClient.post<AuditLog[]>(`${this.apiUrl}/search`, audit);
   }
 
   getById(id: string): Observable<AuditLog> {

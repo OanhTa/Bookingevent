@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { environment } from "../environments/environments";
 import { Injectable } from "@angular/core";
+import { User } from "../models/UserDto";
 
 @Injectable({
   providedIn: 'root'  
@@ -31,6 +32,10 @@ export class UserServices {
     return this.httpClient.put<User>(`${this.apiUrl}/${id}`, user);
   }
 
+  SetPassword(id: string, data: any): Observable<any> {
+    return this.httpClient.put(`${this.apiUrl}/${id}/set-password`, data);
+  }
+
   // Xóa user
   delete(id: string): Observable<any> {
     return this.httpClient.delete(`${this.apiUrl}/${id}`);
@@ -55,17 +60,6 @@ export class UserServices {
   updateToken(request: UpdateTokenRequest): Observable<any> {
     return this.httpClient.post<any>(`${this.apiUrl}/update-token`, request);
   }
-}
-
-// Models
-export class User {
-  id!: string;
-  userName!: string;
-  passHash!: string;
-  email!: string;
-  phone!: string;
-  address!: string;
-  accountGroupId!: string;
 }
 
 export class UpdateTokenRequest {
