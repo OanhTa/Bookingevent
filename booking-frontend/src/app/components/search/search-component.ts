@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search-component.html',
-  imports: [CommonModule]
+  imports: [CommonModule, FormsModule]
 })
 export class SearchComponent {
   searchText: string = '';

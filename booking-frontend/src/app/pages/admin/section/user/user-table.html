@@ -1,80 +1,36 @@
 <div class="m-5">
     <div class="flex justify-between items-center mb-4">
       <h2 class="text-2xl font-bold">Quản lý người dùng</h2>
-      <button 
-        *ngIf="permissionService.hasPermission(constPer.Identity.Users.Create)"
-        (click)="openAdd()" 
-        class="bg-green-600 text-white text-sm p-2 rounded hover:bg-green-700"
-        >
-        + Tạo mới
-      </button>
+<!--  *ngIf="permissionService.hasPermission(constPer.Identity.Users.Create)" -->
+      <p-button label="Tạo mới" size="small" icon="pi pi-plus" (click)="openAdd()"/>
     </div>
 
     <div class="p-4 mb-4 border rounded-md bg-white shadow-sm">
       <div class="flex items-center gap-2">
-        <app-search class="flex-1"></app-search>
-        <button
-            (click)="showFilter = !showFilter"
-            class="flex items-center gap-1 border border-green-600 text-green-600 px-4 py-2 rounded-lg hover:bg-green-50 transition"
-          >
-            Lọc
-            <i
-              class="fas"
-              [ngClass]="showFilter ? 'fa-sort-up' : 'fa-sort-down'"
-            ></i>
-          </button>
+        <app-search class="flex-1" (search)="onSearchHandler($event)"></app-search>
+        <p-button 
+          label="Lọc" iconPos="right"
+          (click)="showFilter = !showFilter"
+          [icon]="showFilter ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"
+        />
       </div>
 
       <div *ngIf="showFilter" class="mt-5">
         <app-filter-form 
-          [fields]="filterFields">
+          [fields]="filterFields"
+          (submitFilter)="onFilterSubmit($event)"
+          (exportFilter)="exportExcel()">
         </app-filter-form>
       </div>
     </div>
 
-    <table *ngIf="users && users.length > 0" class="w-full border border-gray-200">
-      <thead class="bg-gray-100">
-        <tr>
-          <th class="p-2">Hành động</th>
-          <th class="p-2">Tên</th>
-          <th class="p-2">Email</th>
-          <th class="p-2">Quyền</th>
-          <th class="p-2">Số điện thoại</th>
-          <th class="p-2">Địa chỉ</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let user of users" class="border-t border-gray-200 hover:bg-gray-50">
-          <td class="p-4 relative">
-            <button (click)="toggleDropdown(user.id!)" 
-                    class="border border-gray-400 hover:bg-gray-100 px-2 py-1 rounded">
-              <i class="fa-solid fa-gear"></i> Hành động
-            </button>
-            <div *ngIf="dropdownOpen === user.id" 
-                class="absolute left-0 mt-1 bg-white border border-gray-300 rounded shadow w-40 z-[9999]">
-              <ul>
-                <li class="p-3 hover:bg-gray-100 cursor-pointer" (click)="openViewDetail(user)">Xem chi tiết</li>
-                <li class="p-3 hover:bg-gray-100 cursor-pointer" (click)="openEdit(user)">Sửa</li>
-                <li class="p-3 hover:bg-gray-100 cursor-pointer" (click)="showDeletePopup(user)">Xóa</li>
-                <li class="p-3 hover:bg-gray-100 cursor-pointer" (click)="openLock(user)">Khóa</li>
-                <li class="p-3 hover:bg-gray-100 cursor-pointer" (click)="openPermissionsModal(user)">Phân quyền</li>
-                <li class="p-3 hover:bg-gray-100 cursor-pointer" (click)="openSetPassword(user)">Đặt lại mật khẩu</li>
-              </ul>
-            </div>
-          </td>
-          <td class="p-2">{{ user.userName }}</td>
-          <td class="p-2">{{ user.email }}</td>
-          <td class="p-2">
-            <span *ngFor="let r of user.userRoles; let last = last">
-              {{ r.role.name }}<span *ngIf="!last">,</span>
-            </span>
-          </td>
-          <td class="p-2">{{ user.phone }}</td>
-          <td class="p-2">{{ user.address }}</td>
-        </tr>
-      </tbody>
-  </table>
+    <table-component
+      [columns]="columns" 
+      [data]="users"
+      [actions]="actions">
+  </table-component>
 </div>
+
 <ng-container *ngIf="showModalPermissions">
   <app-permissions-modal
     [selected]="selectedUser"
@@ -94,10 +50,20 @@
   (close)="showModalForm=false"
 ></app-modal-form>
 
+<app-modal-tab-form
+  *ngIf="showModalUser"
+  [modalTitle]="modalTitle"
+  [formData]="modelFormData"
+  [currentAction]="currentAction"
+  (save)="onSave($event)"
+  (close)="showModalUser=false"
+>
+</app-modal-tab-form>
+
 <app-popup
   [show]="showConfirm"
-  title="Confirm"
-  message="Do you want to delete this record?"
+  title="Xác nhận"
+  message="Bạn có muốn xóa bản ghi này?"
   (confirm)="onDeleteConfirmed()"
   (cancel)="onDeleteCancelled()">
 </app-popup>

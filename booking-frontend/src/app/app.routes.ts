@@ -14,6 +14,10 @@ import { AddVenueEvent } from './pages/add-venue-event/add-venue-event';
 import { UserTable } from './pages/admin/section/user/user-table';
 import { RoleTable2 } from './pages/admin/section/role/role-table';
 import { AuditLogComponent } from './pages/admin/section/auditlog/audit-log';
+import { SettingSection } from './pages/admin/section/setting/setting-section';
+import { ForgotPasswordComponent } from './pages/login/forgot-password/forgot-password';
+import { ResetPasswordComponent } from './pages/login/reset-password/reset-password';
+import { MyAccount } from './pages/admin/my-account/my-account';
 
 export const routes: Routes = [
     { path: '', component: Home},
@@ -26,12 +30,17 @@ export const routes: Routes = [
             { path: 'dashbord', component: AuditLogComponent },
             { path: 'users', component: UserTable },
             { path: 'roles', component: RoleTable2 },
+            { path: 'audit-log', component: AuditLogComponent },
+            { path: 'settings', component: SettingSection },
+            { path: 'my-account', component: MyAccount },
             { path: '', redirectTo: 'users', pathMatch: 'full' } 
         ]
     },
     { path: 'organisation/:id', component: Organisation},
     { path: 'login', component: Login},
     { path: 'register', component: Register},
+    { path: 'forgot-password', component: ForgotPasswordComponent },
+    { path: 'reset-password', component: ResetPasswordComponent },
     { path: 'create', component: AddEvent},
     { path: 'create-online-event', component: AddOnnlineEvent},
     { path: 'create-venue-event', component: AddVenueEvent}

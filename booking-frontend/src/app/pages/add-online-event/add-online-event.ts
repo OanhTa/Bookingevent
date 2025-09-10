@@ -5,7 +5,7 @@ import { FormDetail } from './form-details/form-detail';
 import { CommonModule } from '@angular/common';
 import { FormTickets } from './form-tickets/form-tickets';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { EventService } from '../../services/EventServer';
+import { EventService } from '../../services/EventService';
 import { MessageService } from 'primeng/api';
 
 

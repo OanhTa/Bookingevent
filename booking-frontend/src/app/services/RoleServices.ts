@@ -33,6 +33,12 @@ export class RoleService {
     return this.http.get<Role>(`${this.baseUrl}/${id}`);
   }
 
+  getSearchKey(keyword: string): Observable<Role[]> {
+    return this.http.get<Role[]>(`${this.baseUrl}/search-key`, {
+      params: { keyword }
+    });
+  }
+
   createRole(role: Partial<Role>): Observable<Role> {
     return this.http.post<Role>(this.baseUrl, role);
   }

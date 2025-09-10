@@ -5,6 +5,7 @@ import { Injectable } from "@angular/core";
 import { LoginResponseDto } from "../models/LoginResponseDto";
 import { LoginRequestDto } from "../models/LoginRequestDto";
 import { RegisterRequest, RegisterResponse } from "../models/RegisterDto";
+import { RequestPasswordResetDto, ResetPasswordDto } from "../models/UserDto";
 
 @Injectable({
   providedIn: 'root'  
@@ -20,5 +21,13 @@ export class AuthServices{
     }
     register(registerRequest: RegisterRequest): Observable<RegisterResponse> {
         return this.httpClient.post<RegisterResponse>(`${this.apiUrl}/register`, registerRequest);
+    }
+
+    requestPasswordReset(dto: RequestPasswordResetDto): Observable<any> {
+        return this.httpClient.post<any>(`${this.apiUrl}/request-password-reset`, dto);
+    }
+
+    resetPassword(dto: ResetPasswordDto): Observable<any> {
+        return this.httpClient.post<any>(`${this.apiUrl}/reset-password`, dto);
     }
 }

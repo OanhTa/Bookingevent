@@ -1,0 +1,28 @@
+<div class="space-y-4">
+  <ng-container *ngFor="let field of fields">
+    <label *ngIf="field.type === 'number'" class="flex flex-col">
+      <span>{{ field.title }}</span>
+      <p-inputnumber [(ngModel)]="settings[field.key]" variant="filled"
+        [min]="field.min ?? 0" [max]="field.max ?? 300" [showButtons]="true" />
+      <span *ngIf="field.subtitle" class="text-sm text-gray-500">{{ field.subtitle }}</span>
+    </label>
+
+    <label *ngIf="field.type === 'checkbox'" class="flex items-start space-x-2">
+        <input type="checkbox" [(ngModel)]="settings[field.key]" />
+        <div class="flex flex-col">
+            <span>{{ field.title }}</span>
+            <span *ngIf="field.subtitle" class="text-sm text-gray-500">{{ field.subtitle }}</span>
+        </div>
+    </label>
+
+    <label *ngIf="field.type === 'text'" class="flex flex-col">
+        <span>{{ field.title }}</span>
+        <input type="text" pInputText [(ngModel)]="settings[field.key]" variant="filled"/>
+
+        <span *ngIf="field.subtitle" class="text-sm text-gray-500">{{ field.subtitle }}</span>
+    </label>
+
+  </ng-container>
+
+  <button class="mt-4 bg-green-600 text-white px-4 py-2 rounded" (click)="onSave()">Lưu</button>
+</div>

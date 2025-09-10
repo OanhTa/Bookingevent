@@ -1,30 +1,68 @@
 <p-table 
-    [columns]="columns" 
-    [value]="data" 
-    [paginator]="true"
-    [rows]="5"
-    [tableStyle]="{ 'min-width': '50rem' }"
-    [rowsPerPageOptions]="[5, 10, 20]"
-    >
-    <ng-template #header let-columns>
-        <tr>
-            <th style="width: 100px">Action</th>
-            <th *ngFor="let col of columns">
-                {{ col.header }}
-            </th>
-        </tr>
-    </ng-template>
-    <ng-template #body let-rowData let-columns="columns">
-        <tr>
-            <td>
-                <button>
-                    Xem chi tiết
-                </button>
-                
-            </td>
-            <td *ngFor="let col of columns">
-                {{ rowData[col.field] }}
-            </td>
-        </tr>
-    </ng-template>
+  [columns]="columns" 
+  [value]="data" 
+  [paginator]="true"
+  [rows]="5"
+  [rowsPerPageOptions]="[5, 10, 20]" 
+  [resizableColumns]="true"
+  columnResizeMode="expand"
+  [tableStyle]="{ 'min-width': '70rem' }"
+>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th style="width: 120px">Hành động</th>
+      <th pResizableColumn *ngFor="let col of columns" [pSortableColumn]="col.field">
+        {{ col.header }}
+        <p-sortIcon [field]="col.field"></p-sortIcon>
+      </th>
+
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-rowData let-columns="columns">
+    <tr>
+      <!-- Action dropdown -->
+      <td class="relative min-w-[150px]">
+        <p-button 
+          (onClick)="displayActions($event, rowData)" 
+          size="small" 
+          icon="pi pi-cog" 
+          label="Hành động" />
+      </td>
+
+      <!-- Other columns -->
+      <td *ngFor="let col of columns">
+        <!-- render roles đặc biệt -->
+        <ng-container *ngIf="col.field === 'roles'; else normalField">
+          <span *ngFor="let r of rowData['userRoles']; let last = last">
+            {{ r.role.name }}<span *ngIf="!last">, </span>
+          </span>
+        </ng-container>
+        <ng-template #normalField>
+          <ng-container *ngIf="rowData[col.field] === true; else notTrue">
+            <i class="pi pi-check text-green-500"></i>
+          </ng-container>
+          <ng-template #notTrue>
+            <ng-container *ngIf="rowData[col.field] === false; else normalValue">
+              <i class="pi pi-times text-red-500"></i>
+            </ng-container>
+          </ng-template>
+
+          <ng-template #normalValue>
+            {{ rowData[col.field] }}
+          </ng-template>
+        </ng-template>
+      </td>
+    </tr>
+  </ng-template>
 </p-table>
+
+<p-popover #op>
+  <ul class="list-none p-0 m-0 w-40">
+    <li *ngFor="let action of actions"
+        class="p-3 hover:bg-gray-100 cursor-pointer"
+        (click)="onActionClick(action)">
+      {{ action.label }}
+    </li>
+  </ul>
+</p-popover>

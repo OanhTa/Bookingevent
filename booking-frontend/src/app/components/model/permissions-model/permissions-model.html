@@ -16,7 +16,7 @@
       <div class="w-1/2 pr-4">
         <div 
           [ngClass]="{
-            'bg-teal-50 text-green-600': selectedGroup === 'IdentityManagement',
+            'bg-teal-100 text-green-800': selectedGroup === 'IdentityManagement',
             'border border-gray-300 bg-white text-gray-700': selectedGroup !== 'IdentityManagement'
           }"
           class="cursor-pointer rounded p-3 my-2"
@@ -25,7 +25,7 @@
         </div>
         <div 
           [ngClass]="{
-            'bg-teal-50 text-green-600': selectedGroup === 'AuditLogging',
+            'bg-teal-100 text-green-800': selectedGroup === 'AuditLogging',
             'border border-gray-300 bg-white text-gray-700': selectedGroup !== 'AuditLogging'
           }"
           class="cursor-pointer rounded p-3 my-2"
@@ -44,7 +44,10 @@
         <div *ngIf="selectedGroup === 'IdentityManagement'" class="content-ltr ml-5 mt-2">                  
           <div *ngFor="let group of groupedPermissions | keyvalue">
             <div class="flex items-center space-x-2">
-              <input type="checkbox"/>
+              <input 
+                type="checkbox"
+                [checked]="isGroupAllChecked(group.value)"
+              />
               <h3 class="font-bold mb-2">{{ group.key }}</h3>
             </div>
             <ul>
@@ -64,5 +67,18 @@
         </div>
       </div>
     </div>
+
+    <div class="flex justify-end space-x-2 mt-4">
+      <button 
+        class="px-4 py-2 rounded bg-gray-400 text-white hover:bg-gray-600"
+        (click)="close()">
+        Đóng
+      </button>
+       <button class="px-4 py-2 rounded bg-green-500 text-white hover:bg-green-600"
+       (click)="onSave()">
+        Lưu
+      </button>
+    </div>
+
   </div>
 </div>

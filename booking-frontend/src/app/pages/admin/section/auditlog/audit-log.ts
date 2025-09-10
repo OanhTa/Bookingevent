@@ -4,6 +4,10 @@ import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FilterFormComponent } from '../../../../components/filter-form/filter-form';
+import { FormField } from '../../../../models/FormField';
+import { ModalFormComponent } from '../../../../components/model/form-model/model-components';
+import { ExportService } from '../../../../services/ExportService';
+import { ButtonModule } from 'primeng/button';
 
 
 @Component({
@@ -12,14 +16,33 @@ import { FilterFormComponent } from '../../../../components/filter-form/filter-f
   imports: [
     TableModule, 
     CommonModule,
+    ButtonModule,
     FormsModule,
-    FilterFormComponent
+    FilterFormComponent,
+    ModalFormComponent,
   ],
 })
 export class AuditLogComponent implements OnInit {
   logs: AuditLog[] = [];
   totalRecords = 0;
   loading = true;
+
+  showModalForm = false;
+  modalTitle = '';
+  modalFields: FormField[] = [
+    { label: 'HTTP status code', name: 'statusCode', type: 'select', required: true, validators: ['required'], options: []},
+    { label: 'HTTP method', name: 'httpMethod', type: 'select', required: true, validators: ['required'], options: []},
+    { label: 'URL', name: 'url', type: 'text', required: true, validators: ['required'] },
+    { label: 'Client IP Address', name: 'ipAddress', type: 'text' },
+    { label: 'Client Name', name: 'clientName', type: 'text' },
+    { label: 'Exceptions', name: 'hasException', type: 'select', options: []},
+    { label: 'User name', name: 'userName', type: 'text' },
+    { label: 'Time', name: 'time', type: 'date' },
+    { label: 'Duration', name: 'duration', type: 'number' },
+    { label: 'Application name', name: 'applicationName', type: 'text' },
+    { label: 'Correlation Id', name: 'correlationId', type: 'text' },
+  ];
+  modelFormData: any = null;
 
   filterFields = [
     { key: 'startDate', label: 'Ngày bắt đầu', type: 'date' },
@@ -51,6 +74,7 @@ export class AuditLogComponent implements OnInit {
 
   constructor(
     private auditLogService: AuditLogServices,
+    private exportService: ExportService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -73,17 +97,17 @@ export class AuditLogComponent implements OnInit {
     });
   }
 
+  openViewDetail(data: any) {
+    this.modalTitle = `Xem chi tiết`;
+    this.modelFormData = { ...data };
+    this.showModalForm = true;
+  }
+
   refresh() {
     this.loadLogs();
   }
 
   exportExcel() {
-    // this.auditLogService.exportExcel().subscribe(blob => {
-    //   const url = window.URL.createObjectURL(blob);
-    //   const a = document.createElement('a');
-    //   a.href = url;
-    //   a.download = 'AuditLogs.xlsx';
-    //   a.click();
-    // });
+    this.exportService.exportExcel(this.logs, 'logs-exportexcel');
   }
 }

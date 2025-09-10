@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CategoryServer } from '../../../services/CategoryServer';
+import { CategoryServer } from '../../../services/CategoryService';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';

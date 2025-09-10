@@ -6,6 +6,8 @@ import { AuthServices } from '../../services/AuthServices';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
+import { ProgressSpinner } from 'primeng/progressspinner';
+import { BlockUI } from 'primeng/blockui';
 
 @Component({
   selector: 'app-register',
@@ -17,12 +19,14 @@ import { ButtonModule } from 'primeng/button';
     FormsModule, 
     CardModule, 
     ButtonModule, 
-    RouterModule
+    RouterModule,
+    ProgressSpinner,BlockUI
   ],
 })
 export class Register{
 
   registerForm!: FormGroup;
+  loading = false
 
   constructor(
     private fb: FormBuilder,
@@ -62,16 +66,17 @@ export class Register{
   }
 
   submitDetails() {
+    this.loading = true;
     const postData = { ...this.registerForm.value };
     delete postData.confirmPassword;
     this.authService.register(postData).subscribe(
       response => {
-        console.log(response);
+        this.loading = false;
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Register successfully' });
         this.router.navigate(['login'])
       },
       error => {
-        console.log(error);
+        this.loading = false;
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
       }
     )

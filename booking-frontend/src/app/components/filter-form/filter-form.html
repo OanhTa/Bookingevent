@@ -1,4 +1,4 @@
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
   <ng-container *ngFor="let field of fields">
     <!-- text -->
     <div *ngIf="field.type === 'text'">
@@ -27,6 +27,6 @@
 
 <!-- Buttons -->
 <div class="flex gap-4 mt-4 justify-end">
-  <button class="bg-green-600 text-white px-4 py-2 rounded-lg" (click)="onSubmit()">Refresh</button>
-  <button class="border border-green-600 text-green-600 px-4 py-2 rounded-lg">Export to Excel</button>
+  <p-button label="Làm mới" (click)="onSubmit()"/>
+  <p-button label="Xuất Excel" variant="outlined" (click)="onExport()"/>
 </div>

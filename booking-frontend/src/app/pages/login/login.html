@@ -38,6 +38,12 @@
                 class="w-full !bg-green-600 hover:!bg-green-700 p-2 text-white font-semibold rounded-lg"
             >Đăng nhập</button>
 
+            <p class="mt-2 text-center text-sm">
+                <a routerLink="/forgot-password" class="text-blue-500 hover:underline">
+                    Quên mật khẩu?
+                </a>
+            </p>
+
             <p class="mt-4 text-center text-sm">
                 Chưa có tài khoản?
                 <a routerLink="/register" class="text-blue-500 hover:underline">Đăng ký ngay</a>
@@ -46,4 +52,8 @@
     </form>
   </div>
 </div>
+
 <router-outlet></router-outlet>
+<p-blockUI [blocked]="loading" [autoZIndex]="true">
+  <p-progressSpinner styleClass="w-12 h-12"></p-progressSpinner>
+</p-blockUI>

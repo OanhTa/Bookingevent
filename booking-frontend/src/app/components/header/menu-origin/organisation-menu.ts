@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { OrganisationService } from '../../../services/OrganisationServer';
+import { OrganisationService } from '../../../services/OrganisationService';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Observable, of } from 'rxjs';

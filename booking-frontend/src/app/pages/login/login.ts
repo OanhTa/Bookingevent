@@ -8,39 +8,50 @@ import { AuthServices,  } from '../../services/AuthServices';
 import { LoginResponseDto } from '../../models/LoginResponseDto';
 import { LoginRequestDto } from '../../models/LoginRequestDto';
 import { MessageService } from 'primeng/api';
+import { ProgressSpinner } from 'primeng/progressspinner';
+import { BlockUI } from 'primeng/blockui';
+import { AccountService } from '../../services/AccountService';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, PasswordModule, InputTextModule, RouterModule],
+  imports: [
+    FormsModule, PasswordModule, 
+    InputTextModule, RouterModule,
+    ProgressSpinner,BlockUI
+  ],
   standalone: true,
   templateUrl: './login.html',
-  styleUrl: './login.css'
 })
 export class Login {
   email!: string;
   password!: string;
   errorMessage: string = '';
+  loading = false
 
   constructor(
     private authServices: AuthServices, 
     private messageService: MessageService, 
+    private accountService: AccountService, 
     private router: Router, 
     private cdr: ChangeDetectorRef) {}
 
   onSubmit() {
+    this.loading = true
     const body: LoginRequestDto = { email : this.email, password: this.password };
     this.authServices.login(body).subscribe({
       next: (res: LoginResponseDto) => {
-      const account = {
-          token: res.token,
-          userId: res.userId,
-          fullName: res.fullName,
-          roles: res.roles, // mảng role
-      };
-      localStorage.setItem('account', JSON.stringify(account));
+        this.loading = false
+        const account = {
+            token: res.token,
+            userId: res.userId,
+            fullName: res.fullName,
+            roles: res.roles, // mảng role
+        };
+        localStorage.setItem('account', JSON.stringify(account));
         
+        this.accountService.setAccount(res);
         this.messageService.add({severity: 'success',summary: 'Đăng nhập thành công',detail: 'Chào mừng bạn quay lại!'});
-        
+          
         if (res.roles.includes('Administrator')) {
           this.router.navigate(['/admin']);
         } else {
@@ -48,6 +59,7 @@ export class Login {
         }
       },
       error: (err) => {
+        this.loading = false
         this.errorMessage = err.error?.message || 'Đăng nhập thất bại';
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
         this.cdr.detectChanges();

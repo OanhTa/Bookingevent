@@ -1,0 +1,60 @@
+<div class="p-5">
+    <h2 class="text-2xl font-bold">Cài đặt</h2>
+</div>
+<div class="flex bg-white rounded-2xl p-5">
+  <!-- Sidebar -->
+  <div class="w-56 border-r">
+    <ul class="space-y-1 p-2">
+      <li>
+        <button class="w-full text-left p-2 rounded hover:bg-gray-100"
+                [ngClass]="{'bg-green-100 text-green-600 hover:bg-green-100': activeMenu === 'account'}"
+                (click)="activeMenu = 'account'">
+          Tài khoản
+        </button>
+      </li>
+      <li>
+        <button 
+          class="w-full text-left p-2 rounded hover:bg-gray-100"
+          [ngClass]="{'bg-green-100 text-green-600 hover:bg-green-100': activeMenu === 'chat'}"
+          (click)="activeMenu = 'chat'">
+          Trò chuyện
+        </button>
+      </li>
+      <li>
+        <button 
+          class="w-full text-left p-2 rounded hover:bg-gray-100"
+          [ngClass]="{'bg-green-100 text-green-600 hover:bg-green-100': activeMenu === 'mail'}"
+          (click)="activeMenu = 'mail'">
+          Gửi mail
+        </button>
+      </li>
+      <li>
+        <button 
+            class="w-full text-left p-2 rounded hover:bg-gray-100"
+            [ngClass]="{'bg-green-100 text-green-600 hover:bg-green-100': activeMenu === 'identity'}"
+            (click)="activeMenu = 'identity'">
+          Quản lý danh tính
+        </button>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Nội dung -->
+  <div class="flex-1 p-6">
+    <ng-container *ngIf="activeMenu === 'account'">
+     <app-setting-account></app-setting-account>
+    </ng-container>
+
+    <ng-container *ngIf="activeMenu === 'identity'">
+      <app-setting-identity></app-setting-identity>
+    </ng-container>
+
+    <ng-container *ngIf="activeMenu === 'mail'">
+      <app-setting-email></app-setting-email>
+    </ng-container>
+
+    <ng-container *ngIf="activeMenu === 'chat'">
+      <app-setting-chat></app-setting-chat>
+    </ng-container>
+  </div>
+</div>

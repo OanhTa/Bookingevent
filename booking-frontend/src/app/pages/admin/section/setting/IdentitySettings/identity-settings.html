@@ -1,0 +1,14 @@
+<div>
+  <div class="border-b mb-4 flex space-x-6">
+    <button class="pb-2" [class.border-b-2]="tab==='policy'" (click)="tab='policy'">Chính sách mật khẩu</button>
+    <button class="pb-2" [class.border-b-2]="tab==='lock'" (click)="tab='lock'">Khóa</button>
+    <button class="pb-2" [class.border-b-2]="tab==='verification'" (click)="tab='verification'">Xác minh danh tính</button>
+    <button class="pb-2" [class.border-b-2]="tab==='profile'" (click)="tab='profile'">Hồ sơ người dùng</button>
+  </div>
+
+  <app-settings-fields 
+    [fields]="fields[tab]" 
+    [settings]="settings"
+    (save)="saveSettings(tab)">
+  </app-settings-fields>
+</div>

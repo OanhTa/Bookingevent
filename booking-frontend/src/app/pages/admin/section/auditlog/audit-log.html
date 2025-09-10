@@ -5,7 +5,8 @@
   <div class="mb-10">
     <app-filter-form 
       [fields]="filterFields"
-      (submitFilter)="onFilterSubmit($event)">
+      (submitFilter)="onFilterSubmit($event)"
+      (exportFilter)="exportExcel()">
     </app-filter-form>
   </div>
 
@@ -31,22 +32,31 @@
     <ng-template pTemplate="body" let-log>
       <tr>
         <td>
-          <button class="btn">
-            <i class="fa fa-eye"></i> Xem 
-          </button>
+          <p-button label="Xem" size="small" icon="pi pi-eye" (click)="openViewDetail(log)" [raised]="true" severity="secondary"/>
         </td>
         <td>
           <span
-            class="px-2 py-1 rounded text-white"
+            class="text-sm px-2 py-1 rounded-2xl text-white"
             [ngClass]="{
-              'bg-green-500': log.statusCode >= 200 && log.statusCode < 300,
-              'bg-orange-500': log.statusCode >= 300 && log.statusCode < 400,
-              'bg-red-500': log.statusCode >= 400
+              'bg-green-400': log.statusCode >= 200 && log.statusCode < 300,
+              'bg-orange-400': log.statusCode >= 300 && log.statusCode < 400,
+              'bg-red-400': log.statusCode >= 400
             }"
           >
             {{ log.statusCode }}
           </span>
-          <span class="px-2 py-1 rounded bg-gray-200 ml-2">{{ log.httpMethod }}</span>
+          <span
+          class="text-sm px-2 py-1 rounded-2xl ml-2 text-white"
+          [ngClass]="{
+            'bg-gray-400': log.httpMethod === 'GET',
+            'bg-green-400': log.httpMethod === 'POST',
+            'bg-yellow-400': log.httpMethod === 'PUT',
+            'bg-red-400': log.httpMethod === 'DELETE',
+            'bg-gray-300': ['GET','POST','PUT','DELETE'].indexOf(log.httpMethod) === -1
+          }"
+        >
+          {{ log.httpMethod }}
+        </span>
           <span class="ml-2">{{ log.url }}</span>
         </td>
         <td>{{ log.userName }}</td>
@@ -58,3 +68,12 @@
     </ng-template>
   </p-table>
 </div>
+
+<app-modal-form
+  *ngIf="showModalForm"
+  [title]="modalTitle"
+  [fields]="modalFields"
+  [formData]="modelFormData"
+  [currentAction]="'view'"
+  (close)="showModalForm=false"
+></app-modal-form>

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { EventItem } from './eventItem/event-item';
-import { EventService } from '../../../services/EventServer';
+import { EventService } from '../../../services/EventService';
 import { ActivatedRoute } from '@angular/router';
 
 

@@ -77,4 +77,8 @@
     </p-card>
   </form>
 </div>
+
 <router-outlet></router-outlet>
+<p-blockUI [blocked]="loading" [autoZIndex]="true">
+  <p-progressSpinner styleClass="w-12 h-12"></p-progressSpinner>
+</p-blockUI>

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
 import { DatePickerModule } from 'primeng/datepicker';
 import { InputNumber } from 'primeng/inputnumber';
 import { Select } from 'primeng/select';
@@ -17,6 +18,7 @@ export interface FilterField {
   templateUrl: './filter-form.html',
   imports: [ 
     CommonModule,
+    ButtonModule,
     FormsModule,   
     DatePickerModule,
     Select,
@@ -29,9 +31,13 @@ export class FilterFormComponent {
   filterData: { [key: string]: any } = {};
   // Event emitter để gửi dữ liệu về cha khi submit
   @Output() submitFilter = new EventEmitter<{ [key: string]: any }>();
+  @Output() exportFilter = new EventEmitter<any>();
 
   onSubmit() {
-    console.log('Dữ liệu filter trước emit:', this.filterData);
     this.submitFilter.emit(this.filterData);
+  }
+
+  onExport() {
+    this.exportFilter.emit();
   }
 }

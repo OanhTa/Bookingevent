@@ -1,0 +1,55 @@
+<div class="p-5">
+    <h2 class="text-2xl font-bold">Tài khoản của tôi</h2>
+</div>
+<div class="flex bg-white rounded-2xl p-5">
+  <div class="w-56 border-r">
+    <ul class="space-y-1 p-2">
+      <li>
+        <button class="w-full text-left p-2 rounded hover:bg-gray-100"
+                [ngClass]="{'bg-green-100 text-green-600 hover:bg-green-100': activeMenu === 'info'}"
+                (click)="activeMenu = 'info'">
+          Thông tin
+        </button>
+      </li>
+      <li>
+        <button 
+          class="w-full text-left p-2 rounded hover:bg-gray-100"
+          [ngClass]="{'bg-green-100 text-green-600 hover:bg-green-100': activeMenu === 'img'}"
+          (click)="activeMenu = 'img'">
+          Hình ảnh đại diện
+        </button>
+      </li>
+      <li>
+        <button 
+          class="w-full text-left p-2 rounded hover:bg-gray-100"
+          [ngClass]="{'bg-green-100 text-green-600 hover:bg-green-100': activeMenu === 'pass'}"
+          (click)="activeMenu = 'pass'">
+          Thay đổi mật khẩu
+        </button>
+      </li>
+    </ul>
+  </div>
+
+  <div class="flex-1 p-6">
+    <ng-container *ngIf="activeMenu === 'info'">
+        <app-settings-fields 
+            [fields]="fields['default']" 
+            [settings]="settings">
+        </app-settings-fields>
+    </ng-container>
+
+    <ng-container *ngIf="activeMenu === 'img'">
+      <app-settings-fields 
+            [fields]="fields['img']" 
+            [settings]="settings">
+        </app-settings-fields>
+    </ng-container>
+
+    <ng-container *ngIf="activeMenu === 'pass'">
+       <app-settings-fields 
+            [fields]="fields['password']" 
+            [settings]="settings">
+        </app-settings-fields>
+    </ng-container>
+  </div>
+</div>

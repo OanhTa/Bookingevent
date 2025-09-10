@@ -8,6 +8,9 @@ import { SearchComponent } from '../../../../components/search/search-component'
 import { ModalFormComponent } from '../../../../components/model/form-model/model-components';
 import { MessageService } from 'primeng/api';
 import { PopupComponent } from '../../../../components/popup/popup-component';
+import { TableAction } from '../../../../models/TableAction';
+import { TableComponent } from '../../../../components/table/table-component';
+import { ButtonModule } from 'primeng/button';
 
 
 @Component({
@@ -16,7 +19,9 @@ import { PopupComponent } from '../../../../components/popup/popup-component';
   standalone: true,
   imports: [
     CommonModule, 
+    ButtonModule,
     FormsModule, 
+    TableComponent,
     PermissionsModalComponent,
     SearchComponent,
     ModalFormComponent,
@@ -25,11 +30,13 @@ import { PopupComponent } from '../../../../components/popup/popup-component';
 })
 export class RoleTable2 implements OnInit {
   roles: Role[] = [];
+  columns: any[] = [];
+  actions: TableAction<Role>[] = [];
+
   roleSelect: Role | null = null;
   groupedPermissions: { [key: string]: PermissionTableItem[] } = {};
   
   showModal = false;
-  dropdownOpen: string | null = null;
   groupSearch: string = '';
 
   constructor(
@@ -59,10 +66,33 @@ export class RoleTable2 implements OnInit {
     });
   }
   showDeletePopup(role: any) {
-    this.dropdownOpen = null;
     this.roleSelect = role;
     this.showConfirm = true;
   }
+
+  ngOnInit(): void {
+    this.columns = [
+      { field: 'name', header: 'Tên quyền' },
+      { field: 'userCount', header: 'Số lượng' }
+    ];
+
+    this.actions = [
+      { label: 'Sửa', callback: (r) => this.openEdit(r) },
+      { label: 'Xóa', callback: (r) => this.showDeletePopup(r) },
+      { label: 'Phân quyền', callback: (r) => this.openPermissionsModal(r) },
+      { label: 'Di chuyển người dùng', callback: (r) => this.openPermissionsModal(r) },
+    ];
+
+    this.loadRoles(); 
+  }
+
+  onSearchHandler(keyword: string) {
+    this.roleService.getSearchKey(keyword).subscribe((res: any) => {
+      this.roles = res
+      this.cdr.detectChanges();
+    });
+  }
+
   openAdd() {
     this.modalTitle = 'Thêm quyền';
     this.modelFormData = {};
@@ -123,10 +153,6 @@ export class RoleTable2 implements OnInit {
     this.showConfirm = false;
   }
 
-  ngOnInit() {
-    this.loadRoles();
-  }
-
   loadRoles() {
     this.roleService.getAllRole().subscribe({
       next: res => { this.roles = res; this.cdr.detectChanges(); },
@@ -140,9 +166,5 @@ export class RoleTable2 implements OnInit {
     this.showModal = true;
     this.loadRolePermissions(role.id)
     this.roleSelect = role;
-  }
-
-  toggleDropdown(roleId: string) {
-    this.dropdownOpen = this.dropdownOpen === roleId ? null : roleId;
   }
 }

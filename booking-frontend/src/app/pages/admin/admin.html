@@ -8,20 +8,28 @@
     </a>
 
     <a class="menu-item" [routerLink]="['/admin/dashbord']" routerLinkActive="active">
-      <i class="fas fa-tachometer-alt"></i>
+      <i class="pi pi-chart-line"></i>
       <span>Tổng quan</span>
     </a>
+
     <a class="menu-item" [routerLink]="['/admin/users']" routerLinkActive="active">
-      <i class="fas fa-user"></i>
+      <i class="pi pi-users"></i>
       <span>Quản lý người dùng</span>
     </a>
+
     <a class="menu-item" [routerLink]="['/admin/roles']" routerLinkActive="active">
-      <i class="fas fa-shield-alt"></i>
+      <i class="pi pi-lock"></i>
       <span>Quản lý quyền</span>
     </a>
 
+    <a class="menu-item" [routerLink]="['/admin/audit-log']" routerLinkActive="active">
+      <i class="pi pi-file"></i> <!-- icon log/nhật ký -->
+      <span>Nhật ký hệ thống</span>
+    </a>
+
+
     <a class="menu-item" [routerLink]="['/admin/settings']" routerLinkActive="active">
-      <i class="fas fa-cog"></i>
+      <i class="pi pi-cog"></i>
       <span>Cài đặt</span>
     </a>
   </div>

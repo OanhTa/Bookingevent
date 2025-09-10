@@ -12,7 +12,7 @@ import { SearchComponent } from '../../search/search-component';
   imports: [
     CommonModule, 
     FormsModule,
-    SearchComponent
+    SearchComponent,
   ]
 })
 export class PermissionsModalComponent implements OnInit, OnChanges {
@@ -20,7 +20,7 @@ export class PermissionsModalComponent implements OnInit, OnChanges {
 
   @Input() selected!: any;              // user/role được chọn
   @Input() entityType!: 'user' | 'role';
-  @Input() checkPermissions: CheckPermission[] = [];   // quyền của user
+  @Input() checkPermissions: CheckPermission[] = [];   // quyền của user/role
   @Output() cancel = new EventEmitter();
 
   groupSearch: string = '';
@@ -41,6 +41,9 @@ export class PermissionsModalComponent implements OnInit, OnChanges {
     if (changes['checkPermissions'] && this.permissions.length) {
       this.mergeUserPermissions();
     }
+  }
+  isGroupAllChecked(perms: any[]): boolean {
+    return perms.length > 0 && perms.every(p => p.isGranted);
   }
 
   private loadPermissions() {
@@ -89,7 +92,6 @@ export class PermissionsModalComponent implements OnInit, OnChanges {
 
   close() {
     this.cancel.emit();
-    this.messageService.add({severity: 'success',summary: 'Success',detail: 'You have saved changes.'});
   }
 
   selectGroup(group: string) {
@@ -98,21 +100,49 @@ export class PermissionsModalComponent implements OnInit, OnChanges {
 
   onPermissionChange(perm: PermissionTableItem) {
     if (!this.selected || !this.selected.id) return;
+    const entity = this.groupedPermissions[this.selectedGroup];
+    if (!entity) return;
 
+    const index = entity.findIndex(p => p.name === perm.name);
+    if (index > -1) {
+      entity[index].isGranted = perm.isGranted;
+    }
+  }
+
+  onSave() {
+    if (!this.selected || !this.selected.id) return;
     const id = this.selected.id;
 
+    const updatedPermissions: PermissionTableItem[] = [];
+    Object.values(this.groupedPermissions).forEach(group => {
+      updatedPermissions.push(...group);
+    });
+
+    const granted = updatedPermissions.filter(p => p.isGranted).map(p => p.name);
+    const revoked = updatedPermissions.filter(p => !p.isGranted).map(p => p.name);
+
     if (this.entityType === 'user') {
-      if (perm.isGranted) {
-        this.permissionService.grantUserPermissions(id, [perm.name]).subscribe();
-      } else {
-        this.permissionService.revokeUserPermissions(id, [perm.name]).subscribe();
-      }
+      this.permissionService.grantUserPermissions(id, granted).subscribe(() => {
+        this.permissionService.revokeUserPermissions(id, revoked).subscribe(() => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Permissions saved successfully'
+          });
+          this.close();
+        });
+      });
     } else if (this.entityType === 'role') {
-      if (perm.isGranted) {
-        this.permissionService.grantRolePermissions(id, [perm.name]).subscribe();
-      } else {
-        this.permissionService.revokeRolePermissions(id, [perm.name]).subscribe();
-      }
+      this.permissionService.grantRolePermissions(id, granted).subscribe(() => {
+        this.permissionService.revokeRolePermissions(id, revoked).subscribe(() => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Role permissions saved successfully'
+          });
+          this.close();
+        });
+      });
     }
   }
 

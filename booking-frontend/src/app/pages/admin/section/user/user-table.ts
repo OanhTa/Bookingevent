@@ -7,12 +7,16 @@ import { CheckPermission, Permission, PermissionService } from '../../../../serv
 import { SearchComponent } from '../../../../components/search/search-component';
 import { ModalFormComponent } from '../../../../components/model/form-model/model-components';
 import { PopupComponent } from '../../../../components/popup/popup-component';
-import { RoleService } from '../../../../services/RoleServices';
 import { FormField } from '../../../../models/FormField';
 import { MessageService } from 'primeng/api';
 import { User } from '../../../../models/UserDto';
 import { PermissionsConst } from '../../../../../constants/permissions';
 import { FilterFormComponent } from '../../../../components/filter-form/filter-form';
+import { TableAction } from '../../../../models/TableAction';
+import { TableComponent } from '../../../../components/table/table-component';
+import { ButtonModule } from 'primeng/button';
+import { ExportService } from '../../../../services/ExportService';
+import { ModalTabFormComponent } from '../../../../components/model/form-tab-model/model-tab-components';
 
 
 @Injectable({
@@ -24,10 +28,13 @@ import { FilterFormComponent } from '../../../../components/filter-form/filter-f
   standalone: true,
   imports: [
     TableModule, 
+    TableComponent,
     CommonModule,
+    ButtonModule,
     PermissionsModalComponent,
     SearchComponent,
     ModalFormComponent,
+    ModalTabFormComponent,
     PopupComponent,
     FilterFormComponent
   ],
@@ -38,8 +45,11 @@ export class UserTable implements OnInit{
   permissions: Permission[] = [];
 
   users: User[] = [];
-  dropdownOpen: string | null = null;
+  columns: any[] = [];
+  actions: TableAction<User>[] = [];
+
   showModalPermissions = false;
+  showModalUser = false;
   
   showModalForm = false;
   modalTitle = '';
@@ -53,7 +63,7 @@ export class UserTable implements OnInit{
   ];
   activeFields : FormField[] = []
   modelFormData: any = null;
-  currentAction: 'add' | 'edit' | 'setPassword'| 'view' = 'add';
+  currentAction: 'add' | 'edit' | 'setPassword'| 'view' | 'lock' = 'add';
 
   showConfirm = false;
   selectedUser: any = null;
@@ -93,9 +103,34 @@ export class UserTable implements OnInit{
     private userServices: UserServices, 
     public  permissionService: PermissionService, 
     private messageService: MessageService,
-    private roleService: RoleService,
+    private exportService: ExportService,
     private cdr: ChangeDetectorRef
   ) {}
+
+  ngOnInit(): void {
+    this.columns = [
+      { field: 'userName', header: 'Tên' },
+      { field: 'email', header: 'Email' },
+      { field: 'roles', header: 'Quyền' },
+      { field: 'phone', header: 'Số điện thoại' },
+      { field: 'address', header: 'Địa chỉ' },
+      { field: 'lockoutEnabled', header: 'Cho Khóa' },
+      { field: 'emailConfirmed', header: 'Xác thực email' },
+      { field: 'emailConfirmed', header: 'Xác thực email' },
+      { field: 'accessFailedCount', header: 'Lượt đăng nhập sai' },
+    ];
+
+    this.actions = [
+      { label: 'Xem chi tiết', callback: (u) => this.openViewDetail(u) },
+      { label: 'Sửa', callback: (u) => this.openEdit(u) },
+      { label: 'Xóa', callback: (u) => this.showDeletePopup(u) },
+      { label: 'Khóa', callback: (u) => this.openLock(u) },
+      { label: 'Phân quyền', callback: (u) => this.openPermissionsModal(u) },
+      { label: 'Đặt lại mật khẩu', callback: (u) => this.openSetPassword(u) },
+    ];
+
+    this.loadUsers();
+  }
 
   loadUserPermissions(userId: string) {
     this.permissionService.getUserPermissions(userId).subscribe({
@@ -109,28 +144,28 @@ export class UserTable implements OnInit{
     });
   }
 
-  loadRoles() {
-    this.roleService.getAllRole().subscribe(res => {
-      const roleField = this.modalFields.find(f => f.name === 'roles');
-      if (roleField) {
-        roleField.options = res.map(r => ({
-          label: r.name,
-          value: r.id
-        }));
-      }
+  showDeletePopup(user: any) {
+    this.selectedUser = user;
+    this.showConfirm = true;
+  }
+
+  onFilterSubmit(filterData: { [key: string]: any }) {
+    this.userServices.getSearch(filterData).subscribe((res: any) => {
+      this.users = res
       this.cdr.detectChanges();
     });
   }
-  showDeletePopup(user: any) {
-    this.dropdownOpen = null;
-    this.selectedUser = user;
-    this.showConfirm = true;
+
+  onSearchHandler(keyword: string) {
+    this.userServices.getSearchKey(keyword).subscribe((res: any) => {
+      this.users = res
+      this.cdr.detectChanges();
+    });
   }
 
   openViewDetail(data: any) {
     this.modalTitle = `Xem chi tiết - ${data.userName}`;
     this.modelFormData = { ...data };
-    this.dropdownOpen = null;
     this.showModalForm = true;
 
     this.activeFields = this.modalFields.filter(f => f.name !== 'passwordHash');
@@ -138,23 +173,16 @@ export class UserTable implements OnInit{
   }
 
   openAdd() {
-    this.loadRoles();
     this.modalTitle = 'Thêm người dùng';
-    this.modelFormData = {};
-    this.showModalForm = true 
-    
-    this.activeFields = [...this.modalFields];
+    this.showModalUser = true 
+    this.modelFormData = {};;
     this.currentAction = 'add';
   }
 
   openEdit(data: any) {
-    this.loadRoles();
     this.modalTitle = `Sửa - ${data.userName}`;
+    this.showModalUser = true;
     this.modelFormData = { ...data };
-    this.dropdownOpen = null;
-    this.showModalForm = true;
-
-    this.activeFields = this.modalFields.filter(f => f.name !== 'passwordHash');
     this.currentAction = 'edit';
   }
 
@@ -162,7 +190,6 @@ export class UserTable implements OnInit{
     this.modalTitle = `Đổi mật khẩu - ${data.userName}`;
     const {passwordHash, ...rest } = data
     this.modelFormData = rest;
-    this.dropdownOpen = null;
     this.showModalForm = true 
     
     this.activeFields = this.modalFields.filter(f => f.name == 'passwordHash');
@@ -173,11 +200,10 @@ export class UserTable implements OnInit{
     this.modalTitle = `Khóa - ${data.userName}`;
     const {passwordHash, ...rest } = data
     this.modelFormData = rest;
-    this.dropdownOpen = null;
     this.showModalForm = true 
     
-    this.activeFields = [{ label: 'Ngày kết thúc khóa', name: 'lock', type: 'text' }]
-    this.currentAction = 'setPassword';
+    this.activeFields = [{ label: 'Ngày kết thúc khóa', name: 'lockoutEnd', type: 'date' }]
+    this.currentAction = 'lock';
   }
 
   onDeleteConfirmed(){
@@ -194,62 +220,46 @@ export class UserTable implements OnInit{
     this.showConfirm = false;
   }
 
-  ngOnInit(): void {
-    this.loadUsers();
-  }
   loadUsers(){
     this.userServices.getAll().subscribe(res => {
       this.users = res; 
       this.cdr.detectChanges();
     });
   }
-  toggleDropdown(usersId: string) {
-    this.dropdownOpen = this.dropdownOpen === usersId ? null : usersId;
-  }
-  
+
   openPermissionsModal(user: any) {
       this.showModalPermissions = true;
       this.loadUserPermissions(user.id);
       this.selectedUser = user;
-      this.dropdownOpen = null;
   }
 
   onSave(data: any) {
     if (!data || this.currentAction === 'view') return;
     if (!data) return;
-
     if (this.currentAction === 'add') {
       const user = {
-        userName: data.userName,
-        email: data.email,
-        phone: data.phoneNumber ?? '',
-        address: data.address ?? '',
-        passwordHash: data.passwordHash, // backend sẽ hash
-        userRoles: [],
-        userPermissions: []
+        ...data,
+        roleIds: data.roles,
+        // organisationIds: data.roles,
       };
       this.userServices.create(user).subscribe({
         next: () => this.handleSuccess('Thêm'),
         error: (err) => this.handleError(err)
       });
     }
-
     else if (this.currentAction === 'edit') {
       const user = {
+        ...data,
         id: this.modelFormData.id,
-        userName: data.userName,
-        email: data.email,
-        phone: data.phoneNumber ?? '',
-        address: data.address ?? '',
-        userRoles: [],
-        userPermissions: []
+        roleIds: data.roles,
+        // organisationIds: data.roles,
       };
+      console.log(user)
       this.userServices.update(user.id, user).subscribe({
         next: () => this.handleSuccess('Sửa'),
         error: (err) => this.handleError(err)
       });
     }
-
     else if (this.currentAction === 'setPassword') {
       const payload = {
         id: this.modelFormData.id,
@@ -260,24 +270,27 @@ export class UserTable implements OnInit{
         error: (err) => this.handleError(err)
       });
     }
+    else if (this.currentAction === 'lock') {
+      const lock = {
+        id: this.modelFormData.id,
+        date: data.date
+      };
+      this.userServices.lockUser(lock.id, lock.date).subscribe();
+    }
   }
 
   private handleSuccess(action: string) {
     this.showModalForm = false;
-    this.messageService.add({
-      severity: 'success',
-      summary: action,
-      detail: `${action.toLowerCase()} người dùng thành công`
-    });
+    this.messageService.add({severity: 'success',summary: action,detail: `${action.toLowerCase()} người dùng thành công`});
     this.loadUsers();
   }
 
   private handleError(err: any) {
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Lỗi',
-      detail: `Có lỗi: ${err}`
-    });
+    this.messageService.add({severity: 'error',summary: 'Lỗi',detail: `Có lỗi: ${err}`});
+  }
+
+  exportExcel() {
+    this.exportService.exportExcel(this.users, 'users-exportexcel');
   }
 }
 

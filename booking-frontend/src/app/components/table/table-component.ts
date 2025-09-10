@@ -1,6 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
+import { TableAction } from '../../models/TableAction';
+import { Popover, PopoverModule } from 'primeng/popover';
+import { ButtonModule } from 'primeng/button';
 
 interface Column {
   field: string;
@@ -11,14 +14,32 @@ interface Column {
   selector: 'table-component',
   templateUrl: 'table-component.html',
   standalone: true,
-  imports: [TableModule, CommonModule]
+  imports: [
+    TableModule, 
+    CommonModule,
+    ButtonModule,
+    PopoverModule
+  ]
 })
-export class TableComponent    {
-  @Input() data: any[] = [];  
-  @Input() columns: Column[] = [];    
+export class TableComponent<T>    {
+  @Input() columns: any[] = [];
+  @Input() data: T[] = [];
+  @Input() actions: TableAction<T>[] = [];
 
-  ngOnInit(): void {
-    console.log(this.columns)
-    console.log(this.data)
+  @ViewChild('op') op!: Popover;
+
+  dropdownOpen = false;
+  selectedRow: any;
+
+  displayActions(event: Event, rowData: any) {
+    this.selectedRow = rowData;
+    this.op.toggle(event);
+  }
+
+  onActionClick(action: any) {
+    if (action.callback) {
+      action.callback(this.selectedRow);
+    }
+    this.op.hide();              
   }
 }

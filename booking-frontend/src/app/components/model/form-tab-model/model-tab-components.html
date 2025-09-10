@@ -1,0 +1,93 @@
+<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white rounded-2xl shadow-xl w-1/3 relative">
+    <h2 class="text-xl font-bold text-gray-800 my-6 px-10">{{ modalTitle }}</h2>
+
+    <!-- Tabs -->
+    <div class="flex border-b mb-4 px-10">
+      <button
+        *ngFor="let tab of tabs; let i = index"
+        (click)="selectTab(i)"
+        [class.border-b-2]="currentTab === i"
+        [class.border-gray-500]="currentTab === i"
+        class="px-4 py-2 font-medium text-gray-700 hover:text-gray-600 transition"
+      >
+        {{ tab.label }}
+      </button>
+    </div>
+
+    <form [formGroup]="form">
+      <div class="space-y-5 max-h-[320px] overflow-y-auto custom-scroll px-10 pb-4">
+        <!-- User Information Tab -->
+        <ng-container *ngIf="currentTab === 0">
+          <div class="space-y-2">
+            <label class="block font-medium">Tên đăng nhập: *</label>
+            <input type="text" formControlName="userName" class="border rounded-lg px-4 py-2 w-full">
+
+            <label class="block font-medium">Họ và tên:</label>
+            <input type="text" formControlName="fullName" class="border rounded-lg px-4 py-2 w-full">
+        
+            <label class="block font-medium">Mật khẩu: *</label>
+            <input type="password" formControlName="passwordHash" class="border rounded-lg px-4 py-2 w-full">
+
+            <label class="block font-medium">Email: *</label>
+            <input type="email" formControlName="email" class="border rounded-lg px-4 py-2 w-full">
+
+            <label class="block font-medium">Số điện thoại:</label>
+            <input type="text" formControlName="phone" class="border rounded-lg px-4 py-2 w-full">
+
+            <div class="flex flex-wrap gap-5">
+              <div class="flex items-center gap-2">
+                <input type="checkbox" formControlName="active" id="active" class="h-4 w-4">
+                <label for="active" class="font-medium">Hoạt động</label>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <input type="checkbox" formControlName="emailConfirmed" id="emailConfirmed" class="h-4 w-4">
+                <label for="emailConfirmed" class="font-medium">Xác thực email</label>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <input type="checkbox" formControlName="phoneConfirmed" id="phoneConfirmed" class="h-4 w-4">
+                <label for="phoneConfirmed" class="font-medium">Xác thực số điện thoại</label>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <input type="checkbox" formControlName="forcePasswordChange" id="forcePasswordChange" class="h-4 w-4">
+                <label for="forcePasswordChange" class="font-medium">Bắt thay đổi mật khẩu</label>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- Roles Tab (change)="onRoleChange($event)"-->
+        <ng-container *ngIf="currentTab === 1">
+          <div class="flex flex-col gap-2">
+            <div *ngFor="let role of availableRoles">
+              <input 
+              type="checkbox" [value]="role.id" 
+              [checked]="form.value.roles.includes(role.id)" 
+              (change)="onRoleChange($event, role.id)"
+              >
+              {{ role.name }}
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- Organization Tab (change)="onOrgChange($event)"-->
+        <ng-container *ngIf="currentTab === 2">
+          <div class="flex flex-col gap-2">
+            <div *ngFor="let unit of availableOrgUnits">
+              <input type="checkbox" [value]="unit"  [checked]="form.value.organizationUnits.includes(unit)">
+              {{ unit }}
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <!-- Buttons -->
+      <div class="flex justify-end gap-3 py-4 px-10 border-t">
+        <button type="button" (click)="close.emit()" class="px-5 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition">Hủy</button>
+        <button type="submit" (click)="onSave()" class="px-5 py-2 rounded-lg bg-gray-600 text-white font-medium hover:bg-gray-700 transition">Lưu</button>
+      </div>
+    </form>
+  </div>
+</div>
