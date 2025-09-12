@@ -30,4 +30,8 @@ export class AuthServices{
     resetPassword(dto: ResetPasswordDto): Observable<any> {
         return this.httpClient.post<any>(`${this.apiUrl}/reset-password`, dto);
     }
+
+    confirmEmail(token: string) {
+        return this.httpClient.get(`${this.apiUrl}/confirm-email?token=${token}`);
+    }
 }

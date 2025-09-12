@@ -1,73 +1,104 @@
 
-<h2 class="text-xl font-bold m-2">Nhật ký hệ thống</h2>
+<h2 class="text-xl font-bold m-2 mb-4">Nhật ký hệ thống</h2>
 
-<div class="bg-white m-2 p-5 rounded-lg">
-  <div class="mb-10">
-    <app-filter-form 
-      [fields]="filterFields"
-      (submitFilter)="onFilterSubmit($event)"
-      (exportFilter)="exportExcel()">
-    </app-filter-form>
-  </div>
+<div class="card">
+    <p-tabs value="0">
+        <p-tablist>
+            <p-tab value="0">Nhật ký hệ thống</p-tab>
+            <p-tab value="1">Đối tượng thay đổi</p-tab>
+        </p-tablist>
+        <p-tabpanels>
+          <p-tabpanel value="1">
+              <div class="bg-white p-2 rounded-lg">
+                <div class="mb-10">
+                    <app-filter-form 
+                        [fields]="filterFields1"
+                        (submitFilter)="onFilterSubmit($event)"
+                        (exportFilter)="exportExcel()"
+                      >
+                    </app-filter-form>
+                </div>
 
-  <p-table
-    [value]="logs"
-    [paginator]="true"
-    [rows]="5"
-    [tableStyle]="{ 'min-width': '50rem' }"
-    [rowsPerPageOptions]="[5, 10, 20]"
-  >
-    <ng-template pTemplate="header">
-      <tr>
-        <th>Actions</th>
-        <th class="min-w-[600px]">HTTP Request</th>
-        <th>User</th>
-        <th>IP Address </th>
-        <th>Date</th>
-        <th>Duration </th>
-        <th>Application name </th>
-      </tr>
-    </ng-template>
+                <table-component
+                  [columns]="columns" 
+                  [data]="logs"
+                  [actions]="actions">
+                </table-component>
+            </div>
+            </p-tabpanel>
+            <p-tabpanel value="0">
+              <div class="bg-white p-2 rounded-lg">
+                <div class="mb-10">
+                  <app-filter-form 
+                    [fields]="filterFields0"
+                    (submitFilter)="onFilterSubmit($event)"
+                    (exportFilter)="exportExcel()">
+                  </app-filter-form>
+                </div>
 
-    <ng-template pTemplate="body" let-log>
-      <tr>
-        <td>
-          <p-button label="Xem" size="small" icon="pi pi-eye" (click)="openViewDetail(log)" [raised]="true" severity="secondary"/>
-        </td>
-        <td>
-          <span
-            class="text-sm px-2 py-1 rounded-2xl text-white"
-            [ngClass]="{
-              'bg-green-400': log.statusCode >= 200 && log.statusCode < 300,
-              'bg-orange-400': log.statusCode >= 300 && log.statusCode < 400,
-              'bg-red-400': log.statusCode >= 400
-            }"
-          >
-            {{ log.statusCode }}
-          </span>
-          <span
-          class="text-sm px-2 py-1 rounded-2xl ml-2 text-white"
-          [ngClass]="{
-            'bg-gray-400': log.httpMethod === 'GET',
-            'bg-green-400': log.httpMethod === 'POST',
-            'bg-yellow-400': log.httpMethod === 'PUT',
-            'bg-red-400': log.httpMethod === 'DELETE',
-            'bg-gray-300': ['GET','POST','PUT','DELETE'].indexOf(log.httpMethod) === -1
-          }"
-        >
-          {{ log.httpMethod }}
-        </span>
-          <span class="ml-2">{{ log.url }}</span>
-        </td>
-        <td>{{ log.userName }}</td>
-        <td>{{ log.clientIpAddress }}</td>
-        <td>{{ log.executionTime }}</td>
-        <td>{{ log.executionDuration }}</td>
-        <td>{{ log.applicationName }}</td>
-      </tr>
-    </ng-template>
-  </p-table>
+                <p-table
+                  [value]="logs"
+                  [paginator]="true"
+                  [rows]="5"
+                  [tableStyle]="{ 'min-width': '50rem' }"
+                  [rowsPerPageOptions]="[5, 10, 20]"
+                >
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>Actions</th>
+                      <th class="min-w-[600px]">HTTP Request</th>
+                      <th>User</th>
+                      <th>IP Address </th>
+                      <th>Date</th>
+                      <th>Duration </th>
+                      <th>Application name </th>
+                    </tr>
+                  </ng-template>
+
+                  <ng-template pTemplate="body" let-log>
+                    <tr>
+                      <td>
+                        <p-button label="Xem" size="small" icon="pi pi-eye" (click)="openViewDetail(log)" [raised]="true" severity="secondary"/>
+                      </td>
+                      <td>
+                        <span
+                          class="text-sm px-2 py-1 rounded-2xl text-white"
+                          [ngClass]="{
+                            'bg-green-400': log.statusCode >= 200 && log.statusCode < 300,
+                            'bg-orange-400': log.statusCode >= 300 && log.statusCode < 400,
+                            'bg-red-400': log.statusCode >= 400
+                          }"
+                        >
+                          {{ log.statusCode }}
+                        </span>
+                        <span
+                        class="text-sm px-2 py-1 rounded-2xl ml-2 text-white"
+                        [ngClass]="{
+                          'bg-gray-400': log.httpMethod === 'GET',
+                          'bg-green-400': log.httpMethod === 'POST',
+                          'bg-yellow-400': log.httpMethod === 'PUT',
+                          'bg-red-400': log.httpMethod === 'DELETE',
+                          'bg-gray-300': ['GET','POST','PUT','DELETE'].indexOf(log.httpMethod) === -1
+                        }"
+                      >
+                        {{ log.httpMethod }}
+                      </span>
+                        <span class="ml-2">{{ log.url }}</span>
+                      </td>
+                      <td>{{ log.userName }}</td>
+                      <td>{{ log.clientIpAddress }}</td>
+                      <td>{{ log.executionTime }}</td>
+                      <td>{{ log.executionDuration }}</td>
+                      <td>{{ log.applicationName }}</td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+            </p-tabpanel>
+        </p-tabpanels>
+    </p-tabs>
 </div>
+
 
 <app-modal-form
   *ngIf="showModalForm"

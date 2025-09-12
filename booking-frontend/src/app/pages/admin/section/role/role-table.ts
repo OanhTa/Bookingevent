@@ -11,6 +11,7 @@ import { PopupComponent } from '../../../../components/popup/popup-component';
 import { TableAction } from '../../../../models/TableAction';
 import { TableComponent } from '../../../../components/table/table-component';
 import { ButtonModule } from 'primeng/button';
+import { FormField } from '../../../../models/FormField';
 
 
 @Component({
@@ -47,12 +48,13 @@ export class RoleTable2 implements OnInit {
 
   showModalForm = false;
   modalTitle = '';
-  modalFields = [
+  modalFields : FormField[] = [
     { label: 'Tên quyền', name: 'name', type: 'text', required: true, validators: ['required'] },
   ];
   modelFormData: any = null;
   showConfirm = false;
   rolePermission: CheckPermission[] = [];
+  currentAction = ''
 
   loadRolePermissions(roleId: string) {
     this.permissionService.getRolePermissions(roleId).subscribe({
@@ -80,7 +82,7 @@ export class RoleTable2 implements OnInit {
       { label: 'Sửa', callback: (r) => this.openEdit(r) },
       { label: 'Xóa', callback: (r) => this.showDeletePopup(r) },
       { label: 'Phân quyền', callback: (r) => this.openPermissionsModal(r) },
-      { label: 'Di chuyển người dùng', callback: (r) => this.openPermissionsModal(r) },
+      { label: 'Di chuyển người dùng', callback: (r) => this.openMove(r) },
     ];
 
     this.loadRoles(); 
@@ -105,7 +107,40 @@ export class RoleTable2 implements OnInit {
     this.showModalForm = true;
   }
 
+  openMove(role: any) {
+    this.modalTitle = `Di chuyển tất cả người dùng`;
+    this.modalFields  = [
+      { 
+        label: `Di chuyển tất cả người dùng có vai trò ${role.name} đến`, 
+        name: 'role', 
+        type: 'select',   
+        required: true, 
+        validators: ['required'],
+        options:this.roles.map(r => ({
+          label: r.name,
+          value: r.id
+        }))
+      },
+    ];
+    this.currentAction = 'move-user'
+    this.modelFormData = { ...role };
+    this.showModalForm = true;
+  }
+
   onSave(data: any) {
+     if(this.currentAction === 'move-user'){
+      this.roleService.moveUsers(this.modelFormData.id, data.role).subscribe({
+        next: () => {
+          this.showModalForm = false;
+          this.messageService.add({severity: 'success',summary: 'Thêm',detail: 'Di chuyển tất cả thành công'});
+          this.loadRoles();
+        },
+        error: (err) => {
+          this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: `Có lỗi + ${err}` });
+        }
+      });
+      return;
+     }
      if (!data) return;
       const role: any = {
         ...(this.modelFormData?.id ? { id: this.modelFormData.id } : {}),

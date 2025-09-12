@@ -25,7 +25,6 @@ export function appConfigFactory() {
           localStorage.setItem('permissions', JSON.stringify(perms));
         })
         .catch(err => {
-          console.error('Không lấy được quyền:', err);
           localStorage.removeItem('permissions');
         });
     } catch (err) {

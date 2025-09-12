@@ -10,7 +10,6 @@ import { LoginRequestDto } from '../../models/LoginRequestDto';
 import { MessageService } from 'primeng/api';
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { BlockUI } from 'primeng/blockui';
-import { AccountService } from '../../services/AccountService';
 
 @Component({
   selector: 'app-login',
@@ -31,7 +30,6 @@ export class Login {
   constructor(
     private authServices: AuthServices, 
     private messageService: MessageService, 
-    private accountService: AccountService, 
     private router: Router, 
     private cdr: ChangeDetectorRef) {}
 
@@ -41,15 +39,7 @@ export class Login {
     this.authServices.login(body).subscribe({
       next: (res: LoginResponseDto) => {
         this.loading = false
-        const account = {
-            token: res.token,
-            userId: res.userId,
-            fullName: res.fullName,
-            roles: res.roles, // mảng role
-        };
-        localStorage.setItem('account', JSON.stringify(account));
-        
-        this.accountService.setAccount(res);
+        localStorage.setItem('account', JSON.stringify(res));
         this.messageService.add({severity: 'success',summary: 'Đăng nhập thành công',detail: 'Chào mừng bạn quay lại!'});
           
         if (res.roles.includes('Administrator')) {

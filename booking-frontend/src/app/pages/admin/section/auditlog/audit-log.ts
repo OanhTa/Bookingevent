@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AuditLog, AuditLogServices } from '../../../../services/AuditLogServices';
 import { TableModule } from 'primeng/table';
+import { TabsModule } from 'primeng/tabs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FilterFormComponent } from '../../../../components/filter-form/filter-form';
@@ -8,6 +9,8 @@ import { FormField } from '../../../../models/FormField';
 import { ModalFormComponent } from '../../../../components/model/form-model/model-components';
 import { ExportService } from '../../../../services/ExportService';
 import { ButtonModule } from 'primeng/button';
+import { TableAction } from '../../../../models/TableAction';
+import { TableComponent } from '../../../../components/table/table-component';
 
 
 @Component({
@@ -15,6 +18,8 @@ import { ButtonModule } from 'primeng/button';
   templateUrl: './audit-log.html',
   imports: [
     TableModule, 
+    TabsModule,
+    TableComponent,
     CommonModule,
     ButtonModule,
     FormsModule,
@@ -26,6 +31,8 @@ export class AuditLogComponent implements OnInit {
   logs: AuditLog[] = [];
   totalRecords = 0;
   loading = true;
+  columns: any[] = [];
+  actions: TableAction<any>[] = [];
 
   showModalForm = false;
   modalTitle = '';
@@ -44,7 +51,7 @@ export class AuditLogComponent implements OnInit {
   ];
   modelFormData: any = null;
 
-  filterFields = [
+  filterFields0 = [
     { key: 'startDate', label: 'Ngày bắt đầu', type: 'date' },
     { key: 'endDate', label: 'Ngày kết thúc', type: 'date' },
     { key: 'userName', label: 'Tên định danh', type: 'text' },
@@ -70,6 +77,17 @@ export class AuditLogComponent implements OnInit {
       { name: 'Không', code: false },
     ]},
   ];
+  filterFields1 = [
+      { key: 'startDate', label: 'Thời gian', type: 'date' },
+      { key: 'httpMethod', label: 'Phương thức', type: 'select', options: [
+          { name: 'GET', code: 'GET' },
+          { name: 'POST', code: 'POST' },
+          { name: 'PUT', code: 'PUT' },
+          { name: 'DELETE', code: 'DELETE' },
+      ]},
+      { key: 'id', label: 'Khóa chính', type: 'text' },
+      { key: 'url', label: 'Tên đối tượng', type: 'text' },
+  ];
 
 
   constructor(
@@ -79,6 +97,17 @@ export class AuditLogComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+     this.columns = [
+            { field: 'executionTime', header: 'Thời gian' },
+            { field: 'httpMethod', header: 'Phương thức' },
+            { field: 'entity', header: 'Tên đối tượng' },
+            { field: 'entityId', header: 'Khóa chính' }
+        ];
+
+        this.actions = [
+            { label: 'Chi tiết', callback: (r) => this.loadLogs() },
+            { label: 'Chi tiết', callback: (r) => this.loadLogs() },
+        ];
     this.loadLogs();
   }
 

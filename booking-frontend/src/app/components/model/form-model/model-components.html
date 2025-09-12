@@ -46,7 +46,7 @@
                 class="border border-gray-300 rounded-lg px-4 py-3 w-full bg-gray-100 text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <!-- Input cho date -->
-             <div *ngIf="field.type === 'date'">
+            <div *ngIf="field.type === 'date'">
                 <input
                   type="date"
                   [value]="form.get('lockoutEnd')?.value ? getDate(form.get('lockoutEnd')?.value) : ''"
@@ -57,8 +57,18 @@
                   [value]="form.get('lockoutEnd')?.value ? getTime(form.get('lockoutEnd')?.value) : ''"
                   class="border border-gray-300 mt-3 rounded-lg px-4 py-3 w-full bg-gray-100 text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-              </div>
-        
+            </div>
+            <!-- Input cho select -->
+            <div *ngIf="field.type === 'select'">
+              <select
+                [formControlName]="field.name"
+                class="border border-gray-300 mt-3 rounded-lg px-4 py-3 w-full bg-gray-100 text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option *ngFor="let opt of field.options" [value]="opt.value">
+                  {{ opt.label }}
+                </option>
+              </select>
+            </div>
             <div *ngIf="form.get(field.name)?.invalid && form.get(field.name)?.touched"
                 class="text-red-500 text-sm mt-1">
               {{ getErrorMessage(field.name) }}

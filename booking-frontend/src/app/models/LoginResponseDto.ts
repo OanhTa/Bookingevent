@@ -5,4 +5,5 @@ export interface LoginResponseDto {
   fullName: string;
   expiry: string;          // hoặc Date nếu bạn muốn convert
   roles: string[];
+  avatarUrl: string;
 }

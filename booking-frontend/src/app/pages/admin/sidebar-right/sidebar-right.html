@@ -1,9 +1,9 @@
 <div class="fixed top-0 right-0 h-screen w-16 bg-white shadow-lg flex flex-col items-center py-4 space-y-6">
   <div class="flex flex-col items-center" (click)="op.toggle($event)">
-    <div class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center">
-      <i class="fa-solid fa-user text-white text-lg"></i>
+    <div class="w-12 h-12 rounded-full overflow-hidden">
+        <img [src]="user.avatarUrl" alt="avatar" class="w-full h-full object-cover" />
     </div>
-    <span class="text-xs text-blue-900 mt-1">admin</span>
+    <span class="text-xs text-blue-900 mt-1">{{ user.name }}</span>
   </div>
   <button class="text-gray-600 hover:text-blue-500">
     <i class="fa-solid fa-comments text-xl"></i>
@@ -16,41 +16,39 @@
     <i class="fa-solid fa-table-cells text-xl"></i>
   </button>
 </div>
+
 <p-popover #op>
-  <div class="flex flex-col">
+  <div class="flex flex-col w-48">
     <div class="flex flex-col items-center p-4">
       <div class="w-12 h-12 rounded-full overflow-hidden">
         <img [src]="user.avatarUrl" alt="avatar" class="w-full h-full object-cover" />
       </div>
       <div class="mt-2 text-center">
-        <div class="font-semibold text-gray-800 dark:text-gray-100 text-sm">{{ user.name }}</div>
-        <div class="text-xs text-gray-500 dark:text-gray-400 truncate w-48">{{ user.email }}</div>
+        <div class="font-semibold text-gray-800 dark:text-gray-100 text-sm">{{ user.fullName }}</div>
+        <div class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ user.email }}</div>
       </div>
     </div>
+
     <div class="flex flex-col divide-y divide-gray-200 dark:divide-gray-700">
-      <button class="flex items-center gap-2 text-left py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 transition rounded">
+      <button class="flex items-center gap-2 py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition">
         <i class="pi pi-clock text-gray-500"></i>
         <span>Sessions</span>
       </button>
-      <button class="flex items-center gap-2 text-left py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 transition rounded">
+      <button class="flex items-center gap-2 py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition">
         <i class="pi pi-link text-gray-500"></i>
         <span>Linked accounts</span>
       </button>
-
-      <button class="flex items-center gap-2 text-left py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 transition rounded">
-        <a routerLink="/admin/my-account" class="link">
-          <i class="pi pi-sliders-h text-gray-500"></i>
-          <span>My account</span>
-        </a>
+      <button [routerLink]="'/admin/my-account'" class="flex items-center gap-2 py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition">
+        <i class="pi pi-id-card text-gray-500"></i>
+        <span>My account</span>
       </button>
-      <button class="flex items-center gap-2 text-left py-2 px-4 text-red-600 hover:bg-red-50 dark:hover:bg-red-700 transition rounded mt-1">
+      <button class="flex items-center gap-2 py-2 px-4 mt-1 text-red-600 hover:bg-red-50 dark:hover:bg-red-700 rounded transition">
         <i class="pi pi-sign-out text-red-600"></i>
         <span>Log out</span>
       </button>
     </div>
-
   </div>
 </p-popover>
-<!-- <router-outlet></router-outlet> -->
+
 
 

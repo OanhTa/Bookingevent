@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { InputNumber } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
 
 @Component({
   selector: 'app-settings-fields',
@@ -13,7 +14,8 @@ import { InputTextModule } from 'primeng/inputtext';
     CommonModule,
     FormsModule,
     InputNumber,
-    InputTextModule
+    InputTextModule,
+    PasswordModule
   ]
 })
 export class SettingsFieldsComponent {

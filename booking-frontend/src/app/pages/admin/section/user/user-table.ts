@@ -38,8 +38,7 @@ import { ModalTabFormComponent } from '../../../../components/model/form-tab-mod
     PopupComponent,
     FilterFormComponent
   ],
-  templateUrl: './user-table.html',
-  styleUrls: ['./user-table.css']
+  templateUrl: './user-table.html'
 })
 export class UserTable implements OnInit{
   permissions: Permission[] = [];
@@ -73,28 +72,23 @@ export class UserTable implements OnInit{
 
   showFilter   = false;
   filterFields = [
-    { key: 'role', label: 'Vai trò', type: 'select', options: [
-      { name: 'Quản trị', code: 'admin' },
-      { name: 'Người dùng', code: 'user' },
-      { name: 'Khách', code: 'guest' },
-    ]},
-    { key: 'userName', label: 'Tên định danh', type: 'text' },
+    { key: 'userName', label: 'Tên đăng nhập', type: 'text' },
     { key: 'name', label: 'Họ và tên', type: 'text' },
     { key: 'creationDate', label: 'Ngày tạo', type: 'date' },
     { key: 'modificationDate', label: 'Ngày xác thực', type: 'date' },
     { key: 'phoneNumber', label: 'Số điện thoại', type: 'text' },
     { key: 'email', label: 'Địa chỉ email', type: 'text' },
     { key: 'active', label: 'Hoạt động', type: 'select', options: [
-      { name: 'Có', code: 'true' },
-      { name: 'Khồng', code: 'false' },
+      { name: 'Có', code: true },
+      { name: 'Không', code: false },
     ]},
     { key: 'emailConfirmed', label: 'Email xác thực', type: 'select', options: [
-      { name: 'Có', code: 'true' },
-      { name: 'Không', code: 'false' },
+      { name: 'Có', code: true },
+      { name: 'Không', code: false },
     ]},
-    { key: 'lock', label: 'Khóa', type: 'select', options: [
-      { name: 'Khóa', code: 'true' },
-      { name: 'Không khóa', code: 'false' },
+    { key: 'lockoutEnabled', label: 'Khóa', type: 'select', options: [
+      { name: 'Khóa', code: true },
+      { name: 'Không khóa', code: false },
     ]},
     { key: 'id', label: 'Id', type: 'text' },
   ];
@@ -115,7 +109,6 @@ export class UserTable implements OnInit{
       { field: 'phone', header: 'Số điện thoại' },
       { field: 'address', header: 'Địa chỉ' },
       { field: 'lockoutEnabled', header: 'Cho Khóa' },
-      { field: 'emailConfirmed', header: 'Xác thực email' },
       { field: 'emailConfirmed', header: 'Xác thực email' },
       { field: 'accessFailedCount', header: 'Lượt đăng nhập sai' },
     ];

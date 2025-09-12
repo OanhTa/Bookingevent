@@ -22,6 +22,12 @@
         <span *ngIf="field.subtitle" class="text-sm text-gray-500">{{ field.subtitle }}</span>
     </label>
 
+    <label *ngIf="field.type === 'password'" class="flex flex-col">
+        <span>{{ field.title }}</span>
+        <p-password [(ngModel)]="settings[field.key]" [toggleMask]="true" variant="filled" [feedback]="false" inputStyleClass="w-full"/>
+        <span *ngIf="field.subtitle" class="text-sm text-gray-500">{{ field.subtitle }}</span>
+    </label>
+
   </ng-container>
 
   <button class="mt-4 bg-green-600 text-white px-4 py-2 rounded" (click)="onSave()">Lưu</button>

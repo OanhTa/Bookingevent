@@ -18,6 +18,8 @@ import { SettingSection } from './pages/admin/section/setting/setting-section';
 import { ForgotPasswordComponent } from './pages/login/forgot-password/forgot-password';
 import { ResetPasswordComponent } from './pages/login/reset-password/reset-password';
 import { MyAccount } from './pages/admin/my-account/my-account';
+import { DashBoard } from './pages/admin/section/dashboard/dashboard';
+import { EmailVerify } from './pages/register/email-verify/email-verify';
 
 export const routes: Routes = [
     { path: '', component: Home},
@@ -25,9 +27,9 @@ export const routes: Routes = [
         path: 'admin', 
         component: Admin,  
         canActivate: [AuthGuard],
-        data: { role: 'Administrator' },
+        data: { role: 'Administrator', allowDirect: false },
         children: [
-            { path: 'dashbord', component: AuditLogComponent },
+            { path: 'dashbord', component: DashBoard },
             { path: 'users', component: UserTable },
             { path: 'roles', component: RoleTable2 },
             { path: 'audit-log', component: AuditLogComponent },
@@ -41,6 +43,7 @@ export const routes: Routes = [
     { path: 'register', component: Register},
     { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: 'reset-password', component: ResetPasswordComponent },
+    { path: 'email-verify', component: EmailVerify },
     { path: 'create', component: AddEvent},
     { path: 'create-online-event', component: AddOnnlineEvent},
     { path: 'create-venue-event', component: AddVenueEvent}

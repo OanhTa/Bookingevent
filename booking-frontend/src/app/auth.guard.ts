@@ -1,16 +1,23 @@
-import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, Router } from '@angular/router';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { CanActivate, ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
-  canActivate(route: ActivatedRouteSnapshot): boolean {
+  canActivate(route: ActivatedRouteSnapshot): boolean | UrlTree {
+    if (!isPlatformBrowser(this.platformId)) {
+      return this.router.parseUrl('/login');
+    }
+
     try {
       const accountStr = localStorage.getItem('account');
       if (!accountStr) {
-        this.router.navigate(['/login']);
-        return false;
+        return this.router.parseUrl('/login');
       }
 
       const account = JSON.parse(accountStr);
@@ -20,12 +27,19 @@ export class AuthGuard implements CanActivate {
         return true;
       }
 
-      this.router.navigate(['/']);
-      return false;
+      const allowDirect = route.data['allowDirect'];
+      if (allowDirect) {
+        // dùng signal currentNavigation
+        const navigation = this.router.currentNavigation();
+        if (!navigation?.previousNavigation) {
+          return this.router.parseUrl('/');
+        }
+      }
+
+      return this.router.parseUrl('/');
+
     } catch (error) {
-      console.error('AuthGuard error:', error);
-      this.router.navigate(['/login']);
-      return false;
+      return this.router.parseUrl('/login');
     }
   }
 }

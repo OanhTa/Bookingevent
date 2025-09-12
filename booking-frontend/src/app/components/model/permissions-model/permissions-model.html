@@ -16,19 +16,19 @@
       <div class="w-1/2 pr-4">
         <div 
           [ngClass]="{
-            'bg-teal-100 text-green-800': selectedGroup === 'IdentityManagement',
+            'bg-green-100 text-green-600 hover:bg-green-100': selectedGroup === 'IdentityManagement',
             'border border-gray-300 bg-white text-gray-700': selectedGroup !== 'IdentityManagement'
           }"
-          class="cursor-pointer rounded p-3 my-2"
+          class="cursor-pointer rounded p-3 my-2 shadow"
           (click)="selectGroup('IdentityManagement')">
           Quản lý danh tính
         </div>
         <div 
           [ngClass]="{
-            'bg-teal-100 text-green-800': selectedGroup === 'AuditLogging',
+            'bg-green-100 text-green-600 hover:bg-green-100': selectedGroup === 'AuditLogging',
             'border border-gray-300 bg-white text-gray-700': selectedGroup !== 'AuditLogging'
           }"
-          class="cursor-pointer rounded p-3 my-2"
+          class="cursor-pointer rounded p-3 my-2 shadow"
           (click)="selectGroup('AuditLogging')">
           Ghi nhật ký
         </div>

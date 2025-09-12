@@ -54,4 +54,11 @@ export class RoleService {
   assignPermissions(roleId: string, permissionIds: string[]): Observable<any> {
     return this.http.post(`${this.baseUrl}/${roleId}/permissions`, permissionIds);
   }
+
+  moveUsers(oldRoleId: string, newRoleId: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/move-users`, {
+      oldRoleId,
+      newRoleId
+    });
+  }
 }

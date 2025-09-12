@@ -5,9 +5,10 @@
   <div class="w-56 border-r">
     <ul class="space-y-1 p-2">
       <li>
-        <button class="w-full text-left p-2 rounded hover:bg-gray-100"
-                [ngClass]="{'bg-green-100 text-green-600 hover:bg-green-100': activeMenu === 'info'}"
-                (click)="activeMenu = 'info'">
+        <button 
+          class="w-full text-left p-2 rounded hover:bg-gray-100"
+          [ngClass]="{'bg-green-100 text-green-600 hover:bg-green-100': activeMenu === 'info'}"
+          (click)="activeMenu = 'info'">
           Thông tin
         </button>
       </li>
@@ -34,22 +35,35 @@
     <ng-container *ngIf="activeMenu === 'info'">
         <app-settings-fields 
             [fields]="fields['default']" 
-            [settings]="settings">
+            [settings]="settings"
+            (save)="saveSettings('default')">
         </app-settings-fields>
     </ng-container>
 
     <ng-container *ngIf="activeMenu === 'img'">
-      <app-settings-fields 
-            [fields]="fields['img']" 
-            [settings]="settings">
-        </app-settings-fields>
+      <div class="flex flex-col items-center mb-3">
+        <h2 class="text-center font-semibold mb-2">Ảnh đại diện hiện tại</h2>
+        <div class="w-40 h-40 rounded-full overflow-hidden mb-3">
+          <img [src]="account.avatarUrl" alt="avatar" class="w-full h-full object-cover" />
+        </div>
+      </div>
+      <p-fileupload name="demo[]" [customUpload]="true" (uploadHandler)="onUpload($event)"  maxFileSize="1000000" mode="advanced" chooseLabel="Chọn tệp" uploadLabel="Tải lên" cancelLabel="Hủy">
+          <ng-template #empty>
+              <div>Kéo và thả tập tin đến đây để tải lên.</div>
+          </ng-template>
+      </p-fileupload>
     </ng-container>
 
     <ng-container *ngIf="activeMenu === 'pass'">
        <app-settings-fields 
             [fields]="fields['password']" 
-            [settings]="settings">
+            [settings]="settings"
+            (save)="saveSettings('password')">
         </app-settings-fields>
     </ng-container>
   </div>
 </div>
+
+<p-blockUI [blocked]="loading" [autoZIndex]="true">
+  <p-progressSpinner styleClass="w-12 h-12"></p-progressSpinner>
+</p-blockUI>
