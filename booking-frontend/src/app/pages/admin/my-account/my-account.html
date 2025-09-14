@@ -35,7 +35,7 @@
     <ng-container *ngIf="activeMenu === 'info'">
         <app-settings-fields 
             [fields]="fields['default']" 
-            [settings]="settings"
+            [settings]="account"
             (save)="saveSettings('default')">
         </app-settings-fields>
     </ng-container>
@@ -57,7 +57,7 @@
     <ng-container *ngIf="activeMenu === 'pass'">
        <app-settings-fields 
             [fields]="fields['password']" 
-            [settings]="settings"
+            [settings]="account"
             (save)="saveSettings('password')">
         </app-settings-fields>
     </ng-container>

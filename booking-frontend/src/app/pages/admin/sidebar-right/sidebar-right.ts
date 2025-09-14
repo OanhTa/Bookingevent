@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { Popover } from 'primeng/popover';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+
 
 @Component({
   selector: 'app-sidebar-right',
@@ -15,7 +16,9 @@ import { RouterModule } from '@angular/router';
 export class SidebarRight{
    user: any;
 
-  constructor() {
+  constructor(
+    private router: Router
+  ) {
     const accountStr = localStorage.getItem('account');
     const account = accountStr ? JSON.parse(accountStr) : {};
 
@@ -27,5 +30,10 @@ export class SidebarRight{
       roles: account?.roles,
       selectedRole: 'Admin'
     };
+  }
+
+  onSignOut() {
+    localStorage.clear();
+    this.router.navigate(['/login']);
   }
 }

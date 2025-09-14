@@ -5,10 +5,6 @@ import { TableAction } from '../../models/TableAction';
 import { Popover, PopoverModule } from 'primeng/popover';
 import { ButtonModule } from 'primeng/button';
 
-interface Column {
-  field: string;
-  header: string;
-}
 
 @Component({
   selector: 'table-component',
@@ -30,6 +26,19 @@ export class TableComponent<T>    {
 
   dropdownOpen = false;
   selectedRow: any;
+
+  isDate(value: any): boolean {
+    if (!value) return false;
+    // Chỉ nhận string
+    if (typeof value !== 'string') return false;
+    // Regex kiểm tra ISO date cơ bản: 2025-09-14T08:20:11
+    const isoDateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/;
+    if (!isoDateRegex.test(value)) return false;
+
+    const d = new Date(value);
+    return !isNaN(d.getTime());
+  }
+
 
   displayActions(event: Event, rowData: any) {
     this.selectedRow = rowData;

@@ -87,7 +87,7 @@
                       </td>
                       <td>{{ log.userName }}</td>
                       <td>{{ log.clientIpAddress }}</td>
-                      <td>{{ log.executionTime }}</td>
+                      <td>{{ log.executionTime | date:'dd/MM/yyyy HH:mm:ss':'Asia/Ho_Chi_Minh' }}</td>
                       <td>{{ log.executionDuration }}</td>
                       <td>{{ log.applicationName }}</td>
                     </tr>

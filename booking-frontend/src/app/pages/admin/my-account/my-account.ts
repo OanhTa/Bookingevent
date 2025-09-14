@@ -7,6 +7,7 @@ import { UploadServices } from "../../../services/UploadService";
 import { MessageService } from "primeng/api";
 import { ProgressSpinner } from "primeng/progressspinner";
 import { BlockUI } from "primeng/blockui";
+import { UserServices } from "../../../services/UserServices";
 
 @Component({
   selector: 'app-my-account',
@@ -24,7 +25,6 @@ export class MyAccount{
   loading = false
   activeMenu: string = 'info';
   account = JSON.parse(localStorage.getItem('account') || '{}');
-  settings: Record<string, string | boolean> = { ...this.account };
 
   fields: Record<string, SettingField[]> = {
     default: [
@@ -46,6 +46,7 @@ export class MyAccount{
 
   constructor(
     private uploadServices: UploadServices,
+    private userServices: UserServices,
     private messageService: MessageService,
   ){}
 
@@ -64,7 +65,23 @@ export class MyAccount{
   }
 
   saveSettings(type: string) {
-    console.log("Saving settings for:", type, this.settings);
-    
+    console.log(this.account)
+    const userId = this.account.userId;
+    const dto = {
+      id: this.account.userId,
+      userName: this.account.userName,
+      fullName: this.account.fullName,
+      email: this.account.email,
+      phone: this.account.phone,
+      address: ""
+    };
+
+    this.userServices.updateProfile(userId, dto).subscribe({
+      next: () => {
+        this.loading = false
+        this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Cập nhật thông tin thành công' });
+      },
+      error: () => this.messageService.add({ severity: 'error', summary: 'Thất bại', detail: 'Có lỗi xảy ra' })
+    })
   }
 }

@@ -40,12 +40,11 @@ export class AuditLogComponent implements OnInit {
     { label: 'HTTP status code', name: 'statusCode', type: 'select', required: true, validators: ['required'], options: []},
     { label: 'HTTP method', name: 'httpMethod', type: 'select', required: true, validators: ['required'], options: []},
     { label: 'URL', name: 'url', type: 'text', required: true, validators: ['required'] },
-    { label: 'Client IP Address', name: 'ipAddress', type: 'text' },
-    { label: 'Client Name', name: 'clientName', type: 'text' },
+    { label: 'Client IP Address', name: 'clientIpAddress', type: 'text' },
     { label: 'Exceptions', name: 'hasException', type: 'select', options: []},
     { label: 'User name', name: 'userName', type: 'text' },
-    { label: 'Time', name: 'time', type: 'date' },
-    { label: 'Duration', name: 'duration', type: 'number' },
+    { label: 'Time', name: 'executionTime', type: 'date' },
+    { label: 'Duration', name: 'executionDuration', type: 'number' },
     { label: 'Application name', name: 'applicationName', type: 'text' },
     { label: 'Correlation Id', name: 'correlationId', type: 'text' },
   ];
@@ -127,6 +126,7 @@ export class AuditLogComponent implements OnInit {
   }
 
   openViewDetail(data: any) {
+    console.log(data)
     this.modalTitle = `Xem chi tiết`;
     this.modelFormData = { ...data };
     this.showModalForm = true;

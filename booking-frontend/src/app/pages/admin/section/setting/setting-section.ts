@@ -3,7 +3,6 @@ import { Component } from "@angular/core";
 import { AccountSettings } from "./AccountSettings/account-settings";
 import { IdentitySettings } from "./IdentitySettings/identity-settings";
 import { EmailSettings } from "./EmailSettings/email-settings";
-import { ChatSettings } from "./ChatSettings/chat-settings";
 
 @Component({
   selector: 'app-setting-section',
@@ -13,8 +12,7 @@ import { ChatSettings } from "./ChatSettings/chat-settings";
     CommonModule,
     AccountSettings,
     IdentitySettings,
-    EmailSettings,
-    ChatSettings
+    EmailSettings
   ]
 })
 export class SettingSection{

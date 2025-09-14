@@ -4,7 +4,6 @@
     
     <form (ngSubmit)="onSubmit()">
         <div class="flex flex-col gap-4">
-            <!-- Email -->
             <div class="flex flex-col gap-2">
                 <label for="email" class="text-sm font-medium text-gray-700">Email</label>
                 <input
@@ -17,12 +16,12 @@
                 />
             </div>
 
-            <!-- Password -->
             <div class="flex flex-col gap-2">
             <label for="password" class="text-sm font-medium text-gray-700">Mật khẩu</label>
                 <p-password
                     id="password"
                     name="password"
+                    [feedback]="false"
                     [(ngModel)]="password"
                     [toggleMask]="true"
                     placeholder="Nhập mật khẩu của bạn"

@@ -1,13 +1,7 @@
 <div>
-  <div class="border-b mb-4 flex space-x-6">
-    <button class="pb-2" [class.border-b-2]="tab==='general'" (click)="tab='general'">Tổng quan</button>
-    <button class="pb-2" [class.border-b-2]="tab==='twofactor'" (click)="tab='twofactor'">Xác thực 2 lớp</button>
-    <button class="pb-2" [class.border-b-2]="tab==='captcha'" (click)="tab='captcha'">Mã Captcha</button>
-  </div>
-
     <app-settings-fields 
-      [fields]="fields[tab]" 
+      [fields]="fields['general']" 
       [settings]="settings"
-      (save)="saveSettings(tab)">
+      (save)="saveSettings('general')">
     </app-settings-fields>
 </div>

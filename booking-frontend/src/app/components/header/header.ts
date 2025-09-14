@@ -1,5 +1,5 @@
-import { Component, ElementRef, HostListener, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, ElementRef, HostListener, Inject, Input, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MenubarModule } from 'primeng/menubar';
 import { BadgeModule } from 'primeng/badge';
 import { AvatarModule } from 'primeng/avatar';
@@ -24,11 +24,8 @@ import { Router } from '@angular/router';
 })
 export class Header {
     @Input() showHeaderEnd: boolean = true;
-    @Input() user: { name: string; email: string; avatarUrl?: string } = {
-                    name: 'John Doe',
-                    email: 'johndoe@example.com',
-                    avatarUrl: 'https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png'
-                  };
+    @Input() user: any = {};
+
     items: any[] = [
         {
           label: 'Trang chủ',
@@ -50,9 +47,14 @@ export class Header {
   showOrgMenu = false;
 
   constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
     private el: ElementRef<HTMLElement>,
     private router: Router
-  ) {}
+  ) {
+    if (isPlatformBrowser(this.platformId)) {
+      this.user = JSON.parse(localStorage.getItem('account') || '{}');
+    }
+  }
 
   toggleOrgMenu() {
     this.showOrgMenu = !this.showOrgMenu;

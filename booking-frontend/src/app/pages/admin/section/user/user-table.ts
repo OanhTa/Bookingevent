@@ -111,6 +111,7 @@ export class UserTable implements OnInit{
       { field: 'lockoutEnabled', header: 'Cho Khóa' },
       { field: 'emailConfirmed', header: 'Xác thực email' },
       { field: 'accessFailedCount', header: 'Lượt đăng nhập sai' },
+      { field: 'createdAt', header: 'Ngày tạo' },
     ];
 
     this.actions = [
@@ -144,14 +145,14 @@ export class UserTable implements OnInit{
 
   onFilterSubmit(filterData: { [key: string]: any }) {
     this.userServices.getSearch(filterData).subscribe((res: any) => {
-      this.users = res
+      this.users = res.data
       this.cdr.detectChanges();
     });
   }
 
   onSearchHandler(keyword: string) {
     this.userServices.getSearchKey(keyword).subscribe((res: any) => {
-      this.users = res
+      this.users = res.data
       this.cdr.detectChanges();
     });
   }
@@ -201,9 +202,9 @@ export class UserTable implements OnInit{
 
   onDeleteConfirmed(){
      this.userServices.delete(this.selectedUser.id).subscribe({
-      next: () => {    
+      next: (res) => {    
         this.users = this.users.filter(u => u.id !== this.selectedUser.id);
-        this.handleSuccess('Xóa')
+        this.handleSuccess(res)
       },
       error: (err) => this.handleError(err)
     });
@@ -215,7 +216,7 @@ export class UserTable implements OnInit{
 
   loadUsers(){
     this.userServices.getAll().subscribe(res => {
-      this.users = res; 
+      this.users = res.data; 
       this.cdr.detectChanges();
     });
   }
@@ -236,7 +237,7 @@ export class UserTable implements OnInit{
         // organisationIds: data.roles,
       };
       this.userServices.create(user).subscribe({
-        next: () => this.handleSuccess('Thêm'),
+        next: (res) => this.handleSuccess(res),
         error: (err) => this.handleError(err)
       });
     }
@@ -247,9 +248,8 @@ export class UserTable implements OnInit{
         roleIds: data.roles,
         // organisationIds: data.roles,
       };
-      console.log(user)
       this.userServices.update(user.id, user).subscribe({
-        next: () => this.handleSuccess('Sửa'),
+        next: (res) => this.handleSuccess(res),
         error: (err) => this.handleError(err)
       });
     }
@@ -258,8 +258,8 @@ export class UserTable implements OnInit{
         id: this.modelFormData.id,
         PasswordHash: data.passwordHash
       };
-      this.userServices.SetPassword(payload.id, payload).subscribe({
-        next: () => this.handleSuccess('Mật khẩu cập nhật'),
+      this.userServices.setPassword(payload.id, payload).subscribe({
+        next: (res) => this.handleSuccess(res),
         error: (err) => this.handleError(err)
       });
     }
@@ -272,14 +272,14 @@ export class UserTable implements OnInit{
     }
   }
 
-  private handleSuccess(action: string) {
+  private handleSuccess(res: any) {
     this.showModalForm = false;
-    this.messageService.add({severity: 'success',summary: action,detail: `${action.toLowerCase()} người dùng thành công`});
+    this.messageService.add({severity: 'success',summary: 'Thành công',detail: res.message})
     this.loadUsers();
   }
 
   private handleError(err: any) {
-    this.messageService.add({severity: 'error',summary: 'Lỗi',detail: `Có lỗi: ${err}`});
+    this.messageService.add({severity: 'error',summary: 'Lỗi', detail: err.error?.message || 'Có lỗi xảy ra'})
   }
 
   exportExcel() {

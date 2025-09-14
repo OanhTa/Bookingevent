@@ -54,6 +54,7 @@ export class ModalTabFormComponent implements OnInit {
       passwordHash: ['', this.currentAction === 'add' ? Validators.required : null],
       email: ['', [Validators.required, Validators.email]],
       phone: [''],
+      address: [''],
       active: [true],
       lockoutEnd: [''],
       emailConfirmed: [false],
@@ -103,8 +104,6 @@ export class ModalTabFormComponent implements OnInit {
   }
 
   onSave() {
-    console.log("dâdadaada")
-    console.log(this.form)
     if (this.form.value) {
       this.save.emit(this.form.value);
     } else {

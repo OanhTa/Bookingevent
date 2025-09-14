@@ -35,26 +35,17 @@
             <label class="block font-medium">Số điện thoại:</label>
             <input type="text" formControlName="phone" class="border rounded-lg px-4 py-2 w-full">
 
-            <div class="flex flex-wrap gap-5">
-              <div class="flex items-center gap-2">
-                <input type="checkbox" formControlName="active" id="active" class="h-4 w-4">
-                <label for="active" class="font-medium">Hoạt động</label>
-              </div>
+            <label class="block font-medium">Địa chỉ:</label>
+            <input type="text" formControlName="address" class="border rounded-lg px-4 py-2 w-full">
 
-              <div class="flex items-center gap-2">
-                <input type="checkbox" formControlName="emailConfirmed" id="emailConfirmed" class="h-4 w-4">
-                <label for="emailConfirmed" class="font-medium">Xác thực email</label>
-              </div>
+            <div class="flex items-center gap-2">
+              <input type="checkbox" formControlName="active" id="active" class="h-4 w-4">
+              <label for="active" class="font-medium">Hoạt động</label>
+            </div>
 
-              <div class="flex items-center gap-2">
-                <input type="checkbox" formControlName="phoneConfirmed" id="phoneConfirmed" class="h-4 w-4">
-                <label for="phoneConfirmed" class="font-medium">Xác thực số điện thoại</label>
-              </div>
-
-              <div class="flex items-center gap-2">
-                <input type="checkbox" formControlName="forcePasswordChange" id="forcePasswordChange" class="h-4 w-4">
-                <label for="forcePasswordChange" class="font-medium">Bắt thay đổi mật khẩu</label>
-              </div>
+            <div class="flex items-center gap-2">
+              <input type="checkbox" formControlName="emailConfirmed" id="emailConfirmed" class="h-4 w-4">
+              <label for="emailConfirmed" class="font-medium">Xác thực email</label>
             </div>
           </div>
         </ng-container>

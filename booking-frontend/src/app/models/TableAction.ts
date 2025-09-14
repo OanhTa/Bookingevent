@@ -1,4 +1,4 @@
 export interface TableAction<T> {
-  label: string;
+  label: string | ((row: T) => string);
   callback: (row: T) => void;
 }

@@ -30,9 +30,7 @@
           label="Hành động" />
       </td>
 
-      <!-- Other columns -->
       <td *ngFor="let col of columns">
-        <!-- render roles đặc biệt -->
         <ng-container *ngIf="col.field === 'roles'; else normalField">
           <span *ngFor="let r of rowData['userRoles']; let last = last">
             {{ r.role.name }}<span *ngIf="!last">, </span>
@@ -49,7 +47,12 @@
           </ng-template>
 
           <ng-template #normalValue>
-            {{ rowData[col.field] }}
+            <ng-container *ngIf="isDate(rowData[col.field]); else textValue">
+              {{ rowData[col.field] | date:'dd/MM/yyyy HH:mm:ss':'Asia/Ho_Chi_Minh' }}
+            </ng-container>
+            <ng-template #textValue>
+              {{ rowData[col.field] }}
+            </ng-template>
           </ng-template>
         </ng-template>
       </td>
