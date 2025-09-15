@@ -1,74 +1,43 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthServices } from '../../services/AuthServices';
-import { CommonModule } from '@angular/common';
-import { CardModule } from 'primeng/card';
-import { ButtonModule } from 'primeng/button';
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { BlockUI } from 'primeng/blockui';
+import { AuthFormComponent } from '../../components/auth-form/auth-form';
+import { AuthFieldConfig } from '../../models/AuthFieldConfig';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.html',
-  styleUrls: ['./register.css'],
   imports: [
-    CommonModule, 
-    ReactiveFormsModule, 
-    FormsModule, 
-    CardModule, 
-    ButtonModule, 
     RouterModule,
+    AuthFormComponent,
     ProgressSpinner,BlockUI
   ],
 })
 export class Register{
-
   registerForm!: FormGroup;
   loading = false
-
+  fields: AuthFieldConfig[] = [
+      { key: 'userName', label: 'Tên đăng nhập', validators: [Validators.required, Validators.pattern(/^[a-zA-Z]+(?: [a-zA-Z]+)*$/)] },
+      { key: 'email', label: 'Email', type: 'email', validators: [Validators.required, Validators.email] },
+      { key: 'password', label: 'Mật khẩu', type: 'password', validators: [Validators.required] },
+      { key: 'confirmPassword', label: 'Nhập lại mật khẩu',  type: 'password', validators: [Validators.required] },
+    ];
+    
   constructor(
-    private fb: FormBuilder,
     private authService: AuthServices,
     private messageService: MessageService,
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-    this.registerForm = this.fb.group({
-      userName: ['', [
-        Validators.required,
-        Validators.pattern(/^[a-zA-Z]+(?: [a-zA-Z]+)*$/)
-      ]],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
-      confirmPassword: ['', Validators.required],
-    }, {
-      validators: passwordMatchValidator
-    });
-  }
-  
-  get userName() {
-    return this.registerForm.controls['userName'];
-  }
-
-  get email() {
-    return this.registerForm.controls['email'];
-  }
-
-  get password() {
-    return this.registerForm.controls['password'];
-  }
-
-  get confirmPassword() {
-    return this.registerForm.controls['confirmPassword'];
-  }
-
-  submitDetails() {
+  onSubmit(value: any) {
     this.loading = true;
-    const postData = { ...this.registerForm.value };
+    const postData = { ...value };
     delete postData.confirmPassword;
+
     this.authService.register(postData).subscribe(
       response => {
         this.loading = false;

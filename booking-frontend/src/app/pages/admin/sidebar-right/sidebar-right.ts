@@ -3,19 +3,21 @@ import { ButtonModule } from 'primeng/button';
 import { Popover } from 'primeng/popover';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-
+import { Dialog } from 'primeng/dialog';
 
 @Component({
   selector: 'app-sidebar-right',
   standalone: true,
   templateUrl: './sidebar-right.html',
   imports:[
-    Popover,ButtonModule,CommonModule,RouterModule
+    Popover,ButtonModule,
+    CommonModule,RouterModule,
+    Dialog
   ]
 })
 export class SidebarRight{
-   user: any;
-
+  user: any;
+  showRoleModal = false;
   constructor(
     private router: Router
   ) {
@@ -31,6 +33,13 @@ export class SidebarRight{
       selectedRole: 'Admin'
     };
   }
+
+  switchRole(role: string) {
+    this.user.selectedRole = role;
+    this.showRoleModal = false;
+    console.log('Đã chuyển sang quyền:', role);
+  }
+
 
   onSignOut() {
     localStorage.clear();

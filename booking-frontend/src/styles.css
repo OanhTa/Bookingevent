@@ -40,7 +40,7 @@ input[type="checkbox"] {
 /* Hover */
 input[type="checkbox"]:hover {
   background-color: #e6f4ea; /* xanh nhạt */
-  border-color: #218838;
+  border-color: #10b981;
 }
 
 /* Focus */
@@ -51,8 +51,8 @@ input[type="checkbox"]:focus {
 
 /* Checked */
 input[type="checkbox"]:checked {
-  background-color: #218838; /* xanh đậm */
-  border-color: #218838;
+  background-color: #10b981; /* xanh đậm */
+  border-color: #10b981;
 }
 
 /* Tick */

@@ -77,15 +77,15 @@ export class AuditLogComponent implements OnInit {
     ]},
   ];
   filterFields1 = [
-      { key: 'startDate', label: 'Thời gian', type: 'date' },
-      { key: 'httpMethod', label: 'Phương thức', type: 'select', options: [
-          { name: 'GET', code: 'GET' },
-          { name: 'POST', code: 'POST' },
-          { name: 'PUT', code: 'PUT' },
-          { name: 'DELETE', code: 'DELETE' },
-      ]},
-      { key: 'id', label: 'Khóa chính', type: 'text' },
-      { key: 'url', label: 'Tên đối tượng', type: 'text' },
+    { key: 'startDate', label: 'Thời gian', type: 'date' },
+    { key: 'httpMethod', label: 'Phương thức', type: 'select', options: [
+        { name: 'GET', code: 'GET' },
+        { name: 'POST', code: 'POST' },
+        { name: 'PUT', code: 'PUT' },
+        { name: 'DELETE', code: 'DELETE' },
+    ]},
+    { key: 'id', label: 'Khóa chính', type: 'text' },
+    { key: 'url', label: 'Tên đối tượng', type: 'text' },
   ];
 
 
@@ -96,37 +96,36 @@ export class AuditLogComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-     this.columns = [
-            { field: 'executionTime', header: 'Thời gian' },
-            { field: 'httpMethod', header: 'Phương thức' },
-            { field: 'entity', header: 'Tên đối tượng' },
-            { field: 'entityId', header: 'Khóa chính' }
-        ];
+    this.columns = [
+      { field: 'executionTime', header: 'Thời gian' },
+      { field: 'httpMethod', header: 'Phương thức' },
+      { field: 'entity', header: 'Tên đối tượng' },
+      { field: 'entityId', header: 'Khóa chính' }
+    ];
 
-        this.actions = [
-            { label: 'Chi tiết', callback: (r) => this.loadLogs() },
-            { label: 'Chi tiết', callback: (r) => this.loadLogs() },
-        ];
+    this.actions = [
+      { label: 'Chi tiết', callback: (r) => this.loadLogs() },
+      { label: 'Chi tiết', callback: (r) => this.loadLogs() },
+    ];
     this.loadLogs();
   }
 
   loadLogs() {
     this.loading = true;
     this.auditLogService.getAll().subscribe((res: any) => {
-      this.logs = res
+      this.logs = res.data
       this.cdr.detectChanges();
     });
   }
 
   onFilterSubmit(filterData: { [key: string]: any }) {
     this.auditLogService.getSearch(filterData).subscribe((res: any) => {
-      this.logs = res
+      this.logs = res.data
       this.cdr.detectChanges();
     });
   }
 
   openViewDetail(data: any) {
-    console.log(data)
     this.modalTitle = `Xem chi tiết`;
     this.modelFormData = { ...data };
     this.showModalForm = true;

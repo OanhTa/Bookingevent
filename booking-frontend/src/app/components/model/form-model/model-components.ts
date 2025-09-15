@@ -30,19 +30,6 @@ export class ModalFormComponent {
     });
   }
   
-  getDate(iso: string | null): string {
-    return iso ? iso.split('T')[0] : '';
-  }
-
-  combineDateTime(date: string, time: string): string {
-    if (!date) return '';
-    return time ? `${date}T${time}:00` : `${date}T00:00:00`;
-  }
-
-  getTime(iso: string | null): string {
-    return iso ? iso.split('T')[1].slice(0,5) : '';
-  }
-
   getErrorMessage(fieldName: string): string {
     const control = this.form.get(fieldName);
     if (!control) return '';

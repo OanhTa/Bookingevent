@@ -1,58 +1,22 @@
 <div class="flex items-center justify-center min-h-screen bg-gray-100">
     <div class="w-full max-w-sm mx-auto p-6 bg-white rounded-2xl shadow-md">
-    <h2 class="text-2xl font-bold text-center mb-6">Đăng nhập</h2>
-    
-    <form (ngSubmit)="onSubmit()">
-        <div class="flex flex-col gap-4">
-            <div class="flex flex-col gap-2">
-                <label for="email" class="text-sm font-medium text-gray-700">Email</label>
-                <input
-                    pInputText
-                    id="email"
-                    name="email"
-                    [(ngModel)]="email"
-                    placeholder="Nhập email của bạn"
-                    class="w-full"
-                />
-            </div>
-
-            <div class="flex flex-col gap-2">
-            <label for="password" class="text-sm font-medium text-gray-700">Mật khẩu</label>
-                <p-password
-                    id="password"
-                    name="password"
-                    [feedback]="false"
-                    [(ngModel)]="password"
-                    [toggleMask]="true"
-                    placeholder="Nhập mật khẩu của bạn"
-                    inputStyleClass="w-full"
-                ></p-password>
-            </div>
-            <div class="text-red-500">
-                {{ errorMessage }}
-            </div>
-            <button
-                type="submit"
-                label="Login"
-                class="w-full !bg-green-600 hover:!bg-green-700 p-2 text-white font-semibold rounded-lg"
-            >Đăng nhập</button>
-
-            <p class="mt-2 text-center text-sm">
-                <a routerLink="/forgot-password" class="text-blue-500 hover:underline">
-                    Quên mật khẩu?
-                </a>
-            </p>
-
-            <p class="mt-4 text-center text-sm">
-                Chưa có tài khoản?
-                <a routerLink="/register" class="text-blue-500 hover:underline">Đăng ký ngay</a>
-            </p>
-        </div >
-    </form>
+        <app-auth-form
+            [fields]="fields"
+            [formTitle]="'Đăng nhập'"
+            [submitLabel]="'Đăng nhập'"        
+            (formSubmit)="onSubmit($event)"
+        ></app-auth-form>
+       <p class="mt-4 text-center text-sm">
+         <a routerLink="/forgot-password" class="text-blue-500 hover:underline">
+            Quên mật khẩu?
+          </a>
+        </p>
+        <p class="mt-4 text-center text-sm">Chưa có tài khoản?
+           <a routerLink="/register" class="text-blue-500 hover:underline">Đăng ký ngay</a>
+        </p>
   </div>
 </div>
 
-<router-outlet></router-outlet>
 <p-blockUI [blocked]="loading" [autoZIndex]="true">
   <p-progressSpinner styleClass="w-12 h-12"></p-progressSpinner>
 </p-blockUI>

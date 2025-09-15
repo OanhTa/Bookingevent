@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { environment } from "../environments/environments";
 import { Injectable } from "@angular/core";
+import { ApiResponse } from "../models/ApiResponseDto";
 
 export interface AuditLog {
   id?: string;
@@ -30,23 +31,23 @@ export class AuditLogServices {
 
   constructor(private httpClient: HttpClient) {}
 
-  getAll(): Observable<AuditLog[]> {
-    return this.httpClient.get<AuditLog[]>(`${this.apiUrl}`);
+  getAll(): Observable<ApiResponse<AuditLog[]>> {
+    return this.httpClient.get<ApiResponse<AuditLog[]>>(this.apiUrl);
   }
 
-  getSearch(audit: AuditLog): Observable<AuditLog[]> {
-    return this.httpClient.post<AuditLog[]>(`${this.apiUrl}/search`, audit);
+  getSearch(audit: Partial<AuditLog>): Observable<ApiResponse<AuditLog[]>> {
+    return this.httpClient.post<ApiResponse<AuditLog[]>>(`${this.apiUrl}/search`, audit);
   }
 
-  getById(id: string): Observable<AuditLog> {
-    return this.httpClient.get<AuditLog>(`${this.apiUrl}/${id}`);
-  }
+  // getById(id: string): Observable<ApiResponse<AuditLog>> {
+  //   return this.httpClient.get<ApiResponse<AuditLog>>(`${this.apiUrl}/${id}`);
+  // }
 
-  add(auditLog: AuditLog): Observable<AuditLog> {
-    return this.httpClient.post<AuditLog>(`${this.apiUrl}`, auditLog);
-  }
+  // add(auditLog: AuditLog): Observable<ApiResponse<AuditLog>> {
+  //   return this.httpClient.post<ApiResponse<AuditLog>>(this.apiUrl, auditLog);
+  // }
 
-  delete(id: string): Observable<void> {
-    return this.httpClient.delete<void>(`${this.apiUrl}/${id}`);
-  }
+  // delete(id: string): Observable<ApiResponse<void>> {
+  //   return this.httpClient.delete<ApiResponse<void>>(`${this.apiUrl}/${id}`);
+  // }
 }

@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { InputNumber } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-settings-fields',
@@ -13,6 +14,7 @@ import { PasswordModule } from 'primeng/password';
   imports: [
     CommonModule,
     FormsModule,
+    ButtonModule,
     InputNumber,
     InputTextModule,
     PasswordModule

@@ -22,15 +22,33 @@
           <div class="space-y-2">
             <label class="block font-medium">Tên đăng nhập: *</label>
             <input type="text" formControlName="userName" class="border rounded-lg px-4 py-2 w-full">
+            <div class="text-sm text-red-500 mt-1"  *ngIf="form.get('userName')?.errors?.['required'] && (form.get('userName')?.touched)">
+              Tên đăng nhập là bắt buộc
+            </div>
+            <div class="text-sm text-red-500 mt-1" *ngIf="form.get('userName')?.errors?.['pattern'] && (form.get('userName')?.touched)">
+              Nhập tên hợp lệ
+            </div>
+
 
             <label class="block font-medium">Họ và tên:</label>
             <input type="text" formControlName="fullName" class="border rounded-lg px-4 py-2 w-full">
         
-            <label class="block font-medium">Mật khẩu: *</label>
-            <input type="password" formControlName="passwordHash" class="border rounded-lg px-4 py-2 w-full">
+            <div *ngIf="currentAction === 'add'">
+              <label class="block font-medium">Mật khẩu: *</label>
+              <input type="password" formControlName="passwordHash" class="border rounded-lg px-4 py-2 w-full">
+              <div class="text-sm text-red-500 mt-1"  *ngIf="form.get('passwordHash')?.errors?.['required'] && (form.get('passwordHash')?.touched)">
+                Mật khẩu là bắt buộc
+              </div>
+            </div>
 
             <label class="block font-medium">Email: *</label>
             <input type="email" formControlName="email" class="border rounded-lg px-4 py-2 w-full">
+            <div class="text-sm text-red-500 mt-1"  *ngIf="form.get('email')?.errors?.['required'] && (form.get('email')?.touched)">
+              Email là bắt buộc
+            </div>
+            <div class="text-sm text-red-500 mt-1" *ngIf="form.get('email')?.errors?.['email'] && (form.get('email')?.touched)">
+              Email phải tồn tại
+            </div>
 
             <label class="block font-medium">Số điện thoại:</label>
             <input type="text" formControlName="phone" class="border rounded-lg px-4 py-2 w-full">

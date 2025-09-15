@@ -34,7 +34,7 @@
         <i class="pi pi-clock text-gray-500"></i>
         <span>Sessions</span>
       </button>
-      <button class="flex items-center gap-2 py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition">
+      <button (click)="showRoleModal = true" class="flex items-center gap-2 py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition">
         <i class="pi pi-link text-gray-500"></i>
         <span>Linked accounts</span>
       </button>
@@ -49,6 +49,24 @@
     </div>
   </div>
 </p-popover>
+
+<p-dialog 
+  header="Chọn quyền sử dụng"
+  [(visible)]="showRoleModal"
+  [modal]="true"
+  [style]="{width: '400px'}">
+  <div class="flex flex-col gap-2">
+    <p *ngFor="let role of user.roles">
+      <button class="w-full text-left px-4 py-2 rounded hover:bg-gray-100"
+              [ngClass]="{'bg-blue-100 font-semibold': role === user.selectedRole}"
+              (click)="switchRole(role)">
+        {{ role }}
+        <i *ngIf="role === user.selectedRole" class="pi pi-check text-green-500 float-right"></i>
+      </button>
+    </p>
+  </div>
+</p-dialog>
+
 
 
 

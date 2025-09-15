@@ -119,6 +119,7 @@ export class UserTable implements OnInit{
       { label: 'Sửa', callback: (u) => this.openEdit(u) },
       { label: 'Xóa', callback: (u) => this.showDeletePopup(u) },
       { label: 'Khóa', callback: (u) => this.openLock(u) },
+      { label: 'Mở Khóa', callback: (u) => this.openUnLock(u) },
       { label: 'Phân quyền', callback: (u) => this.openPermissionsModal(u) },
       { label: 'Đặt lại mật khẩu', callback: (u) => this.openSetPassword(u) },
     ];
@@ -200,6 +201,13 @@ export class UserTable implements OnInit{
     this.currentAction = 'lock';
   }
 
+  openUnLock(data: any) {
+    this.userServices.unlockUser(data.id).subscribe({
+      next: (res) => this.handleSuccess(res),
+      error: (err) => this.handleError(err)
+    });
+  }
+
   onDeleteConfirmed(){
      this.userServices.delete(this.selectedUser.id).subscribe({
       next: (res) => {    
@@ -234,7 +242,6 @@ export class UserTable implements OnInit{
       const user = {
         ...data,
         roleIds: data.roles,
-        // organisationIds: data.roles,
       };
       this.userServices.create(user).subscribe({
         next: (res) => this.handleSuccess(res),
@@ -246,7 +253,6 @@ export class UserTable implements OnInit{
         ...data,
         id: this.modelFormData.id,
         roleIds: data.roles,
-        // organisationIds: data.roles,
       };
       this.userServices.update(user.id, user).subscribe({
         next: (res) => this.handleSuccess(res),
@@ -266,9 +272,12 @@ export class UserTable implements OnInit{
     else if (this.currentAction === 'lock') {
       const lock = {
         id: this.modelFormData.id,
-        date: data.date
+        date: data.lockoutEnd
       };
-      this.userServices.lockUser(lock.id, lock.date).subscribe();
+      this.userServices.lockUser(lock.id, lock.date).subscribe({
+        next: (res) => this.handleSuccess(res),
+        error: (err) => this.handleError(err)
+      });
     }
   }
 

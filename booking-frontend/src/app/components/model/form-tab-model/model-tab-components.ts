@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, OnInit, ChangeDetectorRef, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RoleService } from '../../../services/RoleServices';
 
@@ -21,7 +21,6 @@ export class ModalTabFormComponent implements OnInit {
   @Input() set formData(value: any) {
     this._formData = value;
   }
-
 
   @Output() save = new EventEmitter<any>();
   @Output() close = new EventEmitter<void>();
@@ -49,7 +48,7 @@ export class ModalTabFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      userName: ['', Validators.required],
+      userName: ['', [Validators.required, Validators.pattern(/^[a-zA-Z]+(?: [a-zA-Z]+)*$/)]],
       fullName: [''],
       passwordHash: ['', this.currentAction === 'add' ? Validators.required : null],
       email: ['', [Validators.required, Validators.email]],
@@ -75,7 +74,7 @@ export class ModalTabFormComponent implements OnInit {
 
   loadRoles() {
     this.roleService.getAllRole().subscribe(res => {
-      this.availableRoles = res
+      this.availableRoles = res.data
       this.cdr.detectChanges();
     });
   }
@@ -104,6 +103,11 @@ export class ModalTabFormComponent implements OnInit {
   }
 
   onSave() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched(); 
+      return; 
+    }
+    
     if (this.form.value) {
       this.save.emit(this.form.value);
     } else {

@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import { PasswordModule } from 'primeng/password';
-import { InputTextModule } from 'primeng/inputtext';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
 import { AuthServices,  } from '../../services/AuthServices';
@@ -10,12 +8,15 @@ import { LoginRequestDto } from '../../models/LoginRequestDto';
 import { MessageService } from 'primeng/api';
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { BlockUI } from 'primeng/blockui';
+import { AuthFieldConfig } from '../../models/AuthFieldConfig';
+import { AuthFormComponent } from '../../components/auth-form/auth-form';
 
 @Component({
   selector: 'app-login',
   imports: [
-    FormsModule, PasswordModule, 
-    InputTextModule, RouterModule,
+    FormsModule,
+    RouterModule,
+    AuthFormComponent,
     ProgressSpinner,BlockUI
   ],
   standalone: true,
@@ -27,15 +28,30 @@ export class Login {
   errorMessage: string = '';
   loading = false
 
+  fields: AuthFieldConfig[] = [
+    {
+      key: 'email',
+      label: 'Email',
+      type: 'email',
+      validators: [Validators.required, Validators.email]
+    },
+    {
+      key: 'password',
+      label: 'Mật khẩu',
+      type: 'password',
+      validators: [Validators.required],
+    }
+  ];
+
   constructor(
     private authServices: AuthServices, 
     private messageService: MessageService, 
     private router: Router, 
     private cdr: ChangeDetectorRef) {}
 
-  onSubmit() {
+  onSubmit(data: any) {
     this.loading = true
-    const body: LoginRequestDto = { email : this.email, password: this.password };
+    const body: LoginRequestDto = { email : data.email, password: data.password };
     this.authServices.login(body).subscribe({
       next: (res: LoginResponseDto) => {
         this.loading = false

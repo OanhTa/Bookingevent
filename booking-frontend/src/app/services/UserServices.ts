@@ -71,9 +71,9 @@ export class UserServices {
     return this.httpClient.post<ApiResponse<any>>(`${this.apiUrl}/lock/${userId}`, { lockEnd });
   }
 
-  // unlockUser(userId: string): Observable<ApiResponse<any>> {
-  //   return this.httpClient.post<ApiResponse<any>>(`${this.apiUrl}/unlock/${userId}`, {});
-  // }
+  unlockUser(userId: string): Observable<ApiResponse<any>> {
+    return this.httpClient.post<ApiResponse<any>>(`${this.apiUrl}/unlock/${userId}`, {});
+  }
 }
 
 export class UpdateTokenRequest {

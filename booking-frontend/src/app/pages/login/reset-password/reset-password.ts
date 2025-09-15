@@ -1,30 +1,42 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
 import { AuthServices } from '../../../services/AuthServices';
 import { ProgressSpinner } from 'primeng/progressspinner';
 import { BlockUI } from 'primeng/blockui';
+import { AuthFieldConfig } from '../../../models/AuthFieldConfig';
+import { AuthFormComponent } from '../../../components/auth-form/auth-form';
 
 @Component({
   selector: 'app-reset-password',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, 
-    ButtonModule, InputTextModule,
+    AuthFormComponent,
     ProgressSpinner,BlockUI
 ],
   providers: [MessageService],
-  templateUrl: './reset-password.html', // tách ra HTML
+  templateUrl: './reset-password.html',
 })
 export class ResetPasswordComponent {
-  password = '';
-  confirmPassword = '';
   token: string | null = null;
   loading = false
+
+  fields: AuthFieldConfig[] = [
+    {
+      key: 'password',
+      label: 'Mật khẩu mới',
+      type: 'password',
+      validators: [Validators.required],
+    },
+    {
+      key: 'confirmPassword',
+      label: 'Xác nhận mật khẩu',
+      type: 'password',
+      validators: [Validators.required],
+    }
+  ];
+
 
   constructor(
     private route: ActivatedRoute,
@@ -35,19 +47,18 @@ export class ResetPasswordComponent {
     this.token = this.route.snapshot.queryParamMap.get('token');
   }
 
-  onSubmit() {
+  onSubmit(value: any) {
     this.loading = true
-    if (this.password !== this.confirmPassword) {
+    if (value.password !== value.confirmPassword) {
       this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Mật khẩu không khớp' });
       return;
     }
-
     if (!this.token) {
       this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: 'Token không hợp lệ' });
       return;
     }
 
-    this.authService.resetPassword({ token: this.token, newPassword: this.password }).subscribe({
+    this.authService.resetPassword({ token: this.token, newPassword: value.password }).subscribe({
       next: res => {
         this.loading = false
         this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Đặt lại mật khẩu thành công' });

@@ -130,14 +130,8 @@ export class RoleTable2 implements OnInit {
   onSave(data: any) {
      if(this.currentAction === 'move-user'){
       this.roleService.moveUsers(this.modelFormData.id, data.role).subscribe({
-        next: () => {
-          this.showModalForm = false;
-          this.messageService.add({severity: 'success',summary: 'Thêm',detail: 'Di chuyển tất cả thành công'});
-          this.loadRoles();
-        },
-        error: (err) => {
-          this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: `Có lỗi + ${err}` });
-        }
+        next: (res) => this.handleSuccess(res),
+        error: (err) => this.handleError(err)
       });
       return;
      }
@@ -148,25 +142,13 @@ export class RoleTable2 implements OnInit {
       };
     if (this.modelFormData?.id) {
       this.roleService.updateRole(role.id, role).subscribe({
-        next: () => {
-          this.showModalForm = false;
-          this.messageService.add({severity: 'success',summary: 'Cập nhật',detail: 'Quyền cập nhật thành công'});
-          this.loadRoles(); 
-        },
-        error: (err) => {
-          this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: `Có lỗi + ${err}` });
-        }
+        next: (res) => this.handleSuccess(res),
+        error: (err) => this.handleError(err)
       });
     } else {
       this.roleService.createRole(role).subscribe({
-        next: () => {
-          this.showModalForm = false;
-          this.messageService.add({severity: 'success',summary: 'Thêm',detail: 'Thêm quyền thành công'});
-          this.loadRoles();
-        },
-        error: (err) => {
-          this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: `Có lỗi + ${err}` });
-        }
+        next: (res) => this.handleSuccess(res),
+        error: (err) => this.handleError(err)
       });
     }
   }
@@ -174,13 +156,11 @@ export class RoleTable2 implements OnInit {
     if (!this.roleSelect) return;
 
      this.roleService.deleteRole(this.roleSelect.id).subscribe({
-      next: () => {    
+      next: (res) => {    
         this.roles = this.roles.filter(r => r.id !== this.roleSelect!.id);
-        this.messageService.add({severity: 'success',summary: 'Xóa',detail: 'Xóa quyền thành công'});
+        this.handleSuccess(res)
       },
-      error: (err) => {
-        this.messageService.add({ severity: 'error', summary: 'Lỗi', detail: `Có lỗi + ${err}` });
-      }
+      error: (err) => this.handleError(err)
     });
   }
 
@@ -190,16 +170,23 @@ export class RoleTable2 implements OnInit {
 
   loadRoles() {
     this.roleService.getAllRole().subscribe({
-      next: res => { this.roles = res; this.cdr.detectChanges(); },
+      next: res => { this.roles = res.data; this.cdr.detectChanges(); },
       error: err => console.error(err)
     });
   }
-
-  trackByRoleId(index: number, role: Role) { return role.id; }
 
   openPermissionsModal(role: Role) {
     this.showModal = true;
     this.loadRolePermissions(role.id)
     this.roleSelect = role;
+  }
+  private handleSuccess(res: any) {
+    this.showModalForm = false;
+    this.messageService.add({severity: 'success',summary: 'Thành công',detail: res.message})
+    this.loadRoles();
+  }
+
+  private handleError(err: any) {
+    this.messageService.add({severity: 'error',summary: 'Lỗi', detail: err.error?.message || 'Có lỗi xảy ra'})
   }
 }

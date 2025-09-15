@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CheckPermission, Permission, PermissionService, PermissionTableItem } from '../../../services/PermissionService';
 import { MessageService } from 'primeng/api';
 import { SearchComponent } from '../../search/search-component';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-permissions-modal',
@@ -13,6 +14,7 @@ import { SearchComponent } from '../../search/search-component';
     CommonModule, 
     FormsModule,
     SearchComponent,
+    ButtonModule
   ]
 })
 export class PermissionsModalComponent implements OnInit, OnChanges {
