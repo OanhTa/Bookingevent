@@ -3,7 +3,6 @@ import { FormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
 import { AuthServices,  } from '../../services/AuthServices';
-import { LoginResponseDto } from '../../models/LoginResponseDto';
 import { LoginRequestDto } from '../../models/LoginRequestDto';
 import { MessageService } from 'primeng/api';
 import { ProgressSpinner } from 'primeng/progressspinner';
@@ -31,9 +30,9 @@ export class Login {
   fields: AuthFieldConfig[] = [
     {
       key: 'email',
-      label: 'Email',
+      label: 'Tên đăng nhập / Email',
       type: 'email',
-      validators: [Validators.required, Validators.email]
+      validators: [Validators.required]
     },
     {
       key: 'password',
@@ -53,12 +52,12 @@ export class Login {
     this.loading = true
     const body: LoginRequestDto = { email : data.email, password: data.password };
     this.authServices.login(body).subscribe({
-      next: (res: LoginResponseDto) => {
+      next: (res) => {
         this.loading = false
-        localStorage.setItem('account', JSON.stringify(res));
-        this.messageService.add({severity: 'success',summary: 'Đăng nhập thành công',detail: 'Chào mừng bạn quay lại!'});
+        localStorage.setItem('account', JSON.stringify(res.data));
+        this.messageService.add({severity: 'success',summary: res.message,detail: 'Chào mừng bạn quay lại!'});
           
-        if (res.roles.includes('Administrator')) {
+        if (res.data.roles.includes('Administrator')) {
           this.router.navigate(['/admin']);
         } else {
           this.router.navigate(['/']);
@@ -67,7 +66,7 @@ export class Login {
       error: (err) => {
         this.loading = false
         this.errorMessage = err.error?.message || 'Đăng nhập thất bại';
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: this.errorMessage });
         this.cdr.detectChanges();
       }
     });

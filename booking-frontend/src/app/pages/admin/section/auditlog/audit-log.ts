@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AuditLog, AuditLogServices } from '../../../../services/AuditLogServices';
-import { TableModule } from 'primeng/table';
+import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { TabsModule } from 'primeng/tabs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -11,7 +11,6 @@ import { ExportService } from '../../../../services/ExportService';
 import { ButtonModule } from 'primeng/button';
 import { TableAction } from '../../../../models/TableAction';
 import { TableComponent } from '../../../../components/table/table-component';
-
 
 @Component({
   selector: 'app-audit-log',
@@ -104,16 +103,20 @@ export class AuditLogComponent implements OnInit {
     ];
 
     this.actions = [
-      { label: 'Chi tiết', callback: (r) => this.loadLogs() },
-      { label: 'Chi tiết', callback: (r) => this.loadLogs() },
+      // { label: 'Chi tiết', callback: (r) => this.loadLogs() },
+      // { label: 'Chi tiết', callback: (r) => this.loadLogs() },
     ];
-    this.loadLogs();
   }
 
-  loadLogs() {
+  loadLogs(event: TableLazyLoadEvent) {
     this.loading = true;
-    this.auditLogService.getAll().subscribe((res: any) => {
-      this.logs = res.data
+    const page = (event.first ?? 0) / (event.rows ?? 5) + 1;
+    const pageSize = event.rows ?? 5;
+
+    this.auditLogService.getAll(page, pageSize).subscribe((res: any) => {
+      this.logs = res.data.data;
+      this.totalRecords = res.data.totalCount;
+      this.loading = false;
       this.cdr.detectChanges();
     });
   }
@@ -129,10 +132,6 @@ export class AuditLogComponent implements OnInit {
     this.modalTitle = `Xem chi tiết`;
     this.modelFormData = { ...data };
     this.showModalForm = true;
-  }
-
-  refresh() {
-    this.loadLogs();
   }
 
   exportExcel() {

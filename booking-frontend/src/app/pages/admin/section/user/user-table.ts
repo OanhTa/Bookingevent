@@ -72,16 +72,8 @@ export class UserTable implements OnInit{
 
   showFilter   = false;
   filterFields = [
-    { key: 'userName', label: 'Tên đăng nhập', type: 'text' },
-    { key: 'name', label: 'Họ và tên', type: 'text' },
     { key: 'creationDate', label: 'Ngày tạo', type: 'date' },
     { key: 'modificationDate', label: 'Ngày xác thực', type: 'date' },
-    { key: 'phoneNumber', label: 'Số điện thoại', type: 'text' },
-    { key: 'email', label: 'Địa chỉ email', type: 'text' },
-    { key: 'active', label: 'Hoạt động', type: 'select', options: [
-      { name: 'Có', code: true },
-      { name: 'Không', code: false },
-    ]},
     { key: 'emailConfirmed', label: 'Email xác thực', type: 'select', options: [
       { name: 'Có', code: true },
       { name: 'Không', code: false },
@@ -90,7 +82,6 @@ export class UserTable implements OnInit{
       { name: 'Khóa', code: true },
       { name: 'Không khóa', code: false },
     ]},
-    { key: 'id', label: 'Id', type: 'text' },
   ];
 
   constructor(

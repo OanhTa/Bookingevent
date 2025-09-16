@@ -27,7 +27,6 @@
         <p-password [(ngModel)]="settings[field.key]" [toggleMask]="true" variant="filled" [feedback]="false" inputStyleClass="w-full"/>
         <span *ngIf="field.subtitle" class="text-sm text-gray-500">{{ field.subtitle }}</span>
     </label>
-
   </ng-container>
 
   <button pButton type="button" label="Lưu" (click)="onSave()"></button>

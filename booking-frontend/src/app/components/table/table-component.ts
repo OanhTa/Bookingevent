@@ -22,6 +22,11 @@ export class TableComponent<T>    {
   @Input() data: T[] = [];
   @Input() actions: TableAction<T>[] = [];
 
+  @Input() totalRecords: number = 0;   // tổng bản ghi
+  @Input() rows: number = 10;          // số dòng mỗi trang
+  @Input() lazy: boolean = false; 
+  @Output() pageChange = new EventEmitter<any>();
+
   @ViewChild('op') op!: Popover;
 
   dropdownOpen = false;

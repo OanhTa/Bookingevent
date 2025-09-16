@@ -14,14 +14,16 @@
                     <app-filter-form 
                         [fields]="filterFields1"
                         (submitFilter)="onFilterSubmit($event)"
-                        (exportFilter)="exportExcel()"
-                      >
+                        (exportFilter)="exportExcel()">
                     </app-filter-form>
                 </div>
 
                 <table-component
                   [columns]="columns" 
                   [data]="logs"
+                  [totalRecords]="totalRecords"
+                  [lazy]="true"
+                  (pageChange)="loadLogs($event)"
                   [actions]="actions">
                 </table-component>
             </div>
@@ -39,7 +41,10 @@
                 <p-table
                   [value]="logs"
                   [paginator]="true"
+                  [lazy]="true"
                   [rows]="5"
+                  (onLazyLoad)="loadLogs($event)"
+                  [totalRecords]="totalRecords"
                   [tableStyle]="{ 'min-width': '50rem' }"
                   [rowsPerPageOptions]="[5, 10, 20]"
                 >

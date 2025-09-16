@@ -15,10 +15,11 @@ import { SettingsFieldsComponent } from "../../../../../components/settings-fiel
 })
 export class AccountSettings{
   prefix = 'App.Account';
-  settings: Record<string, string| boolean> = {};
+  settings: any = {};
 
   constructor(
     private appSettingService: AppSettingService,
+    private settingService: AppSettingService,
     private cdr: ChangeDetectorRef
   ){}
   ngOnInit(): void {
@@ -44,7 +45,16 @@ export class AccountSettings{
   };
 
   saveSettings(type: string) {
-    console.log("Saving settings for:", type, this.settings);
+    const arr: any = [];
+    Object.keys(this.settings).forEach(key => {
+      if (this.settings[key] != null) {
+        arr.push({
+          name: `${this.prefix}.${key}`,
+          value: String(this.settings[key]),
+        })
+      }
+    });
+    this.settingService.setValues(arr).subscribe();
   }
 
 }

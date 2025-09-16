@@ -47,8 +47,16 @@ export class EmailSettings{
   };
 
   saveSettings(type: string) {
-    console.log("Saving settings for:", type, this.settings);
-    // TODO: gọi API
+    const arr: any = [];
+    Object.keys(this.settings).forEach(key => {
+      if (this.settings[key] != null) {
+        arr.push({
+          name: `${this.prefix}.${key}`,
+          value: String(this.settings[key]),
+        })
+      }
+    });
+    this.appSettingService.setValues(arr).subscribe();
   }
 
 }

@@ -1,21 +1,18 @@
 <div class="space-y-8 p-10">
   <h2 class="text-2xl font-bold">Tổng quan</h2>
-  <!-- Cards số liệu nhanh -->
-  <div class="bg-white p-5">
-    <app-filter-form 
-      [fields]="filterFields1">
-    </app-filter-form>
-  </div>
 
-  <div class="flex gap-2">
-    <!-- Biểu đồ phân loại -->
-    <div class="flex-1 bg-white shadow rounded-xl p-6">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div class="p-4 bg-white rounded-lg shadow-md">
+      <h3 class="font-bold mb-4">Audit Logs theo ngày</h3>
+      <canvas baseChart [data]="logChartData" [type]="'line'"></canvas>
+    </div>
+    
+    <div class="bg-white shadow rounded-xl p-5">
         <h3 class="font-bold mb-4">Phân loại người dùng theo vai trò</h3>
         <canvas baseChart [data]="roleChartData" [type]="'doughnut'"></canvas>
     </div>
 
-    <!-- Biểu đồ hoạt động -->
-    <div class="flex-1 bg-white shadow rounded-xl p-6">
+    <div class="bg-white shadow rounded-xl p-5">
         <h3 class="font-bold mb-4">Người dùng đăng ký theo ngày</h3>
         <canvas baseChart [data]="activityChartData" [type]="'bar'"></canvas>
     </div>

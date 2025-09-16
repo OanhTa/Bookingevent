@@ -108,18 +108,6 @@ export class IdentitySettings{
         title: 'Xác minh email để đăng ký', 
         subtitle: 'Yêu cầu người dùng xác minh email khi tạo tài khoản mới.' 
       },
-      { 
-        key: 'AllowPhoneConfirm', 
-        type: 'checkbox', 
-        title: 'Cho phép xác nhận số điện thoại', 
-        subtitle: 'Bật nếu hệ thống hỗ trợ xác minh số điện thoại của người dùng.' 
-      },
-      { 
-        key: 'VerifyPhoneLogin', 
-        type: 'checkbox', 
-        title: 'Xác minh số điện thoại để đăng nhập', 
-        subtitle: 'Yêu cầu người dùng xác minh số điện thoại trước khi đăng nhập.' 
-      }
     ],
 
     profile: [
@@ -139,6 +127,15 @@ export class IdentitySettings{
   };
 
   saveSettings(type: string) {
-    console.log("Saving settings for:", type, this.settings);
+    const arr: any = [];
+    Object.keys(this.settings).forEach(key => {
+      if (this.settings[key] != null) {
+        arr.push({
+          name: `${this.prefix}.${key}`,
+          value: String(this.settings[key]),
+        })
+      }
+    });
+    this.appSettingService.setValues(arr).subscribe();
   }
 }

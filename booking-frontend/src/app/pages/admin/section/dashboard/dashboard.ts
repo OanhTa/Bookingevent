@@ -1,8 +1,8 @@
 import { CommonModule } from "@angular/common";
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { NgChartsModule } from 'ng2-charts';
 import { ChartConfiguration } from 'chart.js';
-import { FilterFormComponent } from "../../../../components/filter-form/filter-form";
+import { ReportServices } from "../../../../services/ReportService";
 
 @Component({
   selector: 'app-dashboard',
@@ -10,42 +10,66 @@ import { FilterFormComponent } from "../../../../components/filter-form/filter-f
   standalone: true,
   imports: [
     CommonModule, 
-    NgChartsModule,
-    FilterFormComponent
+    NgChartsModule
   ]
 })
 export class DashBoard  {
-  filterFields1 = [
-      { key: 'startDate', label: 'Bắt đầu', type: 'date' },
-      { key: 'endDate', label: 'Kết thúc', type: 'date' },    
-  ];
+  roleChartData: ChartConfiguration<'doughnut'>['data'] = { labels: [], datasets: [] };
+  activityChartData: ChartConfiguration<'bar'>['data'] = { labels: [], datasets: [] };
+  logChartData: ChartConfiguration<'line'>['data'] = { labels: [], datasets: [] };
 
-  stats = {
-    totalUsers: 1500,
-    newUsersThisMonth: 120,
-    activeUsers: 980,
-    lockedUsers: 50,
-    byRole: { Admin: 5, Teacher: 20, Student: 1400, Guest: 75 },
-    registrationsByDate: [
-      { date: "2025-09-01", count: 5 },
-      { date: "2025-09-02", count: 12 }
-    ]
-  };
+  stats: any;
 
-  roleChartData: ChartConfiguration<'doughnut'>['data'];
-  activityChartData: ChartConfiguration<'bar'>['data'];
+  constructor(
+    private reportServices : ReportServices,
+    private cdr : ChangeDetectorRef
+  ) {}
 
-  constructor() {
-    this.roleChartData = {
-      labels: Object.keys(this.stats.byRole),
-      datasets: [{ data: Object.values(this.stats.byRole) }]
-    };
+  ngOnInit(): void {
+    this.loadStats();
+  }
 
-    this.activityChartData = {
-      labels: this.stats.registrationsByDate.map(r => r.date),
-      datasets: [
-        { data: this.stats.registrationsByDate.map(r => r.count), label: 'Đăng ký mới' }
-      ]
-    };
+  loadStats() {
+    this.reportServices.GetUserStats().subscribe((res: any) => {
+      this.stats = res.data;
+      this.roleChartData = {
+        labels: Object.keys(this.stats.byRole),
+        datasets: [
+          {
+            data: Object.values(this.stats.byRole),
+            backgroundColor: ['#4CAF50', '#2196F3', '#FFC107', '#FF5722']
+          }
+        ]
+      };
+
+      this.activityChartData = {
+        labels: this.stats.registrationsByDate.map((r: any) =>
+          new Date(r.date).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' })
+        ),
+        datasets: [
+          {
+            data: this.stats.registrationsByDate.map((r: any) => r.count),
+            label: 'Đăng ký mới',
+            backgroundColor: '#42A5F5'
+          }
+        ]
+      };
+      this.logChartData = {
+        labels: this.stats.logsByDate.map((l: any) => 
+          new Date(l.date).toLocaleDateString('vi-VN')  
+        ),
+        datasets: [
+          {
+            data: this.stats.logsByDate.map((l: any) => l.count),
+            label: 'Audit Logs',
+            fill: false,
+            borderColor: '#FF4081',
+            tension: 0.3
+          }
+        ]
+      };
+
+      this.cdr.detectChanges();
+    });
   }
 }

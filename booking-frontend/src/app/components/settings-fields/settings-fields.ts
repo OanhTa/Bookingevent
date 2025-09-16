@@ -1,4 +1,3 @@
-// settings-fields.component.ts
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { SettingField } from '../../models/SettingDto';
 import { CommonModule } from '@angular/common';
@@ -27,6 +26,6 @@ export class SettingsFieldsComponent {
   @Output() save = new EventEmitter<void>();
 
   onSave() {
-    this.save.emit();
+    this.save.emit(this.settings);
   }
 }

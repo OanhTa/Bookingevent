@@ -3,6 +3,7 @@ import { Component } from "@angular/core";
 import { AccountSettings } from "./AccountSettings/account-settings";
 import { IdentitySettings } from "./IdentitySettings/identity-settings";
 import { EmailSettings } from "./EmailSettings/email-settings";
+import { AppSettingService } from "../../../../services/AppSettingService";
 
 @Component({
   selector: 'app-setting-section',

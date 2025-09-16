@@ -14,5 +14,13 @@ export class AppSettingService {
   
   GetByPrefix(prefix: string): Observable<Record<string, string>> {
     return this.http.get<Record<string, string>>(`${this.apiUrl}/${prefix}`);
-    }
+  }
+
+  SetValue(data: { name: string; value: string; providerName?: string; providerKey?: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/set`, data);
+  }
+
+  setValues(values: { [key: string]: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/set-values`, values);
+  }
 }

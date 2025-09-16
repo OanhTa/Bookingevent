@@ -31,8 +31,10 @@ export class AuditLogServices {
 
   constructor(private httpClient: HttpClient) {}
 
-  getAll(): Observable<ApiResponse<AuditLog[]>> {
-    return this.httpClient.get<ApiResponse<AuditLog[]>>(this.apiUrl);
+  getAll(page: number, pageSize: number): Observable<ApiResponse<any>> {
+    return this.httpClient.get<ApiResponse<any>>(
+      `${this.apiUrl}?page=${page}&pageSize=${pageSize}`
+    );
   }
 
   getSearch(audit: Partial<AuditLog>): Observable<ApiResponse<AuditLog[]>> {
