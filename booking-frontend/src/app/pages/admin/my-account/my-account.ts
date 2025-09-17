@@ -8,6 +8,7 @@ import { MessageService } from "primeng/api";
 import { ProgressSpinner } from "primeng/progressspinner";
 import { BlockUI } from "primeng/blockui";
 import { UserServices } from "../../../services/UserServices";
+import { AuthServices } from "../../../services/AuthServices";
 
 @Component({
   selector: 'app-my-account',
@@ -46,6 +47,7 @@ export class MyAccount{
 
   constructor(
     private uploadServices: UploadServices,
+    private authServices: AuthServices,
     private userServices: UserServices,
     private messageService: MessageService,
   ){}
@@ -53,11 +55,17 @@ export class MyAccount{
   onUpload(event: any) {
     this.loading = true
     const file = event.files[0]; 
-    const userId = JSON.parse(localStorage.getItem('account') || '{}')?.userId;
+    const account = JSON.parse(localStorage.getItem('account') || '{}');
+    const userId = account?.userId;
+
     this.uploadServices.uploadAvatar(file, userId).subscribe({
-      next: () => {
-        this.loading = false
+      next: (res: any) => {
+        account.avatarUrl = res.avatarUrl;
+        localStorage.setItem('account', JSON.stringify(account));
         this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Cập nhật ảnh thành công' });
+        
+        window.location.reload()
+        this.loading = false
         this.fileUpload.clear();
       },
       error: () => this.messageService.add({ severity: 'error', summary: 'Thất bại', detail: 'Không thể tải ảnh' })
@@ -65,23 +73,36 @@ export class MyAccount{
   }
 
   saveSettings(type: string) {
-    console.log(this.account)
     const userId = this.account.userId;
-    const dto = {
-      id: this.account.userId,
-      userName: this.account.userName,
-      fullName: this.account.fullName,
-      email: this.account.email,
-      phone: this.account.phone,
-      address: ""
-    };
+    if(type == 'default'){
+      const dto = {
+        id: userId,
+        userName: this.account.userName,
+        fullName: this.account.fullName,
+        email: this.account.email,
+        phone: this.account.phone,
+        address: ""
+      };
 
-    this.userServices.updateProfile(userId, dto).subscribe({
-      next: () => {
-        this.loading = false
-        this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Cập nhật thông tin thành công' });
-      },
-      error: () => this.messageService.add({ severity: 'error', summary: 'Thất bại', detail: 'Có lỗi xảy ra' })
-    })
+      this.userServices.updateProfile(userId, dto).subscribe({
+        next: () => {
+          this.loading = false
+          this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Cập nhật thông tin thành công' });
+        },
+        error: () => this.messageService.add({ severity: 'error', summary: 'Thất bại', detail: 'Có lỗi xảy ra' })
+      })
+    }else{
+      const dto = {
+        passwordCurrent: this.account.currentPass,
+        passwordNew: this.account.newPass,
+      };
+      this.authServices.changePassword(userId, dto).subscribe({
+        next: (res) => {
+          this.loading = false
+          this.messageService.add({ severity: 'success', summary: 'Thành công', detail: res.message });
+        },
+        error: (err) => this.messageService.add({ severity: 'error', summary: 'Thất bại', detail: err.error?.message })
+      })
+    }
   }
 }

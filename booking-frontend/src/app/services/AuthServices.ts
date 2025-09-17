@@ -21,8 +21,12 @@ export class AuthServices{
         return this.httpClient.post<ApiResponse<LoginResponseDto>>(`${this.apiUrl}/login`, loginRequest)
     }
    
-    register(registerRequest: RegisterRequest): Observable<RegisterResponse> {
-        return this.httpClient.post<RegisterResponse>(`${this.apiUrl}/register`, registerRequest);
+    register(registerRequest: RegisterRequest): Observable<ApiResponse<RegisterResponse>> {
+        return this.httpClient.post<ApiResponse<RegisterResponse>>(`${this.apiUrl}/register`, registerRequest);
+    }
+
+    changePassword(userId: string, dto: ChangePasswordDto) : Observable<ApiResponse<any>> {
+        return this.httpClient.post<ApiResponse<any>>(`${this.apiUrl}/change-password?userId=${userId}`, dto);
     }
 
     requestPasswordReset(dto: RequestPasswordResetDto): Observable<any> {
@@ -37,3 +41,7 @@ export class AuthServices{
         return this.httpClient.get(`${this.apiUrl}/confirm-email?token=${token}`);
     }
 }
+ export interface ChangePasswordDto{
+    passwordCurrent: string,
+    passwordNew: string
+ }

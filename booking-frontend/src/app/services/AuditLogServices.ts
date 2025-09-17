@@ -37,8 +37,8 @@ export class AuditLogServices {
     );
   }
 
-  getSearch(audit: Partial<AuditLog>): Observable<ApiResponse<AuditLog[]>> {
-    return this.httpClient.post<ApiResponse<AuditLog[]>>(`${this.apiUrl}/search`, audit);
+  getSearch(audit: Partial<AuditLog>, page: number, pageSize: number): Observable<ApiResponse<AuditLog[]>> {
+    return this.httpClient.post<ApiResponse<AuditLog[]>>(`${this.apiUrl}/search?page=${page}&pageSize=${pageSize}`, audit);
   }
 
   // getById(id: string): Observable<ApiResponse<AuditLog>> {

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthServices } from '../../services/AuthServices';
@@ -7,6 +7,7 @@ import { ProgressSpinner } from 'primeng/progressspinner';
 import { BlockUI } from 'primeng/blockui';
 import { AuthFormComponent } from '../../components/auth-form/auth-form';
 import { AuthFieldConfig } from '../../models/AuthFieldConfig';
+import { PasswordValidationService } from '../../utils/password-validator';
 
 @Component({
   selector: 'app-register',
@@ -26,7 +27,12 @@ export class Register{
       { key: 'password', label: 'Mật khẩu', type: 'password', validators: [Validators.required] },
       { key: 'confirmPassword', label: 'Nhập lại mật khẩu',  type: 'password', validators: [Validators.required] },
     ];
-    
+  passwordMatchValidator(group: AbstractControl): ValidationErrors | null {
+    const password = group.get('password')?.value;
+    const confirm = group.get('confirmPassword')?.value;
+    return password === confirm ? null : { passwordMismatch: true };
+  }
+
   constructor(
     private authService: AuthServices,
     private messageService: MessageService,
@@ -39,26 +45,15 @@ export class Register{
     delete postData.confirmPassword;
 
     this.authService.register(postData).subscribe(
-      response => {
+      res => {
         this.loading = false;
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Register successfully' });
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: res.message, life: 6000 });
         this.router.navigate(['login'])
       },
-      error => {
+      err => {
         this.loading = false;
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: err.error?.message });
       }
     )
   }
-
-}
-export const passwordMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-    const password = control.get('password');
-    const confirmPassword = control.get('confirmPassword');
-
-    if (!password || !confirmPassword) {
-        return null;
-    }
-
-    return password.value === confirmPassword.value ? null : { passwordMismatch: true }
 }

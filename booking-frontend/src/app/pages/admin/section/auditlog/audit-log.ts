@@ -11,6 +11,9 @@ import { ExportService } from '../../../../services/ExportService';
 import { ButtonModule } from 'primeng/button';
 import { TableAction } from '../../../../models/TableAction';
 import { TableComponent } from '../../../../components/table/table-component';
+import { ProgressSpinner } from 'primeng/progressspinner';
+import { BlockUI } from 'primeng/blockui';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-audit-log',
@@ -23,15 +26,17 @@ import { TableComponent } from '../../../../components/table/table-component';
     ButtonModule,
     FormsModule,
     FilterFormComponent,
-    ModalFormComponent,
+    ModalFormComponent
   ],
 })
 export class AuditLogComponent implements OnInit {
   logs: AuditLog[] = [];
   totalRecords = 0;
-  loading = true;
   columns: any[] = [];
   actions: TableAction<any>[] = [];
+
+  page: number = 0;
+  pageSize: number = 0;
 
   showModalForm = false;
   modalTitle = '';
@@ -50,10 +55,9 @@ export class AuditLogComponent implements OnInit {
   modelFormData: any = null;
 
   filterFields0 = [
+    { key: 'keyWord', label: 'Nhập từ khóa', type: 'text' },
     { key: 'startDate', label: 'Ngày bắt đầu', type: 'date' },
     { key: 'endDate', label: 'Ngày kết thúc', type: 'date' },
-    { key: 'userName', label: 'Tên định danh', type: 'text' },
-    { key: 'url', label: 'URL', type: 'text' },
     { key: 'minDuration', label: 'Thời gian tối thiểu', type: 'number' },
     { key: 'maxDuration', label: 'Thời gian tối đa', type: 'number' },
     { key: 'httpMethod', label: 'HTTP phương thức', type: 'select', options: [
@@ -67,15 +71,13 @@ export class AuditLogComponent implements OnInit {
       { name: '400 Bad Request', code: '400' },
       { name: '500 Internal Server Error', code: '500' },
     ]},
-    { key: 'applicationName', label: 'Tên ứng dụng', type: 'text' },
-    { key: 'ipAddress', label: 'Địa chỉ khách hàng', type: 'text' },
-    { key: 'correlationId', label: 'Id tương quan', type: 'text' },
     { key: 'hasException', label: 'Có lỗi', type: 'select', options: [
       { name: 'Có', code: true },
       { name: 'Không', code: false },
     ]},
   ];
   filterFields1 = [
+    { key: 'keyWord', label: 'Nhập từ khóa', type: 'text' },
     { key: 'startDate', label: 'Thời gian', type: 'date' },
     { key: 'httpMethod', label: 'Phương thức', type: 'select', options: [
         { name: 'GET', code: 'GET' },
@@ -83,14 +85,13 @@ export class AuditLogComponent implements OnInit {
         { name: 'PUT', code: 'PUT' },
         { name: 'DELETE', code: 'DELETE' },
     ]},
-    { key: 'id', label: 'Khóa chính', type: 'text' },
-    { key: 'url', label: 'Tên đối tượng', type: 'text' },
   ];
 
 
   constructor(
     private auditLogService: AuditLogServices,
     private exportService: ExportService,
+    private messageService: MessageService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -109,22 +110,39 @@ export class AuditLogComponent implements OnInit {
   }
 
   loadLogs(event: TableLazyLoadEvent) {
-    this.loading = true;
-    const page = (event.first ?? 0) / (event.rows ?? 5) + 1;
-    const pageSize = event.rows ?? 5;
+    this.page = (event.first ?? 0) / (event.rows ?? 5) + 1;
+    this.pageSize = event.rows ?? 5;
 
-    this.auditLogService.getAll(page, pageSize).subscribe((res: any) => {
-      this.logs = res.data.data;
-      this.totalRecords = res.data.totalCount;
-      this.loading = false;
-      this.cdr.detectChanges();
+    this.auditLogService.getAll(this.page, this.pageSize).subscribe({
+      next: (res: any) => {
+        this.logs = res.data.data;
+        this.totalRecords = res.data.totalCount;
+        this.cdr.markForCheck();
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Lỗi',
+          detail: err.error?.message || 'Có lỗi xảy ra'
+        });
+      }
     });
   }
 
   onFilterSubmit(filterData: { [key: string]: any }) {
-    this.auditLogService.getSearch(filterData).subscribe((res: any) => {
-      this.logs = res.data
-      this.cdr.detectChanges();
+    this.auditLogService.getSearch(filterData, this.page, this.pageSize).subscribe({
+      next: (res: any) => {
+        this.logs = [...res.data.data];
+        this.totalRecords = res.data.totalCount;
+        this.cdr.markForCheck();
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Lỗi',
+          detail: err.error?.message || 'Có lỗi xảy ra'
+        });
+      }
     });
   }
 

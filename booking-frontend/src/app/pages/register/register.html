@@ -3,7 +3,8 @@
     <app-auth-form
       [fields]="fields"
       [formTitle]="'Đăng ký'"
-      [submitLabel]="'Đăng ký'"        
+      [submitLabel]="'Đăng ký'" 
+      [formValidators]="passwordMatchValidator" 
       (formSubmit)="onSubmit($event)"
     ></app-auth-form>
 

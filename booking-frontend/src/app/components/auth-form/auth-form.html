@@ -20,10 +20,23 @@
         [id]="field.key"
         [formControlName]="field.key"
         [toggleMask]="true"
-        [feedback]="false"
+        autocomplete="off"
         [placeholder]="field.placeholder"
-        inputStyleClass="w-full"
-      ></p-password>
+        promptLabel="Nhập mật khẩu"
+        weakLabel="Quá yếu" 
+        mediumLabel="Trung bình" 
+        strongLabel="Mật khẩu mạnh"
+        inputStyleClass="w-full">
+        <ng-template #footer>
+            <p-divider />
+            <ul class="pl-2 my-0 leading-normal">
+                <li>At least one lowercase</li>
+                <li>At least one uppercase</li>
+                <li>At least one numeric</li>
+                <li>Minimum 8 characters</li>
+            </ul>
+        </ng-template>
+      </p-password>
 
       <small class="text-red-500 text-sm" *ngIf="getControl(field.key)?.invalid && (getControl(field.key)?.touched || getControl(field.key)?.dirty)">
         <div *ngFor="let msg of getErrorMessages(getControl(field.key), field)">

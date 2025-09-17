@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl, React
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
+import { DividerModule } from 'primeng/divider';
+import { PasswordValidationService } from '../../utils/password-validator';
 
 export interface AuthFieldConfig {
   key: string;                 // tên control
@@ -21,10 +23,12 @@ export interface AuthFieldConfig {
     InputTextModule,
     ButtonModule, 
     ReactiveFormsModule,
-    PasswordModule
+    PasswordModule, DividerModule
 ],
 })
 export class AuthFormComponent implements OnInit {
+  messPassword: any;
+
   @Input() fields: AuthFieldConfig[] = [];
   @Input() formTitle: string = '';
   @Input() submitLabel: string = 'Submit';
@@ -34,7 +38,10 @@ export class AuthFormComponent implements OnInit {
 
   form!: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private passwordValidation: PasswordValidationService,
+  ) {}
 
   ngOnInit(): void {
     const group: any = {};
@@ -42,6 +49,10 @@ export class AuthFormComponent implements OnInit {
       group[f.key] = ['', f.validators || []];
     });
     this.form = this.fb.group(group, { validators: this.formValidators });
+
+    // this.passwordValidation.loadSettings()
+    //   .then(result => console.log(result))
+    //   .catch(err => console.error(err));
   }
 
   onSubmit() {
@@ -66,6 +77,8 @@ export class AuthFormComponent implements OnInit {
     if (errors['pattern']) messages.push(`${field.label} không hợp lệ.`);
     if (errors['minlength']) messages.push(`${field.label} tối thiểu ${errors['minlength'].requiredLength} ký tự.`);
     if (errors['maxlength']) messages.push(`${field.label} tối đa ${errors['maxlength'].requiredLength} ký tự.`);
+    if (errors['passwordMismatch']) messages.push(`Mật khẩu nhập lại không khớp.`);
+ 
     return messages;
   }
 }

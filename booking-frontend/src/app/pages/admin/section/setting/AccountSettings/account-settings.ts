@@ -39,7 +39,7 @@ export class AccountSettings{
   fields: Record<string, SettingField[]> = {
       general: [
         { key: 'IsSelfRegistrationEnabled', type: 'checkbox', title: 'Cho phép tự đăng ký', subtitle: 'Người dùng có thể tự tạo tài khoản mới mà không cần quản trị viên.' },
-        { key: 'EnableLocalLogin', type: 'checkbox', title: 'Cho phép đăng ký và đăng nhập bằng tài khoản nội bộ', subtitle: 'Nếu tắt, chỉ có thể đăng nhập bằng phương thức bên ngoài như Google, Facebook...' },
+        { key: 'EnableLocalLogin', type: 'checkbox', title: ' Cho phép đăng ký và đăng nhập bằng tài khoản nội bộ', subtitle: 'Nếu tắt, chỉ có thể đăng nhập bằng phương thức bên ngoài như Google, Facebook...' },
         { key: 'PreventEmailEnumeration', type: 'checkbox', title: 'Ngăn dò tìm email', subtitle: 'Bật để tránh lộ thông tin người dùng qua thông báo lỗi đăng nhập.' }
       ]
   };
