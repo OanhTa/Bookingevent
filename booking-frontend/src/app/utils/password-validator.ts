@@ -26,12 +26,12 @@ export class PasswordValidationService {
     if (!this.settings) {
       const data = await firstValueFrom(this.appSettingService.GetByPrefix('App.Identity'));
       this.settings = {
-        minLength: parseInt(data['PasswordMinLength'] ?? '6'),
-        minUniqueChars: parseInt(data['PasswordUniqueChars'] ?? '3'),
-        requireSpecialChar: data['PasswordRequireNonAlphanumeric'] === 'true',
-        requireLowercase: data['PasswordRequireLowercase'] === 'true',
-        requireUppercase: data['PasswordRequireUppercase'] === 'true',
-        requireDigit: data['PasswordRequireDigit'] === 'true'
+        minLength: parseInt(data['MinLength']),
+        minUniqueChars: parseInt(data['UniqueChars']),
+        requireSpecialChar: data['RequireNonAlphanumeric'] === 'true',
+        requireLowercase: data['RequireLowercase'] === 'true',
+        requireUppercase: data['RequireUppercase'] === 'true',
+        requireDigit: data['RequireDigit'] === 'true'
       };
     }
     return this.settings;
@@ -39,7 +39,6 @@ export class PasswordValidationService {
 
   async validate(password: string): Promise<PasswordValidatorResult> {
     const settings = await this.loadSettings();
-
     const errors: string[] = [];
     if (!password) errors.push("Mật khẩu không được để trống.");
     if (password.length < settings.minLength) errors.push(`Mật khẩu phải có ít nhất ${settings.minLength} ký tự.`);

@@ -32,13 +32,29 @@ export class FormDetail{
     this.categories$ = this.categoryService.getCategory();
 
     const detailGroup = this.fb.group({
-        name: ['', [Validators.required, Validators.minLength(3)]], 
-        categoryId: [null, [Validators.required]], 
-        date: ['', [Validators.required]], 
-        time: ['', [Validators.required]], 
-        duration: ['', [Validators.required, Validators.min(1)]], 
-        location: ['Online'], 
-        description: ['', [Validators.required, Validators.minLength(10)]]
+      name: ['', [Validators.required, Validators.minLength(3)]], 
+      categoryId: [null, [Validators.required]], 
+      date: ['', [Validators.required]], 
+      time: ['', [Validators.required]], 
+      duration: ['', [Validators.required]], 
+      location: ['Offline'], 
+      description: ['', [Validators.required, Validators.minLength(10)]],
+
+      // thêm địa điểm
+      venue: ['', [Validators.required]],
+      address1: ['', [Validators.required]],
+      state: ['', [Validators.required]],
+      city: ['', [Validators.required]],
+      zipCode: ['', [Validators.required]]
+    });
+
+    detailGroup.valueChanges.subscribe(values => {
+      const { venue, address1, city, state} = values;
+      const location = [venue, address1, city, state]
+        .filter(x => !!x) 
+        .join(', ');
+      
+      detailGroup.get('location')?.setValue(location, { emitEvent: false });
     });
     this.parentForm.setControl('detail', detailGroup);
   }

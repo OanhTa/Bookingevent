@@ -10,6 +10,7 @@ import { Select } from 'primeng/select';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    Select
   ]
 })
 export class FormTickets {
@@ -43,9 +44,18 @@ export class FormTickets {
 
   createTicket(): FormGroup {
     return this.fb.group({
-      name: ['Vé Online'],
+      name: ['', [Validators.required]],
+      customName: [''],
       price: ['', [Validators.required, Validators.min(0)]],
       quantity: ['', [Validators.required, Validators.min(1)]]
     });
+  }
+
+  addTicket() {
+    this.tickets.push(this.createTicket());
+  }
+
+  removeTicket(index: number) {
+    this.tickets.removeAt(index);
   }
 }

@@ -13,6 +13,7 @@
                 <div class="mb-10">
                     <app-filter-form 
                         [fields]="filterFields1"
+                        [isExcel]="true"
                         (submitFilter)="onFilterSubmit($event)"
                         (exportFilter)="exportExcel()">
                     </app-filter-form>
@@ -34,6 +35,7 @@
                   <app-filter-form 
                     [fields]="filterFields0"
                     (submitFilter)="onFilterSubmit($event)"
+                    [isExcel]="true"
                     (exportFilter)="exportExcel()">
                   </app-filter-form>
                 </div>

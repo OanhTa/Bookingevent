@@ -9,7 +9,32 @@
 
   <div formArrayName="tickets">
     <div *ngFor="let ticket of tickets.controls; let i = index" [formGroupName]="i"
-        class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 border-b pb-4">   
+        class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 border-b pb-4">
+
+      <div>
+        <label class="block text-sm font-medium mb-2">Loại vé*</label>
+        <p-select
+          [options]="ticketTypes"
+          formControlName="name"
+          placeholder="Chọn loại vé"
+          optionLabel="label"
+          optionValue="value"
+          class="w-full">
+        </p-select>
+        <div *ngIf="showError(i, 'name', 'required')" class="text-red-500 text-sm">
+          Vui lòng chọn loại vé
+        </div>
+      </div>
+
+      <div *ngIf="ticket?.get('name')?.value === 'Khác'">
+        <label class="block text-sm font-medium mb-2">Tên vé khác*</label>
+        <input type="text"
+              formControlName="customName"
+              class="w-full border rounded-md p-2 focus:outline-green-500"
+              placeholder="Nhập tên vé khác" />
+      </div>
+
+      <!-- Price -->
       <div>
         <label class="block text-sm font-medium mb-2">Giá*</label>
         <input type="number" step="0.5"
@@ -24,6 +49,7 @@
         </div>
       </div>
 
+      <!-- Ticket Quantity -->
       <div>
         <label class="block text-sm font-medium mb-2">Tổng số vé có sẵn*</label>
         <input type="number"
@@ -37,6 +63,26 @@
           Số lượng phải ít nhất 1
         </div>
       </div>
+
+      <!-- Remove button -->
+      <div class="col-span-2 flex justify-end">
+        <button type="button"
+                (click)="removeTicket(i)"
+                class="text-red-500 hover:underline">
+          Xóa vé
+        </button>
+      </div>
     </div>
   </div>
+
+  <!-- Add Ticket -->
+  <div class="mt-4">
+    <button type="button"
+            (click)="addTicket()"
+            class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+      + Thêm vé
+    </button>
+  </div>
+
+
 </form>

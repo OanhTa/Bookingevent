@@ -35,7 +35,7 @@ export class AddOnnlineEvent{
   ngOnInit(): void {
     this.eventForm = this.fb.group({
       detail: this.fb.group({}),
-      ticket: this.fb.group({}), 
+      tickets: this.fb.array([]),
       setting: this.fb.group({})
     });
   }
@@ -52,14 +52,17 @@ export class AddOnnlineEvent{
     this.activeStep = step; 
   }
   onSave() {
+    if (this.eventForm.invalid) {
+      this.eventForm.markAllAsTouched();
+    }
+    const orgId = localStorage.getItem('organisationId');
      if (this.eventForm.valid && this.activeStep === 3) {
       const dto = {
         ...this.eventForm.value.detail,
-        ...this.eventForm.value.ticket,
+        ticketTypes: this.eventForm.value.tickets,
+        organisationId: orgId
         // ...this.eventForm.value.setting
       };
-
-      console.log('Final DTO:', dto);
 
       this.eventService.createEvent(dto).subscribe({
         next: () => this.messageService.add({severity: 'success',summary: 'Create',detail: 'Event create successfully'}),

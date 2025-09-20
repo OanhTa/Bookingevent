@@ -2,7 +2,11 @@
     <div class="flex flex-wrap justify-between items-center mb-4">
       <h2 class="text-2xl font-bold">Quản lý người dùng</h2>
       <!-- *ngIf="permissionService.hasPermission(constPer.Identity.Users.Create)" -->
-      <p-button label="Tạo mới" size="small" icon="pi pi-plus" (click)="openAdd()"/>
+       <div class="flex flex-wrap items-center gap-2">
+        <p-button label="Import" size="small" icon="pi pi-upload" variant="outlined" (click)="openAdd()"></p-button>
+        <p-button label="Export" size="small" icon="pi pi-download" variant="outlined" (click)="exportExcel()"></p-button>
+        <p-button label="Tạo mới" size="small" icon="pi pi-plus" (click)="openAdd()"></p-button>
+      </div>
     </div>
 
     <div class="p-4 mb-4 border rounded-md bg-white shadow-sm">

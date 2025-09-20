@@ -22,20 +22,8 @@
         [toggleMask]="true"
         autocomplete="off"
         [placeholder]="field.placeholder"
-        promptLabel="Nhập mật khẩu"
-        weakLabel="Quá yếu" 
-        mediumLabel="Trung bình" 
-        strongLabel="Mật khẩu mạnh"
+        [feedback]="false"
         inputStyleClass="w-full">
-        <ng-template #footer>
-            <p-divider />
-            <ul class="pl-2 my-0 leading-normal">
-                <li>At least one lowercase</li>
-                <li>At least one uppercase</li>
-                <li>At least one numeric</li>
-                <li>Minimum 8 characters</li>
-            </ul>
-        </ng-template>
       </p-password>
 
       <small class="text-red-500 text-sm" *ngIf="getControl(field.key)?.invalid && (getControl(field.key)?.touched || getControl(field.key)?.dirty)">

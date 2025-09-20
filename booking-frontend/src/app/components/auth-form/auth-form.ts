@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl, ReactiveFormsModule, AsyncValidatorFn } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { DividerModule } from 'primeng/divider';
 import { PasswordValidationService } from '../../utils/password-validator';
+import { from, map } from 'rxjs';
 
 export interface AuthFieldConfig {
   key: string;                 // tên control
@@ -46,13 +47,17 @@ export class AuthFormComponent implements OnInit {
   ngOnInit(): void {
     const group: any = {};
     this.fields.forEach(f => {
-      group[f.key] = ['', f.validators || []];
+      if (f.type === 'password' || f.key.toLowerCase().includes('password')) {
+        group[f.key] = [
+            '',
+            f.validators || [],
+            [this.passwordAsyncValidator()]  
+        ];
+      } else {
+        group[f.key] = ['', f.validators || []];
+      }
     });
     this.form = this.fb.group(group, { validators: this.formValidators });
-
-    // this.passwordValidation.loadSettings()
-    //   .then(result => console.log(result))
-    //   .catch(err => console.error(err));
   }
 
   onSubmit() {
@@ -67,6 +72,16 @@ export class AuthFormComponent implements OnInit {
     return this.form.get(key);
   }
 
+  passwordAsyncValidator(): AsyncValidatorFn {
+    return (control: AbstractControl) => {
+      return from(this.passwordValidation.validate(control.value)).pipe(
+        map(result => {
+          return result.isValid ? null : { passwordWeak: result.errors };
+        })
+      );
+    };
+  }
+
   getErrorMessages(control: AbstractControl | null, field: AuthFieldConfig): string[] {
     if (!control || !control.errors) return [];
     const messages: string[] = [];
@@ -79,6 +94,13 @@ export class AuthFormComponent implements OnInit {
     if (errors['maxlength']) messages.push(`${field.label} tối đa ${errors['maxlength'].requiredLength} ký tự.`);
     if (errors['passwordMismatch']) messages.push(`Mật khẩu nhập lại không khớp.`);
  
+    if (errors['passwordWeak']) {
+      if (Array.isArray(errors['passwordWeak'])) {
+        messages.push(...errors['passwordWeak']); // lấy từng lỗi chi tiết từ service
+      } else {
+        messages.push(errors['passwordWeak']); // fallback nếu chỉ là string
+      }
+    }
     return messages;
   }
 }

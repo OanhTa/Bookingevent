@@ -27,6 +27,7 @@ export interface FilterField {
   
 })
 export class FilterFormComponent {
+  @Input() isExcel = false;
   @Input() fields: FilterField[] = [];   // cha truyền vào
   filterData: { [key: string]: any } = {};
   // Event emitter để gửi dữ liệu về cha khi submit
@@ -39,5 +40,12 @@ export class FilterFormComponent {
 
   onExport() {
     this.exportFilter.emit();
+  }
+
+  onClear() {
+    Object.keys(this.filterData).forEach(key => {
+      this.filterData[key] = '';
+    });
+    this.submitFilter.emit({});
   }
 }

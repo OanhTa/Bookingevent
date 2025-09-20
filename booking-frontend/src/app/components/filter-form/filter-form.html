@@ -27,6 +27,7 @@
 
 <!-- Buttons -->
 <div class="flex gap-4 mt-4 justify-end">
-  <p-button label="Làm mới" (click)="onSubmit()"/>
-  <p-button label="Xuất Excel" variant="outlined" (click)="onExport()"/>
+  <p-button label="Xóa bộ lọc" icon="pi pi-filter-slash" variant="outlined" (click)="onClear()"/>
+  <p-button *ngIf="isExcel" label="Xuất Excel" icon="pi pi-file-excel" severity="success" variant="outlined" (click)="onExport()"/>
+  <p-button label="Lọc dữ liệu" icon="pi pi-search" (click)="onSubmit()"/>
 </div>

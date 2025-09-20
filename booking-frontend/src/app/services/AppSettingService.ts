@@ -20,7 +20,14 @@ export class AppSettingService {
     return this.http.post(`${this.apiUrl}/set`, data);
   }
 
-  setValues(values: { [key: string]: string }): Observable<any> {
+  setValues(values: SetValueDto[]): Observable<any> {
     return this.http.post(`${this.apiUrl}/set-values`, values);
   }
+}
+
+export interface SetValueDto {
+  name: string;
+  value: string;
+  providerName?: string;
+  providerKey?: string;
 }

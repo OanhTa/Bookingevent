@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { OrganisationService } from '../../../services/OrganisationService';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Observable, of } from 'rxjs';
 
 @Component({
@@ -18,6 +18,7 @@ export class OrganisationMenuComponent implements OnInit {
 
   constructor(
     private organisationService: OrganisationService,
+    private router: Router,
     private cdr: ChangeDetectorRef
 
 ) {}
@@ -28,4 +29,13 @@ export class OrganisationMenuComponent implements OnInit {
       this.organisations$ = this.organisationService.getOrganisationsByUser(userId);
     }
   }
+
+  selectOrganisation(org: any) {
+    const orgId = org.organisation.id; 
+    localStorage.setItem('organisationId', orgId);
+    window.location.reload()
+    
+    this.router.navigate(['/organisation']);
+  }
+
 }

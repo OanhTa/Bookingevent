@@ -4,35 +4,61 @@
   <!-- Event name -->
   <div class="mb-6">
     <label class="block text-sm font-medium mb-2">Đưa ra tên sự kiện*</label>
-    <input type="text" formControlName="name" class="w-full border rounded-md p-3 focus:outline-green-500" />
+    <input type="text" formControlName="name" class="w-full border rounded-md p-2 focus:outline-green-500" />
+    <small class="text-red-500" *ngIf="showError('name','required')">
+      Tên sự kiện không được bỏ trống.
+    </small>
+    <small class="text-red-500" *ngIf="showError('name','minlength')">
+      Tên sự kiện phải có ít nhất 3 ký tự.
+    </small>
   </div>
 
   <!-- Category -->
   <div class="mb-6">
     <label class="block text-sm font-medium mb-2">Chọn danh mục*</label>
-    <select formControlName="categoryId" class="w-full border rounded-md p-3 focus:outline-green-500">
-      <option *ngFor="let cat of categories$ | async" [value]="cat.id">
-        {{ cat.name }}
-      </option>
-    </select>
+    <p-select 
+       *ngIf="(categories$ | async) as categories"
+        [options]="categories"
+        formControlName="categoryId"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Chọn danh mục"
+        class="w-full">
+    </p-select>
+    <small class="text-red-500" *ngIf="showError('categoryId','required')">
+      Vui lòng chọn danh mục.
+    </small>
   </div>
 
   <!-- Date / Time / Duration -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
     <div>
       <label class="block text-sm font-medium mb-2">Ngày diễn ra sự kiện*</label>
-      <input type="date" formControlName="date"
-             class="w-full border rounded-md p-3 focus:outline-green-500" />
+      <p-datepicker formControlName="date" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" />
+      <small class="text-red-500" *ngIf="showError('date','required')">
+        Vui lòng chọn ngày tổ chức.
+      </small>
     </div>
     <div>
       <label class="block text-sm font-medium mb-2">Thời gian*</label>
-      <input type="time" formControlName="time"
-             class="w-full border rounded-md p-3 focus:outline-green-500" />
+      <input 
+        type="time" 
+        formControlName="time" 
+        step="1"  
+        class="w-full border rounded-md p-2 focus:outline-green-500"
+        id="timeInput"
+      />
+      <small class="text-red-500" *ngIf="showError('time','required')">
+        Vui lòng chọn giờ bắt đầu.
+      </small>
     </div>
     <div>
-      <label class="block text-sm font-medium mb-2">*Khoảng thời gian</label>
+      <label class="block text-sm font-medium mb-2">Khoảng thời gian*</label>
       <input type="text" formControlName="duration" placeholder="1h"
-             class="w-full border rounded-md p-3 focus:outline-green-500" />
+             class="w-full border rounded-md p-2 focus:outline-green-500" />
+      <small class="text-red-500" *ngIf="showError('duration','required')">
+        Vui lòng nhập thời lượng.
+      </small>
     </div>
   </div>
 
@@ -40,10 +66,18 @@
   <div class="mb-6">
     <label class="block text-sm font-medium mb-2">Thêm ảnh đại diện*</label>
     <div class="border-2 border-dashed rounded-lg p-4 flex flex-col items-center justify-center">
-      <div class="bg-gray-200 w-full h-40 flex items-center justify-center">
-        <span class="text-gray-500">Xem trước ảnh</span>
+      <div class="bg-gray-200 w-full h-40 flex items-center justify-center overflow-hidden rounded-md">
+        <img 
+          *ngIf="previewUrl; else defaultImage"
+          [src]="previewUrl"
+          alt="Preview" 
+          class="object-cover w-full h-full" />
+        <ng-template #defaultImage>
+          <span class="text-gray-500 w-full h-full"></span>
+        </ng-template>
       </div>
-      <input type="file" (change)="onFileSelected($event)" hidden #bannerInput />
+
+      <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden #bannerInput />
       <button type="button" (click)="bannerInput.click()"
               class="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
         Thay đổi ảnh
@@ -54,7 +88,12 @@
   <!-- Description -->
   <div class="mb-6">
     <label class="block text-sm font-medium mb-2">Nhập mô tả cho sự kiện*</label>
-    <textarea rows="4" formControlName="description"
-              class="w-full border rounded-md p-3 focus:outline-green-500"></textarea>
+    <textarea rows="4" formControlName="description" class="w-full border rounded-md p-3 focus:outline-green-500"></textarea>
+    <small class="text-red-500" *ngIf="showError('description','required')">
+      Mô tả không được bỏ trống.
+    </small>
+    <small class="text-red-500" *ngIf="showError('description','minlength')">
+      Mô tả phải có ít nhất 10 ký tự.
+    </small>
   </div>
 </form>

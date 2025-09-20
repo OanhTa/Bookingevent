@@ -37,13 +37,33 @@ export const routes: Routes = [
             { path: '', redirectTo: 'users', pathMatch: 'full' } 
         ]
     },
-    { path: 'organisation/:id', component: Organisation},
+    { 
+        path: 'organisation', 
+        component: Organisation,
+        canActivate: [AuthGuard],
+        data: { role: 'Organiser', allowDirect: false },
+    },
+    { 
+        path: 'create', 
+        component: AddEvent,
+        canActivate: [AuthGuard],
+        data: { role: 'Organiser', allowDirect: false },
+    },
+    { 
+        path: 'create-online-event', 
+        component: AddOnnlineEvent,
+        canActivate: [AuthGuard],
+        data: { role: 'Organiser', allowDirect: false },
+    },
+    { 
+        path: 'create-venue-event', 
+        component: AddVenueEvent,
+        canActivate: [AuthGuard],
+        data: { role: 'Organiser', allowDirect: false },
+    },
     { path: 'login', component: Login},
     { path: 'register', component: Register},
     { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: 'reset-password', component: ResetPasswordComponent },
     { path: 'email-verify', component: EmailVerify },
-    { path: 'create', component: AddEvent},
-    { path: 'create-online-event', component: AddOnnlineEvent},
-    { path: 'create-venue-event', component: AddVenueEvent}
 ];

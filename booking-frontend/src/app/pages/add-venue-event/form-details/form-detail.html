@@ -1,0 +1,120 @@
+<div [formGroup]="detailForm" class="max-w-4xl mx-auto bg-white rounded-lg shadow p-8">
+  <h2 class="text-xl font-semibold mb-6">Chi tiết sự kiện</h2>
+
+  <!-- Tên sự kiện -->
+  <div class="mb-6">
+    <label class="block text-sm font-medium mb-2">Tên sự kiện*</label>
+    <input type="text"
+           formControlName="name"
+           placeholder="Nhập tên sự kiện"
+           class="w-full border rounded-md p-3 focus:outline-green-500" />
+    <small class="text-red-500" *ngIf="showError('name','required')">Tên sự kiện không được để trống.</small>
+    <small class="text-red-500" *ngIf="showError('name','minlength')">Tên sự kiện phải có ít nhất 3 ký tự.</small>
+  </div>
+
+  <!-- Danh mục -->
+  <div class="mb-6">
+    <label class="block text-sm font-medium mb-2">Danh mục*</label>
+    <p-select 
+      *ngIf="(categories$ | async) as categories"
+      [options]="categories"
+      optionLabel="name"
+      optionValue="id"
+      formControlName="categoryId"
+      placeholder="Chọn danh mục"
+      class="w-full">
+    </p-select>
+    <small class="text-red-500" *ngIf="showError('categoryId','required')">Vui lòng chọn danh mục.</small>
+  </div>
+
+  <!-- Ngày, Giờ, Thời lượng -->
+  <div class="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div>
+      <label class="block text-sm font-medium mb-2">Ngày diễn ra*</label>
+      <input type="date" formControlName="date" class="w-full border rounded-md p-3 focus:outline-green-500" />
+      <small class="text-red-500" *ngIf="showError('date','required')">Vui lòng chọn ngày.</small>
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-2">Thời gian*</label>
+      <input type="time" formControlName="time" class="w-full border rounded-md p-3 focus:outline-green-500" />
+      <small class="text-red-500" *ngIf="showError('time','required')">Vui lòng chọn giờ.</small>
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-2">Thời lượng (giờ)*</label>
+      <input type="text" formControlName="duration" placeholder="Ví dụ: 2"
+             class="w-full border rounded-md p-3 focus:outline-green-500" />
+      <small class="text-red-500" *ngIf="showError('duration','required')">Vui lòng nhập thời lượng.</small>
+    </div>
+  </div>
+
+  <!-- Ảnh banner -->
+  <div class="mb-6">
+    <label class="block text-sm font-medium mb-2">Ảnh đại diện sự kiện*</label>
+    <div class="border-2 border-dashed rounded-md flex flex-col items-center justify-center p-6">
+      <img *ngIf="previewUrl; else defaultImage"
+           [src]="previewUrl"
+           alt="banner preview"
+           class="mb-4 rounded-md object-cover w-full h-40" />
+      <ng-template #defaultImage>
+        <span class="text-gray-500">Chưa có ảnh được chọn</span>
+      </ng-template>
+      <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden #bannerInput />
+      <button type="button" (click)="bannerInput.click()"
+              class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">
+        Thay đổi ảnh
+      </button>
+    </div>
+  </div>
+
+  <!-- Mô tả -->
+  <div class="mb-6">
+    <label class="block text-sm font-medium mb-2">Mô tả sự kiện*</label>
+    <textarea rows="6"
+              formControlName="description"
+              placeholder="Nhập mô tả chi tiết cho sự kiện..."
+              class="w-full border rounded-md p-3 focus:outline-green-500"></textarea>
+    <small class="text-red-500" *ngIf="showError('description','required')">Mô tả không được để trống.</small>
+    <small class="text-red-500" *ngIf="showError('description','minlength')">Mô tả phải có ít nhất 10 ký tự.</small>
+  </div>
+
+  <!-- Địa điểm -->
+  <div class="mb-6">
+    <h3 class="text-lg font-semibold mb-4">Địa điểm tổ chức</h3>
+    <div class="mb-4">
+      <label class="block text-sm font-medium mb-1">Tên địa điểm*</label>
+      <input type="text" formControlName="venue" placeholder="Ví dụ: Trung tâm hội nghị Quốc gia"
+             class="w-full border rounded-md p-2 focus:ring focus:ring-green-200">
+      <small class="text-red-500" *ngIf="showError('venue','required')">Vui lòng nhập địa điểm.</small>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+       <div>
+        <label class="block text-sm font-medium mb-1">Số nhà/ đường</label>
+        <input type="text" formControlName="address1" placeholder="Số nhà, đường..."
+               class="w-full border rounded-md p-2 focus:ring focus:ring-green-200">
+        <small class="text-red-500" *ngIf="showError('address1','required')">Vui lòng nhập số nhà.</small>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Tỉnh/Thành phố*</label>
+          <input type="text" formControlName="state" placeholder="Ví dụ: Hà Nội"
+                class="w-full border rounded-md p-2 focus:ring focus:ring-green-200">
+          <small class="text-red-500" *ngIf="showError('state','required')">Vui lòng nhập tỉnh/thành phố.</small>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium mb-1">Quận/Huyện*</label>
+        <input type="text" formControlName="city" placeholder="Ví dụ: Cầu Giấy"
+               class="w-full border rounded-md p-2 focus:ring focus:ring-green-200">
+        <small class="text-red-500" *ngIf="showError('city','required')">Vui lòng nhập quận/huyện.</small>
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-1">Mã bưu điện (Zip code)*</label>
+        <input type="text" formControlName="zipCode" placeholder="Ví dụ: 100000"
+               class="w-full border rounded-md p-2 focus:ring focus:ring-green-200">
+        <small class="text-red-500" *ngIf="showError('zipCode','required')">Vui lòng nhập mã bưu điện.</small>
+      </div>
+    </div>
+  </div>
+</div>

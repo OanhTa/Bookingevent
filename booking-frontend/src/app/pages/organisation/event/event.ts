@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { EventItem } from './eventItem/event-item';
 import { EventService } from '../../../services/EventService';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -22,21 +22,21 @@ export class EventComponent implements OnInit {
   constructor(
     private eventService: EventService,
     private cdr: ChangeDetectorRef,
-    private route: ActivatedRoute,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(paramMap => {
-       const orgId = this.route.snapshot.paramMap.get('id')!;
-
-        this.eventService.getEventsByOrg(orgId).subscribe({
-          next: (res) => {
-            this.events = res,
-            this.cdr.detectChanges();
-          }
-        })
-    });
-
+   const orgId = localStorage.getItem('organisationId');
+   if (!orgId) {
+     this.router.navigate(['/login']);
+    } else {
+      this.eventService.getEventsByOrg(orgId).subscribe({
+        next: (res) => {
+          this.events = res,
+          this.cdr.detectChanges();
+        }
+      })
+    }
   }
   
   get totalEvents() {

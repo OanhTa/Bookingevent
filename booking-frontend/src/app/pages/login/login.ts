@@ -56,10 +56,15 @@ export class Login {
         this.loading = false
         localStorage.setItem('account', JSON.stringify(res.data));
         this.messageService.add({severity: 'success',summary: res.message,detail: 'Chào mừng bạn quay lại!'});
-          
+   
         if (res.data.roles.includes('Administrator')) {
           this.router.navigate(['/admin']);
-        } else {
+        }else if (res.data.roles.includes('Organiser')) {
+          const organisationId = res.data.organisationUsers[0].organisationId
+          localStorage.setItem('organisationId', organisationId);
+
+          this.router.navigate(['/organisation']);
+        }else {
           this.router.navigate(['/']);
         }
       },
