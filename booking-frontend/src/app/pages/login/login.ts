@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
-import { AuthServices,  } from '../../services/AuthServices';
+import { AuthServices  } from '../../services/AuthServices';
 import { LoginRequestDto } from '../../models/LoginRequestDto';
 import { MessageService } from 'primeng/api';
 import { ProgressSpinner } from 'primeng/progressspinner';
@@ -54,10 +54,10 @@ export class Login {
     this.authServices.login(body).subscribe({
       next: (res) => {
         this.loading = false
-        localStorage.setItem('account', JSON.stringify(res.data));
+        localStorage.setItem('account', JSON.stringify(res));
         this.messageService.add({severity: 'success',summary: res.message,detail: 'Chào mừng bạn quay lại!'});
-          
-        if (res.data.roles.includes('Administrator')) {
+        
+        if (res.roles.includes('Administrator')) {
           this.router.navigate(['/admin']);
         } else {
           this.router.navigate(['/']);

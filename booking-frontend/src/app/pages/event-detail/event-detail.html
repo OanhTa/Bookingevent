@@ -1,0 +1,107 @@
+<app-header></app-header>
+
+<div *ngIf="eventDetail; else loading" class="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 py-10 grid grid-cols-1 lg:grid-cols-3 gap-10">
+
+  <!-- LEFT: Main Info -->
+  <div class="lg:col-span-2 space-y-6">
+
+    <!-- Date + Title -->
+    <div class="flex items-start space-x-6">
+      <div class="bg-green-500 text-white text-center px-5 py-3 rounded-lg">
+        <p class="text-sm font-bold uppercase">{{ eventDetail.date | date:'MMM' }}</p>
+        <p class="text-3xl font-extrabold">{{ eventDetail.date | date:'dd' }}</p>
+      </div>
+      <div>
+        <h2 class="text-3xl lg:text-4xl font-bold leading-tight">{{ eventDetail.name }}</h2>
+        <p class="text-gray-600 mt-2 text-sm lg:text-base">
+          📍 {{ eventDetail.eventDetail.location }} · 🕒 {{ eventDetail.time }} · ⏱️ {{ eventDetail.duration }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Main Image -->
+    <img *ngIf="eventDetail.thumbnail"
+         [src]="eventDetail.thumbnail"
+         alt="{{ eventDetail.name }}"
+         class="w-full h-96 lg:h-[32rem] object-cover rounded-lg shadow-lg">
+
+    <!-- Gallery -->
+    <div *ngIf="getGalleryImages().length > 0" class="flex space-x-3 overflow-x-auto py-2">
+      <img *ngFor="let img of getGalleryImages()" [src]="img" alt="Gallery" class="h-24 w-24 object-cover rounded-md flex-shrink-0">
+    </div>
+
+    <!-- Price & Buy Button -->
+    <div class="flex items-center justify-between mt-4">
+      <p class="text-2xl font-bold text-green-600">From ${{ eventDetail.priceFrom }}</p>
+      <button (click)="goToTicketPage(eventDetail.id)"
+              class="px-6 py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition">
+        Mua ngay
+      </button>
+    </div>
+
+    <!-- Description -->
+    <div>
+      <h3 class="text-lg font-semibold mb-2">Description</h3>
+      <p class="text-gray-700">{{ eventDetail.eventDetail.description }}</p>
+    </div>
+
+    <!-- Speaker / Performer -->
+    <div *ngIf="eventDetail.eventDetail?.speakerOrPerformer">
+      <h3 class="text-lg font-semibold mb-1">Speaker / Performer</h3>
+      <p>{{ eventDetail.eventDetail.speakerOrPerformer }}</p>
+    </div>
+
+    <!-- Contact Info -->
+    <div *ngIf="eventDetail.eventDetail?.contactInfo">
+      <h3 class="text-lg font-semibold mb-1">Contact Info</h3>
+      <p>{{ eventDetail.eventDetail.contactInfo }}</p>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: Event Details Box -->
+  <div class="bg-white shadow-lg rounded-lg p-6 space-y-4">
+    <h3 class="text-lg font-semibold mb-4">Event Details</h3>
+
+
+    <div>
+      <p class="font-medium">📅 Date</p>
+      <p>{{ eventDetail.date | date:'EEE, MMM d, y' }}</p>
+    </div>
+
+    <div *ngIf="eventDetail.time">
+      <p class="font-medium">🕒 Time</p>
+      <p>{{ eventDetail.time }}</p>
+    </div>
+
+    <div *ngIf="eventDetail.duration">
+      <p class="font-medium">⏱️ Duration</p>
+      <p>{{ eventDetail.duration }}</p>
+    </div>
+
+    <div *ngIf="eventDetail.eventDetail?.location">
+      <p class="font-medium">📍 Location</p>
+      <p>{{ eventDetail.eventDetail.location }}</p>
+    </div>
+
+    <div *ngIf="eventDetail.categoryId">
+      <p class="font-medium">📂 Category</p>
+      <p>{{ getCategoryName(eventDetail.categoryId) }}</p>
+    </div>
+
+    <div *ngIf="eventDetail.ticketTypes?.length">
+      <p class="font-medium">🎟️ Tickets Available</p>
+      <ul class="list-disc pl-5">
+        <li *ngFor="let ticket of eventDetail.ticketTypes">
+          {{ ticket.name }} - {{ ticket.quantity }} tickets - ${{ ticket.price }}
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+</div>
+
+<ng-template #loading>
+  <p class="text-center py-10 text-gray-500">Đang tải...</p>
+</ng-template>

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CategoryServer } from '../../../services/CategoryService';
+import { CategoryService} from '../../../services/CategoryService';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -21,7 +21,7 @@ export class FormDetail{
   bannerFile: File | null = null;
 
   constructor(
-    private categoryService: CategoryServer,
+    private categoryService: CategoryService,
     private fb: FormBuilder
   ) {}
 

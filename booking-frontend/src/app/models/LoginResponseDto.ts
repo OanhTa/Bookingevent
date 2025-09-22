@@ -1,4 +1,6 @@
 export interface LoginResponseDto {
+  data(data: any): string;
+  message: string | undefined;
   token: string;
   userId: string;
   email: string;

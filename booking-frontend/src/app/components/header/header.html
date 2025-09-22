@@ -1,92 +1,99 @@
-<p-menubar [model]="items" class="!py-2 !px-4 text-sm">
-  <!-- Logo -->
-  <ng-template pTemplate="start">
-    <div class="flex items-center gap-2 py-2">
-      <a routerLink="/" class="flex items-center gap-2 font-bold text-lg">
-        <span class="bg-green-600 text-white rounded-full flex items-center justify-center w-7 h-7 text-sm">
-          B
-        </span>
-        Barren
-      </a>
-    </div>
-  </ng-template>
+<nav class="bg-white shadow-md">
+  <div class="max-w-[80%] mx-auto px-6 sm:px-8 lg:px-12">
+    <div class="flex items-center justify-between h-20"> <!-- tăng chiều cao -->
 
-  <ng-template pTemplate="item" let-item>
-    <a class="flex items-center no-underline px-2 text-gray-800 hover:text-green-600 text-sm">
-      <i [class]="item.icon + ' mr-2 text-xs'"></i>
-      <span>{{ item.label }}</span>
-    </a>
-  </ng-template>
+      <!-- Logo + Desktop Menu -->
+      <div class="flex items-center gap-12"> <!-- tăng gap -->
+        <!-- Logo -->
+        <a routerLink="/" class="flex items-center gap-3 font-bold text-2xl"> <!-- font to hơn -->
+          <span class="bg-green-600 text-white rounded-full flex items-center justify-center w-10 h-10 text-lg">
+            B
+          </span>
+          Barren
+        </a>
 
-  <ng-template pTemplate="end">
-    <div class="flex items-center gap-2">
-      <button class="bg-green-500 text-white flex items-center p-2 rounded text-sm hover:bg-green-700">
-        <a routerLink="/create" class="flex items-center">
-          <i class="fa-solid fa-calendar mr-1 text-xs"></i>
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex items-center gap-8"> <!-- tăng gap -->
+          <a routerLink="/" class="text-gray-700 hover:text-green-600 transition-colors font-semibold text-lg">Trang chủ</a>
+          <a routerLink="/events" class="text-gray-700 hover:text-green-600 transition-colors font-semibold text-lg">Sự kiện</a>
+          <a routerLink="/about" class="text-gray-700 hover:text-green-600 transition-colors font-semibold text-lg">Giới thiệu</a>
+        </div>
+      </div>
+
+      <!-- Right actions -->
+      <div class="flex items-center gap-4">
+        <!-- Create Event button -->
+        <a
+          routerLink="/create"
+          class="bg-green-500 text-white px-4 py-3 rounded text-base hover:bg-green-600 transition-colors flex items-center gap-2"
+        >
+          <i class="fa-solid fa-calendar text-sm"></i>
           Tạo sự kiện
         </a>
-      </button>
 
-      <button 
-        (click)="toggle()"
-        type="button"
-        class="flex items-center focus:outline-none rounded-full"
-        aria-haspopup="true"
-        aria-expanded="{{isOpen}}"
-      >
-      <div class="w-8 h-8 mx-auto rounded-full overflow-hidden border-2 border-green-400">
-        <img [src]="user.avatarUrl" alt="avatar large" class="w-full h-full object-cover" />
+        <!-- Avatar dropdown -->
+        <div class="relative">
+          <button
+            (click)="toggle()"
+            class="w-10 h-10 rounded-full overflow-hidden border-2 border-green-400 focus:outline-none"
+          >
+            <img [src]="user.avatarUrl" alt="avatar" class="w-full h-full object-cover" />
+          </button>
+
+          <!-- Dropdown menu -->
+          <div
+            *ngIf="isOpen"
+            class="absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-lg ring-1 ring-black ring-opacity-5 z-50"
+          >
+            <div class="p-6 text-center">
+              <div class="w-20 h-20 mx-auto rounded-full overflow-hidden border-2 border-green-400">
+                <img [src]="user.avatarUrl" alt="avatar" class="w-full h-full object-cover" />
+              </div>
+              <div class="mt-4">
+                <div class="font-semibold text-gray-800 text-base">{{ user.fullName }}</div>
+                <div class="text-sm text-gray-500">{{ user.email }}</div>
+              </div>
+            </div>
+            <div class="border-t">
+              <ul class="text-base">
+                <li>
+                  <button
+                    class="w-full text-left px-4 py-3 hover:bg-gray-50"
+                    (click)="toggleOrgMenu()"
+                  >
+                    Tổ chức của bạn
+                  </button>
+                </li>
+                <li>
+                  <button class="w-full text-left px-4 py-3 hover:bg-gray-50">Hồ sơ</button>
+                </li>
+                <li>
+                  <button
+                    (click)="onSignOut()"
+                    class="w-full text-left px-4 py-3 hover:bg-gray-50 text-red-600"
+                  >
+                    Đăng xuất
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
-      </button>
 
-      <button class="p-1 text-gray-600 hover:text-gray-900 text-sm">
-        <i class="fa-solid fa-gear"></i>
-      </button>
-    </div>
-  </ng-template>
-</p-menubar>
-
-<div
-  *ngIf="isOpen"
-  class="origin-top-right absolute right-0 mt-2 w-60 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 z-50 transform transition duration-150"
-  role="menu"
-  aria-orientation="vertical"
->
-  <!-- User info -->
-  <div class="p-4 text-center">
-    <div class="w-16 h-16 mx-auto rounded-full overflow-hidden border-2 border-green-400">
-      <img [src]="user.avatarUrl" alt="avatar large" class="w-full h-full object-cover" />
-    </div>
-    <div class="mt-3">
-      <div class="font-semibold text-gray-800 text-sm">{{ user.fullName }}</div>
-      <div class="text-xs text-gray-500">{{ user.email }}</div>
+      <!-- Mobile menu button -->
+      <div class="md:hidden">
+        <button (click)="mobileOpen = !mobileOpen" class="text-gray-700 focus:outline-none text-2xl">
+          <i class="fa-solid" [ngClass]="mobileOpen ? 'fa-xmark' : 'fa-bars'"></i>
+        </button>
+      </div>
     </div>
   </div>
 
-  <!-- Menu items -->
-  <div class="border-t px-2 py-2">
-    <ul class="space-y-0.5 text-sm">
-      <li class="relative">
-        <button class="w-full text-left px-2 py-1.5 rounded hover:bg-gray-50" (click)="toggleOrgMenu()">
-          Tổ chức của bạn
-        </button>
-         <app-organisation-menu
-            *ngIf="showOrgMenu"
-            class="absolute right-60 mt-1 w-full bg-white border rounded-lg shadow-md z-100" />
-      </li>
-      <li>
-        <button class="w-full text-left px-2 py-1.5 rounded hover:bg-gray-50">
-          Hồ sơ
-        </button>
-      </li>
-      <li>
-        <button
-          (click)="onSignOut()"
-          class="w-full text-left px-2 py-1.5 rounded hover:bg-gray-50 text-red-600"
-        >
-          Đăng xuất
-        </button>
-      </li>
-    </ul>
+  <!-- Mobile Menu -->
+  <div *ngIf="mobileOpen" class="md:hidden px-6 pb-4">
+    <a routerLink="/" class="block py-3 text-gray-700 hover:text-green-600 font-semibold text-lg">Trang chủ</a>
+    <a routerLink="/events" class="block py-3 text-gray-700 hover:text-green-600 font-semibold text-lg">Sự kiện</a>
+    <a routerLink="/about" class="block py-3 text-gray-700 hover:text-green-600 font-semibold text-lg">Giới thiệu</a>
   </div>
-</div>
+</nav>

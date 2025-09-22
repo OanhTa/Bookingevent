@@ -17,7 +17,6 @@ import { Router } from '@angular/router';
     BadgeModule,
     AvatarModule,
     RouterModule,
-    OrganisationMenuComponent
   ],
   templateUrl: './header.html',
   styleUrl: './header.css'
@@ -45,6 +44,7 @@ export class Header {
       ];
   isOpen = false;
   showOrgMenu = false;
+mobileOpen: any;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
