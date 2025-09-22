@@ -47,6 +47,9 @@ export class PermissionsModalComponent implements OnInit, OnChanges {
   isGroupAllChecked(perms: any[]): boolean {
     return perms.length > 0 && perms.every(p => p.isGranted);
   }
+  isGroupAllDisabled(perms: any[]): boolean {
+    return perms.every(p => p.roleEnable);
+  }
 
   private loadPermissions() {
     this.permissionService.getPermissions().subscribe({
@@ -66,9 +69,12 @@ export class PermissionsModalComponent implements OnInit, OnChanges {
   private mergeUserPermissions() {
     const merged = this.permissions.map(p => {
       const userPerm = this.checkPermissions.find(up => up.name === p.name);
+      const granted = userPerm ? userPerm.isGranted : false;
       return {
         ...p,
-        isGranted: userPerm ? userPerm.isGranted : false
+        isGranted: granted,
+        originalIsGranted: granted,// 🔹 lưu lại trạng thái gốc
+        roleEnable: this.entityType === 'user' && userPerm?.fromRole === true
       };
     });
 
@@ -86,7 +92,9 @@ export class PermissionsModalComponent implements OnInit, OnChanges {
       grouped[entity].push({
         name: p.name,
         action,
-        isGranted: p.isGranted ?? false
+        isGranted: p.isGranted ?? false,
+        originalIsGranted: p.isGranted ?? false,// 🔹 lưu lại trạng thái gốc
+        roleEnable: p.roleEnable ?? false
       });
     });
     return grouped;
@@ -115,38 +123,48 @@ export class PermissionsModalComponent implements OnInit, OnChanges {
     if (!this.selected || !this.selected.id) return;
     const id = this.selected.id;
 
-    const updatedPermissions: PermissionTableItem[] = [];
+    const changed: PermissionTableItem[] = [];
     Object.values(this.groupedPermissions).forEach(group => {
-      updatedPermissions.push(...group);
+      group.forEach(p => {
+        if (p.isGranted !== p.originalIsGranted) {
+          changed.push(p);
+        }
+      });
     });
 
-    const granted = updatedPermissions.filter(p => p.isGranted).map(p => p.name);
-    const revoked = updatedPermissions.filter(p => !p.isGranted).map(p => p.name);
+    const granted = changed.filter(p => p.isGranted).map(p => p.name);
+    const revoked = changed.filter(p => !p.isGranted).map(p => p.name);
 
     if (this.entityType === 'user') {
-      this.permissionService.grantUserPermissions(id, granted).subscribe(() => {
-        this.permissionService.revokeUserPermissions(id, revoked).subscribe(() => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Permissions saved successfully'
-          });
-          this.close();
-        });
+       if (granted.length > 0) {
+        this.permissionService.grantUserPermissions(id, granted).subscribe();
+      }
+
+      if (revoked.length > 0) {
+        this.permissionService.revokeUserPermissions(id, revoked).subscribe();
+      }
+
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Thành công',
+        detail: 'Cập nhật quyền cho người dùng thành công'
       });
+      this.close();
     } else if (this.entityType === 'role') {
-      this.permissionService.grantRolePermissions(id, granted).subscribe(() => {
-        this.permissionService.revokeRolePermissions(id, revoked).subscribe(() => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Role permissions saved successfully'
-          });
-          this.close();
-        });
+      if (granted.length > 0) {
+        this.permissionService.grantRolePermissions(id, granted).subscribe();
+      }
+
+      if (revoked.length > 0) {
+        this.permissionService.revokeRolePermissions(id, revoked).subscribe();
+      }
+
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Thành công',
+        detail: 'Cập nhật quyền cho vai trò thành công'
       });
+      this.close();
     }
   }
-
-
 }

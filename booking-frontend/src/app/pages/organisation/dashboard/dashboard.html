@@ -9,14 +9,15 @@
       />
       <div>
         <h2 class="text-lg font-semibold">John Doe</h2>
-        <p class="text-gray-500">My Organisation</p>
+        <p class="text-gray-500">Tổ chức của tôi</p>
       </div>
     </div>
     <button
+      (click)="openAdd()"
       class="flex items-center px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
     >
       <i class="pi pi-plus mr-2"></i>
-      Add Organisation
+      Thêm tổ chức
     </button>
   </div>
 
@@ -25,37 +26,61 @@
     <!-- Revenue -->
     <div class="bg-purple-500 text-white rounded-xl shadow p-6 flex flex-col justify-between">
       <div>
-        <p class="uppercase text-sm">Revenue (AUD)</p>
+        <p class="uppercase text-sm">Doanh thu (VND)</p>
         <h3 class="text-2xl font-bold mt-2">$550.00</h3>
       </div>
-      <p class="text-xs mt-2">0.00% From Previous Period</p>
+      <p class="text-xs mt-2">0.00% từ giai đoạn trước</p>
     </div>
 
     <!-- Orders -->
     <div class="bg-red-500 text-white rounded-xl shadow p-6 flex flex-col justify-between">
       <div>
-        <p class="uppercase text-sm">Orders</p>
+        <p class="uppercase text-sm">Đơn đặt hàng</p>
         <h3 class="text-2xl font-bold mt-2">2</h3>
       </div>
-      <p class="text-xs mt-2">0.00% From Previous Period</p>
+      <p class="text-xs mt-2">0.00% từ giai đoạn trước</p>
     </div>
 
     <!-- Page Views -->
     <div class="bg-sky-500 text-white rounded-xl shadow p-6 flex flex-col justify-between">
       <div>
-        <p class="uppercase text-sm">Page Views</p>
+        <p class="uppercase text-sm">Lượt xem trang</p>
         <h3 class="text-2xl font-bold mt-2">30</h3>
       </div>
-      <p class="text-xs mt-2">0.00% From Previous Period</p>
+      <p class="text-xs mt-2">0.00% từ giai đoạn trước</p>
     </div>
 
     <!-- Ticket Sales -->
     <div class="bg-green-500 text-white rounded-xl shadow p-6 flex flex-col justify-between">
       <div>
-        <p class="uppercase text-sm">Ticket Sales</p>
+        <p class="uppercase text-sm">Bán vé</p>
         <h3 class="text-2xl font-bold mt-2">3</h3>
       </div>
-      <p class="text-xs mt-2">0.00% From Previous Period</p>
+      <p class="text-xs mt-2">0.00% từ giai đoạn trước</p>
     </div>
   </div>
+
+  <div class="bg-white rounded-xl shadow p-4 mt-2">
+    <div class="flex justify-between items-center mb-4">
+      <label for="chartType" class="font-medium">Chọn dữ liệu:</label>
+      <select id="chartType" [(ngModel)]="selectedMetric" (change)="updateChart()" class="border px-3 py-2 rounded">
+        <option value="revenue">Doanh thu</option>
+        <option value="orders">Đơn đặt hàng</option>
+        <option value="views">Lượt xem trang</option>
+        <option value="tickets">Bán vé</option>
+      </select>
+    </div>
+
+    <canvas id="myChart" class="w-full h-64"></canvas>
+  </div>
 </div>
+
+<app-modal-form
+  *ngIf="showModalForm"
+  [title]="modalTitle"
+  [fields]="modalFields"
+  [formData]="modelFormData"
+  
+  (close)="showModalForm=false"
+></app-modal-form>
+<!-- (save)="onSave($event)" -->

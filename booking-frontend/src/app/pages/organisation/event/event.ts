@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { EventItem } from './eventItem/event-item';
 import { EventService } from '../../../services/EventService';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
@@ -10,7 +11,8 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [
     CommonModule,
-    EventItem
+    EventItem,
+    FormsModule
   ],
   templateUrl: './event.html',
 })
@@ -69,4 +71,18 @@ export class EventComponent implements OnInit {
   filter(type: 'all' | 'online' | 'venue') {
     this.selectedFilter = type;
   }
+
+  onSearch() {
+    const keyword = this.searchText.trim();
+    this.eventService.getSearch(keyword)
+      .subscribe({
+        next: (res) => {
+          this.events = res;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Search error:', err);
+        }
+      });
+    }
 }

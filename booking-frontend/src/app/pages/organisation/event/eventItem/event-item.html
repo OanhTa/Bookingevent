@@ -9,7 +9,7 @@
     <div class="ml-4">
       <h2 class="text-l font-semibold">{{ event.name }}</h2>
       <div class="text-sm text-gray-500 mt-1">
-        Status: {{ event.status }} | Starts on: {{ event.date }}
+        Trang thái: {{ event.status }} | Bắt đầu vào: {{ event.date | date:'dd/MM/yyyy HH:mm' }}
       </div>
     </div>
     <div class="relative ml-auto">
@@ -25,16 +25,16 @@
         class="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg z-50"
       >
         <button class="flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100">
-          <i class="fa-solid fa-gear"></i> Manage
+          <i class="fa-solid fa-gear"></i> Sửa
         </button>
         <button class="flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100">
-          <i class="fa-solid fa-eye"></i> Preview Event
+          <i class="fa-solid fa-eye"></i> Xem sự kiện
         </button>
         <button class="flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100">
-          <i class="fa-solid fa-copy"></i> Duplicate
+          <i class="fa-solid fa-copy"></i> Nhân bản
         </button>
         <button (click)="onDelete()" class="flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100">
-          <i class="fa-solid fa-trash"></i> Delete
+          <i class="fa-solid fa-trash"></i> Xóa
         </button>
       </div>
     </div>
@@ -48,23 +48,23 @@
     >
       <div class="font-semibold text-lg">{{ ticket.name }}</div>
       <div class="flex justify-between mt-1 text-sm text-gray-600">
-        <span>Price: {{ ticket.price | number:'1.0-0' }}</span>
-        <span>Sold: {{ ticket.sold }} / {{ ticket.quantity }}</span>
+        <span>Giá: {{ ticket.price | number:'1.0-0' }} VNĐ</span>
+        <span>Bán: {{ ticket.sold }} / {{ ticket.quantity }}</span>
       </div>
       <button
-        class="mt-2 text-blue-500 text-sm hover:underline"
+        class="mt-2 text-green-500 text-sm hover:underline"
         (click)="viewCustomers(ticket.id)"
       >
-        [View Customers]
+        [Danh sách khách hàng]
       </button>
       <div *ngIf="customers.length > 0" class="mt-4">
-        <h3 class="font-bold mb-2">Customers:</h3>
+        <h3 class="font-bold mb-2">Khách hàng:</h3>
         <table class="min-w-full border">
           <thead>
             <tr>
-              <th class="border px-2 py-1">Username</th>
+              <th class="border px-2 py-1">Tên</th>
               <th class="border px-2 py-1">Email</th>
-              <th class="border px-2 py-1">Phone</th>
+              <th class="border px-2 py-1">Số điện thoại</th>
             </tr>
           </thead>
           <tbody>

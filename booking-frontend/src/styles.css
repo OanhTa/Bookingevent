@@ -30,6 +30,7 @@ input, textarea {
   direction: ltr;
 }
 
+/* Base */
 input[type="checkbox"] {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -41,10 +42,11 @@ input[type="checkbox"] {
   cursor: pointer;
   position: relative;
   transition: all 0.2s ease;
+  border: 2px solid #ccc;
 }
 
 /* Hover */
-input[type="checkbox"]:hover {
+input[type="checkbox"]:hover:not(:disabled) {
   background-color: #e6f4ea; /* xanh nhạt */
   border-color: #10b981;
 }
@@ -69,7 +71,25 @@ input[type="checkbox"]:checked::after {
   top: 2px;
   width: 5px;
   height: 10px;
-  border: solid #fff; /* tick trắng */
+  border: solid #fff;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
+}
+
+/* Disabled (chưa check) */
+input[type="checkbox"]:disabled {
+  background-color: #f3f4f6; /* Tailwind gray-100 */
+  border-color: #d1d5db; /* gray-300 */
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+/* Disabled + Checked */
+input[type="checkbox"]:disabled:checked {
+  background-color: #9ca3af; /* Tailwind gray-400 */
+  border-color: #9ca3af;
+}
+
+input[type="checkbox"]:disabled:checked::after {
+  border-color: #fff;
 }

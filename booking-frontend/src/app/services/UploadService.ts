@@ -17,4 +17,11 @@ export class UploadServices {
 
     return this.httpClient.post<{ success: boolean }>(`${this.apiUrl}/upload-avatar`, formData);
   }
+
+  uploadPoster(file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.httpClient.post<{ success: boolean }>(`${this.apiUrl}/upload-poster`, formData);
+  }
 }

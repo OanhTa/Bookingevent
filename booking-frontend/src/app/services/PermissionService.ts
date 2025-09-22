@@ -15,6 +15,7 @@ export interface CheckPermission {
   name: string;
   description: string;
   isGranted: boolean;
+  fromRole?: boolean;
 }
 
 
@@ -22,6 +23,8 @@ export interface PermissionTableItem {
   name: string;
   action: string;
   isGranted: string;
+  roleEnable: boolean;
+  originalIsGranted? :string;
 }
 
 @Injectable({

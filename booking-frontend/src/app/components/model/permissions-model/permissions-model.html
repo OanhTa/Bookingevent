@@ -47,6 +47,7 @@
               <input 
                 type="checkbox"
                 [checked]="isGroupAllChecked(group.value)"
+                [disabled]="isGroupAllDisabled(group.value)"
               />
               <h3 class="font-bold mb-2">{{ group.key }}</h3>
             </div>
@@ -56,8 +57,11 @@
                   type="checkbox"
                   [(ngModel)]="perm.isGranted"
                   (change)="onPermissionChange(perm)"
+                  [disabled]="perm.roleEnable"
                 />
-                <label>{{ perm.action }}</label>
+                <label [class.text-gray-400]="perm.roleEnable">
+                  {{ perm.action }}
+              </label>
               </li>
             </ul>
           </div>

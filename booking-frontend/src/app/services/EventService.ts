@@ -15,6 +15,11 @@ export class EventService {
   getEvents(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl);
   }
+
+  getSearch(keyword: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/search?keyword=${keyword}`);
+  }
+
   getEventsByOrg(orgId: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/by-org/${orgId}`);
   }

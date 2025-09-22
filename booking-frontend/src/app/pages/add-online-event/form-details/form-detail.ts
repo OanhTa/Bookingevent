@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { CategoryServer } from '../../../services/CategoryService';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Select } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
 import { FluidModule } from 'primeng/fluid';
+import { UploadServices } from '../../../services/UploadService';
 
 @Component({
   selector: 'app-form-detail',
@@ -25,7 +26,9 @@ export class FormDetail{
 
   constructor(
     private categoryService: CategoryServer,
-    private fb: FormBuilder
+    private uploadServices: UploadServices,
+    private fb: FormBuilder,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -33,6 +36,7 @@ export class FormDetail{
 
     const detailGroup = this.fb.group({
         name: ['', [Validators.required, Validators.minLength(3)]], 
+        thumbnail: [''], 
         categoryId: [null, [Validators.required]], 
         date: ['', [Validators.required]], 
         time: ['', [Validators.required]], 
@@ -56,11 +60,19 @@ export class FormDetail{
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       const file = input.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.previewUrl = reader.result as string;
-      };
-      reader.readAsDataURL(file);
+      this.uploadServices.uploadPoster(file).subscribe({
+      next: (res :any) => {
+        if (res.success && res.avatarUrl) {
+          this.detailForm.get('thumbnail')?.setValue(res.avatarUrl);
+          this.previewUrl = res.avatarUrl;
+ 
+          this.cdr.detectChanges();
+        }
+      },
+      error: (err) => {
+        console.error('Upload lỗi:', err);
+      }
+    });
     }
   }
 
