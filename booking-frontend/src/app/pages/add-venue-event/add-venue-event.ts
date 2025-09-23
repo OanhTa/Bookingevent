@@ -7,6 +7,7 @@ import { MessageService } from 'primeng/api';
 import { EventService } from '../../services/EventService';
 import { FormDetail } from './form-details/form-detail';
 import { FormTickets } from './form-tickets/form-tickets';
+import { ButtonModule } from 'primeng/button';
 
 
 @Component({
@@ -18,6 +19,7 @@ import { FormTickets } from './form-tickets/form-tickets';
     StepperComponent,
     FormDetail,
     FormTickets,
+    ButtonModule
   ],
   templateUrl: './add-venue-event.html',
 })

@@ -65,23 +65,18 @@
   <!-- Banner -->
   <div class="mb-6">
     <label class="block text-sm font-medium mb-2">Thêm ảnh đại diện*</label>
-    <div class="border-2 border-dashed rounded-lg p-4 flex flex-col items-center justify-center">
-      <div class="bg-gray-200 w-full h-40 flex items-center justify-center overflow-hidden rounded-md">
-        <img 
-          *ngIf="previewUrl; else defaultImage"
-          [src]="previewUrl"
-          alt="Preview" 
-          class="object-cover w-full h-full" />
-        <ng-template #defaultImage>
-          <span class="text-gray-500 w-full h-full"></span>
-        </ng-template>
-      </div>
-
+    <div class="border-2 border-dashed rounded-md flex flex-col items-center justify-center p-6">
+      <img *ngIf="previewUrl; else defaultImage"
+           [src]="previewUrl"
+           alt="banner preview"
+           class="mb-4 rounded-md object-cover w-full h-40" />
+      <ng-template #defaultImage>
+        <span class="text-gray-500">Chưa có ảnh được chọn</span>
+      </ng-template>
       <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden #bannerInput />
-      <button type="button" (click)="bannerInput.click()"
-              class="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+      <p-button size="small" (click)="bannerInput.click()">
         Thay đổi ảnh
-      </button>
+      </p-button>
     </div>
   </div>
 

@@ -18,6 +18,33 @@ export class DashboardComponent {
   chart!: Chart;
   selectedMetric = 'views';
 
+  stats = [
+    {
+      title: 'Doanh thu (VND)',
+      value: '$550.00',
+      change: '0.00% từ giai đoạn trước',
+      bg: 'bg-purple-500'
+    },
+    {
+      title: 'Đơn đặt hàng',
+      value: '2',
+      change: '0.00% từ giai đoạn trước',
+      bg: 'bg-red-500'
+    },
+    {
+      title: 'Lượt xem trang',
+      value: '30',
+      change: '0.00% từ giai đoạn trước',
+      bg: 'bg-sky-500'
+    },
+    {
+      title: 'Bán vé',
+      value: '3',
+      change: '0.00% từ giai đoạn trước',
+      bg: 'bg-green-500'
+    }
+  ];
+
   dataSets: any = {
     revenue: [550, 600, 580, 620, 590, 610, 640],
     orders: [2, 3, 1, 4, 2, 5, 3],
@@ -60,6 +87,10 @@ export class DashboardComponent {
   initChart() {
     const ctx = document.getElementById('myChart') as HTMLCanvasElement;
 
+    if (this.chart) {
+      this.chart.destroy();
+    }
+    
     this.chart = new Chart(ctx, {
       type: 'line',
       data: {

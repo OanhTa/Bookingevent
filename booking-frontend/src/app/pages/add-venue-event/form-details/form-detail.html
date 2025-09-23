@@ -59,10 +59,9 @@
         <span class="text-gray-500">Chưa có ảnh được chọn</span>
       </ng-template>
       <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden #bannerInput />
-      <button type="button" (click)="bannerInput.click()"
-              class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">
+      <p-button size="small" (click)="bannerInput.click()">
         Thay đổi ảnh
-      </button>
+      </p-button>
     </div>
   </div>
 
@@ -82,7 +81,7 @@
     <h3 class="text-lg font-semibold mb-4">Địa điểm tổ chức</h3>
     <div class="mb-4">
       <label class="block text-sm font-medium mb-1">Tên địa điểm*</label>
-      <input type="text" formControlName="venue" placeholder="Ví dụ: Trung tâm hội nghị Quốc gia"
+      <input type="text" formControlName="venue" placeholder="Trung tâm hội nghị Quốc gia"
              class="w-full border rounded-md p-2 focus:ring focus:ring-green-200">
       <small class="text-red-500" *ngIf="showError('venue','required')">Vui lòng nhập địa điểm.</small>
     </div>
@@ -96,7 +95,7 @@
         </div>
         <div>
           <label class="block text-sm font-medium mb-1">Tỉnh/Thành phố*</label>
-          <input type="text" formControlName="state" placeholder="Ví dụ: Hà Nội"
+          <input type="text" formControlName="state" placeholder="Hà Nội"
                 class="w-full border rounded-md p-2 focus:ring focus:ring-green-200">
           <small class="text-red-500" *ngIf="showError('state','required')">Vui lòng nhập tỉnh/thành phố.</small>
         </div>
@@ -105,13 +104,13 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
         <label class="block text-sm font-medium mb-1">Quận/Huyện*</label>
-        <input type="text" formControlName="city" placeholder="Ví dụ: Cầu Giấy"
+        <input type="text" formControlName="city" placeholder="Cầu Giấy"
                class="w-full border rounded-md p-2 focus:ring focus:ring-green-200">
         <small class="text-red-500" *ngIf="showError('city','required')">Vui lòng nhập quận/huyện.</small>
       </div>
       <div>
         <label class="block text-sm font-medium mb-1">Mã bưu điện (Zip code)*</label>
-        <input type="text" formControlName="zipCode" placeholder="Ví dụ: 100000"
+        <input type="text" formControlName="zipCode" placeholder="100000"
                class="w-full border rounded-md p-2 focus:ring focus:ring-green-200">
         <small class="text-red-500" *ngIf="showError('zipCode','required')">Vui lòng nhập mã bưu điện.</small>
       </div>

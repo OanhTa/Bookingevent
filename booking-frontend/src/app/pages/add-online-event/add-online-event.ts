@@ -7,6 +7,7 @@ import { FormTickets } from './form-tickets/form-tickets';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { EventService } from '../../services/EventService';
 import { MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
 
 
 @Component({
@@ -18,6 +19,7 @@ import { MessageService } from 'primeng/api';
     StepperComponent,
     FormDetail,
     FormTickets,
+    ButtonModule,
     ReactiveFormsModule
   ],
   templateUrl: './add-online-event.html',

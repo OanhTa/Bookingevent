@@ -1,29 +1,15 @@
 <div class="flex justify-center mb-10">
   <div class="flex items-center gap-8">
-    <div class="flex flex-col items-center cursor-pointer" (click)="goToStep(1)">
-      <div [ngClass]="activeStep >= 1 ? 'bg-green-500 text-white' : 'border text-gray-500'"
-           class="w-10 h-10 rounded-full flex items-center justify-center">
-        1
+    <ng-container *ngFor="let step of steps; let i = index">
+      <div class="flex flex-col items-center cursor-pointer" (click)="goToStep(step.id)">
+        <div 
+          [ngClass]="activeStep >= step.id ? 'bg-emerald-500 text-white' : 'border text-gray-500'"
+          class="w-10 h-10 rounded-full flex items-center justify-center">
+          {{ step.id }}
+        </div>
+        <span class="text-sm mt-2">{{ step.label }}</span>
       </div>
-      <span class="text-sm mt-2">Chi tiết</span>
-    </div>
-    <div class="h-0.5 w-16 bg-gray-300"></div>
-
-    <div class="flex flex-col items-center cursor-pointer" (click)="goToStep(2)">
-      <div [ngClass]="activeStep >= 2 ? 'bg-green-500 text-white' : 'border text-gray-500'"
-           class="w-10 h-10 rounded-full flex items-center justify-center">
-        2
-      </div>
-      <span class="text-sm mt-2">Vé</span>
-    </div>
-    <div class="h-0.5 w-16 bg-gray-300"></div>
-
-    <div class="flex flex-col items-center cursor-pointer" (click)="goToStep(3)">
-      <div [ngClass]="activeStep >= 3 ? 'bg-green-500 text-white' : 'border text-gray-500'"
-           class="w-10 h-10 rounded-full flex items-center justify-center">
-        3
-      </div>
-      <span class="text-sm mt-2">Cài đặt</span>
-    </div>
+      <div *ngIf="i < steps.length - 1" class="h-0.5 w-16 bg-gray-300"></div>
+    </ng-container>
   </div>
 </div>

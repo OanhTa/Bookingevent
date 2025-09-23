@@ -9,30 +9,12 @@
     <div *ngIf="activeStep === 2">
       <app-form-ticket [parentForm]="eventForm"/>
     </div>
-    <div *ngIf="activeStep === 3">
-
-    </div>
   </div>
   <div class="flex justify-center gap-3 mt-6">
-    <button 
-      (click)="prevStep()" 
-      [disabled]="activeStep === 1" 
-      class="px-4 py-2 bg-gray-300 rounded">
-      Quay lại
-    </button>
+    <p-button *ngIf="activeStep < 3" label="Quay lại" (onClick)="prevStep()" [disabled]="activeStep === 1" severity="secondary"/>
+    <p-button *ngIf="activeStep < 3" label="Tiếp tục" (onClick)="nextStep()" />
 
-    <button 
-      *ngIf="activeStep < 3" 
-      (click)="nextStep()" 
-      class="px-4 py-2 bg-green-500 text-white rounded">
-      Tiếp tục
-    </button>
-
-    <button 
-      *ngIf="activeStep === 3" 
-      (click)="onSave()" 
-      class="px-4 py-2 bg-green-500 text-white rounded">
-      Gửi
-    </button>
+    <p-button *ngIf="activeStep === 3" label="Lưu nháp" (onClick)="onSave()" severity="secondary"/>
+    <p-button *ngIf="activeStep === 3" label="Xuất bản" (onClick)="onSave()"/>
   </div>
 </div>

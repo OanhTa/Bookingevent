@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, Inject, Input, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, Input, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MenubarModule } from 'primeng/menubar';
 import { BadgeModule } from 'primeng/badge';
@@ -6,6 +6,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { RouterModule } from '@angular/router';
 import { OrganisationMenuComponent } from './menu-origin/organisation-menu';
 import { Router } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
 
 
 @Component({
@@ -16,41 +17,34 @@ import { Router } from '@angular/router';
     MenubarModule,
     BadgeModule,
     AvatarModule,
+    ButtonModule,
     RouterModule,
     OrganisationMenuComponent
   ],
   templateUrl: './header.html',
-  styleUrl: './header.css'
 })
 export class Header {
-    @Input() showHeaderEnd: boolean = true;
-    @Input() user: any = {};
+  @Input() showHeaderEnd: boolean = true;
+  @Input() user: any = {};
 
-    items: any[] = [
-        {
-          label: 'Trang chủ',
-          icon: 'pi pi-home',
-          routerLink: '/'
-        },
-        {
-          label: 'Giới thiệu',
-          icon: 'pi pi-info-circle',
-          routerLink: '/about'
-        },
-        {
-          label: 'Liên hệ',
-          icon: 'pi pi-envelope',
-          routerLink: '/contact'
-        }
-      ];
+  items: any[] = [
+    {
+      label: 'Trang chủ',
+      icon: 'pi pi-arrow-right-arrow-left',
+      routerLink: '/'
+    },
+    {
+      label: 'Khám phá',
+      icon: 'pi pi-sync',
+      routerLink: '/about'
+    },
+  ];
   isOpen = false;
   showOrgMenu = false;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
-    private el: ElementRef<HTMLElement>,
-    private router: Router
-  ) {
+    private router: Router) {
     if (isPlatformBrowser(this.platformId)) {
       this.user = JSON.parse(localStorage.getItem('account') || '{}');
     }
@@ -67,18 +61,6 @@ export class Header {
   close() {
     this.isOpen = false;
   }
-
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent) {
-    const clickedInside = this.el.nativeElement.contains(event.target as Node);
-    if (!clickedInside) this.close();
-  }
-
-  @HostListener('document:keydown.escape', ['$event'])
-  onEscape(event: Event) {
-    this.close();
-  }
-
 
   onSignOut() {
     localStorage.clear();

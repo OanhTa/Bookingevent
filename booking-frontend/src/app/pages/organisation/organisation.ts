@@ -17,15 +17,13 @@ import { DashboardComponent } from './dashboard/dashboard';
   styleUrls: ['./organisation.css']
 })
 export class Organisation{
-  tabs = [
-  { label: 'Tổng quan', icon: 'fa fa-tachometer' },
-  { label: 'Sự kiện', icon: 'fa fa-calendar'},
-  { label: 'Ưa đãi', icon: 'fa fa-ad' },
-
-  { label: 'Thanh toán', icon: 'fa fa-credit-card'},
-  { label: 'Báo cáo', icon: 'fa fa-chart-pie' },
-
-  { label: 'Thành viên', icon: 'fa fa-users'}
+ tabs = [
+  { label: 'Tổng quan', icon: 'pi pi-chart-bar' },
+  { label: 'Sự kiện', icon: 'pi pi-calendar' },
+  { label: 'Ưu đãi', icon: 'pi pi-gift' },
+  { label: 'Thanh toán', icon: 'pi pi-credit-card' },
+  { label: 'Báo cáo', icon: 'pi pi-chart-pie' },
+  { label: 'Thành viên', icon: 'pi pi-users' }
 ];
 
   activeTab = 0;

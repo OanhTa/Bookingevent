@@ -4,36 +4,13 @@
   <h1 class="text-3xl font-bold mb-10 text-center">Tạo sự kiện mới</h1>
 
   <div class="flex flex-col md:flex-row gap-8">
-    <!-- Online Event -->
-    <div class="bg-white rounded-lg shadow-lg p-8 w-80 flex flex-col items-center">
+    <div *ngFor="let item of eventTypes"
+          class="bg-white rounded-lg shadow-lg p-8 w-80 flex flex-col items-center">
       <div class="bg-green-50 rounded-full p-4 mb-4">
-        <i class="fas fa-video text-2xl"></i>
+        <i class="{{ item.icon }} text-2xl"></i>
       </div>
-      <h2 class="text-lg font-semibold mb-6">Tạo sự kiện trực tuyến</h2>
-      <button
-        class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-md flex items-center gap-2 transition"
-      >
-        <a routerLink="/create-online-event" class="link">
-            Tạo
-            <i class="fas fa-arrow-right"></i>
-        </a>
-      </button>
-    </div>
-
-    <!-- Venue Event -->
-    <div class="bg-white rounded-lg shadow-lg p-8 w-80 flex flex-col items-center">
-      <div class="bg-green-50 rounded-full p-4 mb-4">
-        <i class="fas fa-map-marker-alt text-2xl"></i>
-      </div>
-      <h2 class="text-lg font-semibold mb-6">Tạo sự kiện tại địa điểm</h2>
-      <button
-        class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-md flex items-center gap-2 transition"
-      >
-        <a routerLink="/create-venue-event" class="link">
-            Tạo
-            <i class="fas fa-arrow-right"></i>
-        </a>
-      </button>
+      <h2 class="text-lg font-semibold mb-6">{{ item.title }}</h2>
+      <p-button size="small" label="Tạo" icon="fas fa-arrow-right" iconPos="right" [routerLink]="item.link"/>
     </div>
   </div>
 </div>

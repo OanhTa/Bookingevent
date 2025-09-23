@@ -4,6 +4,7 @@ import { EventItem } from './eventItem/event-item';
 import { EventService } from '../../../services/EventService';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
 
 
 @Component({
@@ -12,7 +13,8 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     EventItem,
-    FormsModule
+    FormsModule,
+    ButtonModule
   ],
   templateUrl: './event.html',
 })
@@ -73,7 +75,7 @@ export class EventComponent implements OnInit {
   }
 
   onSearch() {
-    const keyword = this.searchText.trim();
+    const keyword = this.searchText.trim()|| '';
     this.eventService.getSearch(keyword)
       .subscribe({
         next: (res) => {

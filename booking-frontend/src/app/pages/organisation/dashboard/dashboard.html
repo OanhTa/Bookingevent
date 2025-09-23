@@ -1,4 +1,8 @@
 <div class="p-6 space-y-6">
+  <div class="flex items-center mb-5">
+    <i class="pi pi-chart-bar font-bold mr-2"></i>
+    <h1 class="text-xl font-bold">Tổng quan</h1>
+  </div>
   <!-- Header -->
   <div class="flex items-center justify-between bg-white rounded-xl shadow p-4">
     <div class="flex items-center space-x-4">
@@ -23,42 +27,18 @@
 
   <!-- Stats cards -->
   <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-    <!-- Revenue -->
-    <div class="bg-purple-500 text-white rounded-xl shadow p-6 flex flex-col justify-between">
+    <div 
+      *ngFor="let item of stats" 
+      class="text-white rounded-xl shadow p-6 flex flex-col justify-between"
+      [ngClass]="item.bg">
       <div>
-        <p class="uppercase text-sm">Doanh thu (VND)</p>
-        <h3 class="text-2xl font-bold mt-2">$550.00</h3>
-      </div>
-      <p class="text-xs mt-2">0.00% từ giai đoạn trước</p>
-    </div>
-
-    <!-- Orders -->
-    <div class="bg-red-500 text-white rounded-xl shadow p-6 flex flex-col justify-between">
-      <div>
-        <p class="uppercase text-sm">Đơn đặt hàng</p>
-        <h3 class="text-2xl font-bold mt-2">2</h3>
-      </div>
-      <p class="text-xs mt-2">0.00% từ giai đoạn trước</p>
-    </div>
-
-    <!-- Page Views -->
-    <div class="bg-sky-500 text-white rounded-xl shadow p-6 flex flex-col justify-between">
-      <div>
-        <p class="uppercase text-sm">Lượt xem trang</p>
-        <h3 class="text-2xl font-bold mt-2">30</h3>
-      </div>
-      <p class="text-xs mt-2">0.00% từ giai đoạn trước</p>
-    </div>
-
-    <!-- Ticket Sales -->
-    <div class="bg-green-500 text-white rounded-xl shadow p-6 flex flex-col justify-between">
-      <div>
-        <p class="uppercase text-sm">Bán vé</p>
-        <h3 class="text-2xl font-bold mt-2">3</h3>
-      </div>
-      <p class="text-xs mt-2">0.00% từ giai đoạn trước</p>
+        <p class="uppercase text-sm">{{ item.title }}</p>
+        <h3 class="text-2xl font-bold mt-2">{{ item.value }}</h3>
+      </div>    
+      <p class="text-xs mt-2">{{ item.change }}</p>
     </div>
   </div>
+
 
   <div class="bg-white rounded-xl shadow p-4 mt-2">
     <div class="flex justify-between items-center mb-4">

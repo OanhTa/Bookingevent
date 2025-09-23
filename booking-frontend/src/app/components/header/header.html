@@ -11,7 +11,7 @@
     </div>
   </ng-template>
 
-  <ng-template pTemplate="item" let-item>
+  <ng-template pTemplate="item" let-item *ngIf="false">
     <a class="flex items-center no-underline px-2 text-gray-800 hover:text-green-600 text-sm">
       <i [class]="item.icon + ' mr-2 text-xs'"></i>
       <span>{{ item.label }}</span>
@@ -19,29 +19,13 @@
   </ng-template>
 
   <ng-template pTemplate="end">
-    <div class="flex items-center gap-2">
-      <button class="bg-green-500 text-white flex items-center p-2 rounded text-sm hover:bg-green-700">
-        <a routerLink="/create" class="flex items-center">
-          <i class="fa-solid fa-calendar mr-1 text-xs"></i>
-          Tạo sự kiện
-        </a>
-      </button>
-
-      <button 
-        (click)="toggle()"
-        type="button"
-        class="flex items-center focus:outline-none rounded-full"
-        aria-haspopup="true"
-        aria-expanded="{{isOpen}}"
-      >
-      <div class="w-8 h-8 mx-auto rounded-full overflow-hidden border-2 border-green-400">
-        <img [src]="user.avatarUrl" alt="avatar large" class="w-full h-full object-cover" />
-      </div>
-      </button>
-
-      <button class="p-1 text-gray-600 hover:text-gray-900 text-sm">
-        <i class="fa-solid fa-gear"></i>
-      </button>
+    <div class="flex items-center">
+      <p-button size="small" label="Tạo sự kiện" icon="fa-solid fa-calendar" routerLink="/create"/>
+      <p-button link (onClick)="toggle()">
+        <div class="w-8 h-8 mx-auto rounded-full overflow-hidden border-2 border-green-400">
+          <img [src]="user.avatarUrl" alt="avatar large" class="w-full h-full object-cover" />
+        </div>
+      </p-button>
     </div>
   </ng-template>
 </p-menubar>

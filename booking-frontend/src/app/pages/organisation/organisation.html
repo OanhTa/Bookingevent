@@ -1,29 +1,31 @@
-<app-header></app-header>
+<div class="h-screen overflow-y-hidden">
+  <app-header></app-header>
 
-<div class="flex h-[calc(100vh-64px)]"> 
-  <!-- Sidebar -->
-  <div class="tablist bg-white w-60 border-r border-gray-200 flex-shrink-0">
-    <div class="menu-item" 
-         *ngFor="let tab of tabs; let i = index"
-         [class.active]="activeTab === i"
-         (click)="activeTab = i">
-        <i class="{{ tab.icon }}"></i>
-        <span>{{ tab.label }}</span>
-    </div>
-  </div>
-
- 
-  <div class="flex-1 overflow-y-auto custom-scroll p-4 bg-gray-50">
-    <div *ngIf="activeTab === 0">
-      <app-dashboard/>
+  <div class="flex h-[calc(100vh-64px)]"> 
+    <!-- Sidebar -->
+    <div class="tablist bg-white w-60 border-r border-gray-200 flex-shrink-0">
+      <div class="menu-item" 
+          *ngFor="let tab of tabs; let i = index"
+          [class.active]="activeTab === i"
+          (click)="activeTab = i">
+          <i class="{{ tab.icon }}"></i>
+          <span>{{ tab.label }}</span>
+      </div>
     </div>
 
-    <div *ngIf="activeTab === 1">
-      <app-event/>
-    </div>
+  
+    <div class="flex-1 overflow-y-auto custom-scroll p-4 bg-gray-50">
+      <div *ngIf="activeTab === 0">
+        <app-dashboard/>
+      </div>
 
-    <div *ngIf="activeTab === 2">
-    
+      <div *ngIf="activeTab === 1">
+        <app-event/>
+      </div>
+
+      <div *ngIf="activeTab === 2">
+      
+      </div>
     </div>
   </div>
 </div>
