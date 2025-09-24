@@ -9,6 +9,7 @@ import { FormField } from "../../../models/FormField";
 import { FilterFormComponent } from "../../../components/filter-form/filter-form";
 import { OrganisationService } from "../../../services/OrganisationService";
 import { ModalFormComponent } from "../../../components/model/form-model/model-components";
+import { InviteUserDto } from "../../../models/CreateOrganisationDto";
 
 
 
@@ -57,6 +58,8 @@ export class MemberComponent implements OnInit {
   showConfirm = false;
   currentAction = ''
 
+  orgId = localStorage.getItem('organisationId') || "";
+
   constructor(
     public organisationService : OrganisationService,
     public cdr : ChangeDetectorRef
@@ -82,8 +85,7 @@ export class MemberComponent implements OnInit {
     this.loadUserByOrg();
   }
   loadUserByOrg(){
-    const orgId = localStorage.getItem('organisationId') || "";
-    this.organisationService.getUsersByOrganisation(orgId).subscribe(
+    this.organisationService.getUsersByOrganisation(this.orgId).subscribe(
       (res)=>{
         this.members = res; 
         this.cdr.detectChanges()
@@ -95,5 +97,16 @@ export class MemberComponent implements OnInit {
     this.modalTitle = 'Thêm thành viên';
     this.modelFormData = {};
     this.showModalForm = true;
+  }
+
+  onSave(data: any) {
+    const a: InviteUserDto = {
+      email: data.email,
+      orgId: this.orgId,
+      RoleInOrg: data.role,
+    };
+    this.organisationService.invateMember(a).subscribe({
+        next: (res) => this.loadUserByOrg()
+    });
   }
 }

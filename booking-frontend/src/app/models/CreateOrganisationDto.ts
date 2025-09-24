@@ -3,3 +3,9 @@ export interface CreateOrganisationDto {
   description: string;
   logo: string;
 }
+
+export interface InviteUserDto {
+  email: string;
+  orgId: string;
+  RoleInOrg: string;
+}

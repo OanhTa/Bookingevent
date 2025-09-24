@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../environments/environments';
-import { CreateOrganisationDto } from '../models/CreateOrganisationDto';
+import { CreateOrganisationDto, InviteUserDto } from '../models/CreateOrganisationDto';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +14,10 @@ export class OrganisationService {
 
   createOrganisation(dto: CreateOrganisationDto): Observable<any> {
     return this.http.post<any>(this.apiUrl, dto);
+  }
+
+  invateMember(dto: InviteUserDto): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/invite-user`, dto);
   }
 
   getMyOrganisations(): Observable<any[]> {
