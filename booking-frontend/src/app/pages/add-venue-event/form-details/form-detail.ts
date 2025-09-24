@@ -2,26 +2,29 @@ import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { CategoryServer } from '../../../services/CategoryService';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Select } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
 import { FluidModule } from 'primeng/fluid';
 import { UploadServices } from '../../../services/UploadService';
 import { ButtonModule } from 'primeng/button';
+import { Editor } from 'primeng/editor';
 
 @Component({
   selector: 'app-form-detail',
   standalone: true,
   imports: [
     CommonModule, ButtonModule,
-    ReactiveFormsModule,
-    Select, DatePickerModule,FluidModule
+    ReactiveFormsModule,FormsModule,
+    Select, DatePickerModule,FluidModule,
+    Editor
   ],
   templateUrl: './form-detail.html',
 })
 export class FormDetail{
   @Input() parentForm!: FormGroup;
 
+  editorText: string | undefined;
   categories$!: Observable<any[]>;
   previewUrl: string | null = null;
 

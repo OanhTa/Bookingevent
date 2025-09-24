@@ -33,11 +33,11 @@ export class Header {
       icon: 'pi pi-arrow-right-arrow-left',
       routerLink: '/'
     },
-    {
-      label: 'Khám phá',
-      icon: 'pi pi-sync',
-      routerLink: '/about'
-    },
+    // {
+    //   label: 'Khám phá',
+    //   icon: 'pi pi-sync',
+    //   routerLink: '/about'
+    // },
   ];
   isOpen = false;
   showOrgMenu = false;

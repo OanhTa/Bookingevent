@@ -5,6 +5,7 @@ import { EventService } from '../../../services/EventService';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
+import { getStatusText } from '../../../utils/event-status.helper';
 
 
 @Component({
@@ -35,8 +36,11 @@ export class EventComponent implements OnInit {
      this.router.navigate(['/login']);
     } else {
       this.eventService.getEventsByOrg(orgId).subscribe({
-        next: (res) => {
-          this.events = res,
+        next: (res: any[]) => {
+          this.events = res.map(event => ({
+            ...event,
+            status: getStatusText(event.status)
+          }));
           this.cdr.detectChanges();
         }
       })
@@ -79,7 +83,10 @@ export class EventComponent implements OnInit {
     this.eventService.getSearch(keyword)
       .subscribe({
         next: (res) => {
-          this.events = res;
+          this.events = res.map(event => ({
+            ...event,
+            status: getStatusText(event.status)
+          }));
           this.cdr.detectChanges();
         },
         error: (err) => {

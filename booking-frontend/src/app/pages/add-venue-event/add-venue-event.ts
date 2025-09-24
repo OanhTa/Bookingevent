@@ -53,7 +53,7 @@ export class AddVenueEvent{
     this.activeStep = step; 
   }
 
-  onSave() {
+  onSave(status: number) {
     if (this.eventForm.invalid) {
       this.eventForm.markAllAsTouched();
       return
@@ -63,11 +63,9 @@ export class AddVenueEvent{
       const dto = {
         ...this.eventForm.value.detail,
         ticketTypes: this.eventForm.value.tickets,
-        organisationId: orgId
-        // ...this.eventForm.value.setting
+        organisationId: orgId,
+        status: status
       };
-
-      console.log('Final DTO:', dto);
 
       this.eventService.createEvent(dto).subscribe({
         next: () => this.messageService.add({severity: 'success',summary: 'Create',detail: 'Event create successfully'}),

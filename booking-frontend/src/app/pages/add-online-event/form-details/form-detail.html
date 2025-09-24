@@ -83,7 +83,7 @@
   <!-- Description -->
   <div class="mb-6">
     <label class="block text-sm font-medium mb-2">Nhập mô tả cho sự kiện*</label>
-    <textarea rows="4" formControlName="description" class="w-full border rounded-md p-3 focus:outline-green-500"></textarea>
+    <p-editor formControlName="description" [style]="{ height: '300px' }"/>
     <small class="text-red-500" *ngIf="showError('description','required')">
       Mô tả không được bỏ trống.
     </small>

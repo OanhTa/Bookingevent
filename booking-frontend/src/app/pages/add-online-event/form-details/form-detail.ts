@@ -8,6 +8,7 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { FluidModule } from 'primeng/fluid';
 import { UploadServices } from '../../../services/UploadService';
 import { ButtonModule } from 'primeng/button';
+import { Editor } from 'primeng/editor';
 
 @Component({
   selector: 'app-form-detail',
@@ -15,7 +16,8 @@ import { ButtonModule } from 'primeng/button';
   imports: [
     CommonModule, ButtonModule,
     ReactiveFormsModule,
-    Select, DatePickerModule,FluidModule
+    Select, DatePickerModule,FluidModule,
+    Editor
   ],
   templateUrl: './form-detail.html',
 })

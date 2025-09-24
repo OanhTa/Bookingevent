@@ -4,10 +4,10 @@
   <app-stepper [activeStep]="activeStep" (stepChange)="onStepChange($event)"></app-stepper>
 
   <div class="p-4">
-    <div *ngIf="activeStep === 1">
+    <div [hidden]="activeStep !== 1">
       <app-form-detail [parentForm]="eventForm"/>
     </div>
-    <div *ngIf="activeStep === 2">
+    <div [hidden]="activeStep !== 2">
       <app-form-ticket [parentForm]="eventForm"/>
     </div>
   </div>
@@ -15,7 +15,7 @@
     <p-button *ngIf="activeStep < 3" label="Quay lại" (onClick)="prevStep()" [disabled]="activeStep === 1" severity="secondary"/>
     <p-button *ngIf="activeStep < 3" label="Tiếp tục" (onClick)="nextStep()" />
 
-    <p-button *ngIf="activeStep === 3" label="Lưu nháp" (onClick)="onSave()" severity="secondary"/>
-    <p-button *ngIf="activeStep === 3" label="Xuất bản" (onClick)="onSave()"/>
+    <p-button *ngIf="activeStep === 3" label="Lưu nháp" (onClick)="onSave(0)" severity="secondary"/>
+    <p-button *ngIf="activeStep === 3" label="Xuất bản" (onClick)="onSave(1)" [disabled]="eventForm.invalid"/>
   </div>
 </div>

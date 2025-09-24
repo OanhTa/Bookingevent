@@ -1,0 +1,31 @@
+<div class="p-4 rounded m-5">
+  <div class="flex items-center mb-5">
+    <i class="pi pi-users font-bold mr-2"></i>
+    <h1 class="text-xl font-bold">Thành viên nhóm</h1>
+  </div>
+
+  <div class="p-4 mb-4 border rounded-md bg-white shadow-sm flex justify-between items-center">
+    <div class="flex gap-2">
+      <p-button label="Tổng quan" size="small"/>
+      <p-button label="Vai trò" size="small" variant="outlined" severity="secondary"/>
+    </div>
+
+    <p-button (click)="openAdd()" label="Mời thành viên vào nhóm" size="small"/>
+  </div>
+
+  <table-component
+      [columns]="columns" 
+      [data]="members"
+      [actions]="actions">
+  </table-component>
+</div>
+
+<app-modal-form
+  *ngIf="showModalForm"
+  [title]="modalTitle"
+  [fields]="modalFields"
+  [formData]="modelFormData"
+  
+  (close)="showModalForm=false"
+></app-modal-form>
+<!-- (save)="onSave($event)" -->

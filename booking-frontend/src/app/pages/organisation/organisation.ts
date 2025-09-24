@@ -3,6 +3,9 @@ import { Header } from '../../components/header/header';
 import { CommonModule } from '@angular/common';
 import { EventComponent } from './event/event';
 import { DashboardComponent } from './dashboard/dashboard';
+import { OrderComponent } from './order/order';
+import { MyAccount } from '../admin/my-account/my-account';
+import { MemberComponent } from './member/member';
 
 @Component({
   selector: 'app-organisation',
@@ -11,7 +14,10 @@ import { DashboardComponent } from './dashboard/dashboard';
     CommonModule,
     Header,
     EventComponent,
-    DashboardComponent
+    OrderComponent,
+    MemberComponent,
+    DashboardComponent,
+    MyAccount
   ],
   templateUrl: './organisation.html',
   styleUrls: ['./organisation.css']
@@ -20,9 +26,8 @@ export class Organisation{
  tabs = [
   { label: 'Tổng quan', icon: 'pi pi-chart-bar' },
   { label: 'Sự kiện', icon: 'pi pi-calendar' },
-  { label: 'Ưu đãi', icon: 'pi pi-gift' },
-  { label: 'Thanh toán', icon: 'pi pi-credit-card' },
-  { label: 'Báo cáo', icon: 'pi pi-chart-pie' },
+  { label: 'Đơn hàng', icon: 'pi pi-shopping-cart' },
+  { label: 'Hồ sơ', icon: 'pi pi-user' },
   { label: 'Thành viên', icon: 'pi pi-users' }
 ];
 

@@ -24,6 +24,10 @@ export class OrganisationService {
     return this.http.get<any[]>(`${this.apiUrl}/by-user/${userId}`);
   }
 
+  getUsersByOrganisation(orgId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/users-by-organisation?orgId=${orgId}`);
+  }
+
   updateOrganisation(id: string, dto: CreateOrganisationDto): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/${id}`, dto);
   }

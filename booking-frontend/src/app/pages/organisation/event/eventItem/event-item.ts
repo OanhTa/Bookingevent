@@ -27,11 +27,7 @@ export class EventItem implements OnInit {
       private eventService: EventService,
       private messageService: MessageService,
     ) {}
-    viewCustomers(ticketId: string) {
-      this.ticketServer.getCustomersByServer(ticketId).subscribe(res => {
-        this.customers = res;
-      });
-    }
+   
     onDelete(){
       const eventId = this.event.id;
       this.eventService.deleteEvent(eventId).subscribe(res => this.messageService.add({severity: 'success',summary: 'Thành công',detail: 'Xóa sự kiện thành công'}));

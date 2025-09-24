@@ -17,9 +17,7 @@
         (click)="dropdownOpen = !dropdownOpen"
         class="p-2 hover:bg-gray-100 rounded-full"
         title="More options"
-      >
-        ⋮
-      </button>
+      >⋮</button>
       <div
         *ngIf="dropdownOpen"
         class="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg z-50"
@@ -48,33 +46,8 @@
     >
       <div class="font-semibold text-lg">{{ ticket.name }}</div>
       <div class="flex justify-between mt-1 text-sm text-gray-600">
-        <span>Giá: {{ ticket.price | number:'1.0-0' }} VNĐ</span>
+        <span>Giá: {{ ticket.price | number:'1.0-0' }},000 VNĐ</span>
         <span>Bán: {{ ticket.sold }} / {{ ticket.quantity }}</span>
-      </div>
-      <button
-        class="mt-2 text-green-500 text-sm hover:underline"
-        (click)="viewCustomers(ticket.id)"
-      >
-        [Danh sách khách hàng]
-      </button>
-      <div *ngIf="customers.length > 0" class="mt-4">
-        <h3 class="font-bold mb-2">Khách hàng:</h3>
-        <table class="min-w-full border">
-          <thead>
-            <tr>
-              <th class="border px-2 py-1">Tên</th>
-              <th class="border px-2 py-1">Email</th>
-              <th class="border px-2 py-1">Số điện thoại</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let user of customers">
-              <td class="border px-2 py-1">{{ user.userName }}</td>
-              <td class="border px-2 py-1">{{ user.email }}</td>
-              <td class="border px-2 py-1">{{ user.phone }}</td>
-            </tr>
-          </tbody>
-        </table>
       </div>
     </div>
   </div>

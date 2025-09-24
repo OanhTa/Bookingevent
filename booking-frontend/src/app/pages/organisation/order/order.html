@@ -1,0 +1,19 @@
+<div class="p-4 rounded m-5">
+  <div class="flex items-center mb-5">
+    <i class="pi pi-shopping-cart font-bold mr-2"></i>
+    <h1 class="text-xl font-bold">Đơn hàng</h1>
+  </div>
+
+  <div class="p-4 mb-4 border rounded-md bg-white shadow-sm">
+       <app-search (search)="onSearchHandler($event)"></app-search>
+       <app-filter-form 
+          [fields]="filterFields">
+        </app-filter-form>
+  </div>
+
+  <table-component
+      [columns]="columns" 
+      [data]="orders"
+      [actions]="actions">
+  </table-component>
+</div>

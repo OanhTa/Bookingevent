@@ -53,7 +53,7 @@ export class AddOnnlineEvent{
   onStepChange(step: number) {
     this.activeStep = step; 
   }
-  onSave() {
+  onSave(status: number) {
     if (this.eventForm.invalid) {
       this.eventForm.markAllAsTouched();
     }
@@ -62,8 +62,8 @@ export class AddOnnlineEvent{
       const dto = {
         ...this.eventForm.value.detail,
         ticketTypes: this.eventForm.value.tickets,
-        organisationId: orgId
-        // ...this.eventForm.value.setting
+        organisationId: orgId,
+        Status: status
       };
 
       this.eventService.createEvent(dto).subscribe({

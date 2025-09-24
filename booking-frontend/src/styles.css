@@ -8,12 +8,6 @@
 body {
   font-family: 'Aya Script', sans-serif;
 }
-* {
-  caret-color: transparent !important;
-}
-input, textarea {
-  caret-color: auto !important; 
-}
 
 .custom-scroll {
   scrollbar-width: thin; /* Firefox */
@@ -43,12 +37,6 @@ input[type="checkbox"] {
   position: relative;
   transition: all 0.2s ease;
   border: 2px solid #ccc;
-}
-
-/* Hover */
-input[type="checkbox"]:hover:not(:disabled) {
-  background-color: #e6f4ea; /* xanh nhạt */
-  border-color: #10b981;
 }
 
 /* Focus */
