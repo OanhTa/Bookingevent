@@ -21,12 +21,12 @@ export class AddEvent{
     {
       title: 'Tạo sự kiện trực tuyến',
       icon: 'fas fa-video',
-      link: '/create-online-event'
+      link: '/online-event'
     },
     {
       title: 'Tạo sự kiện tại địa điểm',
       icon: 'fas fa-map-marker-alt',
-      link: '/create-venue-event'
+      link: '/venue-event'
     }
   ];
 }

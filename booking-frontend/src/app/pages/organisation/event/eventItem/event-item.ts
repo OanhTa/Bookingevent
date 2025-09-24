@@ -7,6 +7,7 @@ import { MessageService } from 'primeng/api';
 import { PopupComponent } from '../../../../components/popup/popup-component';
 import { Popover } from 'primeng/popover';
 import { ButtonModule } from 'primeng/button';
+import { RouterModule } from '@angular/router';
 
 
 @Component({
@@ -15,7 +16,8 @@ import { ButtonModule } from 'primeng/button';
   imports: [
     CommonModule,
     PopupComponent,
-    Popover, ButtonModule
+    Popover, ButtonModule,
+    RouterModule
   ],
   templateUrl: './event-item.html',
 })

@@ -131,4 +131,8 @@ export class DashboardComponent {
       default: return '';
     }
   }
+  onSave(data: any){
+    console.log("onsave")
+    console.log(data)
+  }
 }

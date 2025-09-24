@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { CategoryServer } from '../../../services/CategoryService';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Select } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
 import { FluidModule } from 'primeng/fluid';
@@ -30,24 +30,14 @@ export class FormDetail{
   constructor(
     private categoryService: CategoryServer,
     private uploadServices: UploadServices,
-    private fb: FormBuilder,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.categories$ = this.categoryService.getCategory();
-
-    const detailGroup = this.fb.group({
-        name: ['', [Validators.required, Validators.minLength(3)]], 
-        thumbnail: [''], 
-        categoryId: [null, [Validators.required]], 
-        date: ['', [Validators.required]], 
-        time: ['', [Validators.required]], 
-        duration: ['', [Validators.required, Validators.min(1)]], 
-        location: ['Online'], 
-        description: ['', [Validators.required, Validators.minLength(10)]]
+    this.detailForm.get('thumbnail')?.valueChanges.subscribe(val => {
+      this.previewUrl = val;
     });
-    this.parentForm.setControl('detail', detailGroup);
   }
 
   showError(controlName: string, errorKey: string): boolean {

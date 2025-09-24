@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../environments/environments';
 import { CreateOrganisationDto, InviteUserDto } from '../models/CreateOrganisationDto';
+import { ApiResponse } from '../models/ApiResponseDto';
+import { User } from '../models/UserDto';
 
 @Injectable({
   providedIn: 'root'
@@ -12,31 +14,33 @@ export class OrganisationService {
 
   constructor(private http: HttpClient) {}
 
-  createOrganisation(dto: CreateOrganisationDto): Observable<any> {
-    return this.http.post<any>(this.apiUrl, dto);
+   createOrganisation(dto: CreateOrganisationDto): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(this.apiUrl, dto);
   }
 
-  invateMember(dto: InviteUserDto): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/invite-user`, dto);
+  inviteMember(dto: InviteUserDto): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.apiUrl}/invite-user`, dto);
   }
 
-  getMyOrganisations(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/my-organisation`);
+  getMyOrganisations(): Observable<ApiResponse<any[]>> {
+    return this.http.get<ApiResponse<any[]>>(`${this.apiUrl}/my-organisation`);
   }
 
-  getOrganisationsByUser(userId: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/by-user/${userId}`);
+  getOrganisationsByUser(userId: string): Observable<ApiResponse<any[]>> {
+    return this.http.get<ApiResponse<any[]>>(`${this.apiUrl}/by-user/${userId}`);
   }
 
-  getUsersByOrganisation(orgId: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/users-by-organisation?orgId=${orgId}`);
+  getUsersByOrganisation(orgId: string): Observable<ApiResponse<User[]>> {
+    return this.http.get<ApiResponse<User[]>>(
+      `${this.apiUrl}/users-by-organisation?orgId=${orgId}`
+    );
   }
 
-  updateOrganisation(id: string, dto: CreateOrganisationDto): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, dto);
+  updateOrganisation(id: string, dto: CreateOrganisationDto): Observable<ApiResponse<any>> {
+    return this.http.put<ApiResponse<any>>(`${this.apiUrl}/${id}`, dto);
   }
 
-  deleteOrganisation(id: string): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  deleteOrganisation(id: string): Observable<ApiResponse<any>> {
+    return this.http.delete<ApiResponse<any>>(`${this.apiUrl}/${id}`);
   }
 }

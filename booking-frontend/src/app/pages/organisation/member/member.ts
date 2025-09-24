@@ -87,7 +87,7 @@ export class MemberComponent implements OnInit {
   loadUserByOrg(){
     this.organisationService.getUsersByOrganisation(this.orgId).subscribe(
       (res)=>{
-        this.members = res; 
+        this.members = res.data; 
         this.cdr.detectChanges()
       } 
     )
@@ -105,7 +105,7 @@ export class MemberComponent implements OnInit {
       orgId: this.orgId,
       RoleInOrg: data.role,
     };
-    this.organisationService.invateMember(a).subscribe({
+    this.organisationService.inviteMember(a).subscribe({
         next: (res) => this.loadUserByOrg()
     });
   }

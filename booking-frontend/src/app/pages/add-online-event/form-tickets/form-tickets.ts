@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Select } from 'primeng/select';
 
 @Component({
   selector: 'app-form-ticket',
@@ -27,12 +26,6 @@ export class FormTickets {
   ];
   get tickets(): FormArray {
     return this.parentForm.get('tickets') as FormArray;
-  }
-
-  ngOnInit(): void {
-    if (this.parentForm.get('tickets') && this.tickets.length === 0) {
-      this.tickets.push(this.createTicket());
-    }
   }
 
   showError(index: number, controlName: string, errorKey: string): boolean {

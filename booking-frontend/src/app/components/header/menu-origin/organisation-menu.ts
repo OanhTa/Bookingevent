@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { OrganisationService } from '../../../services/OrganisationService';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-organisation-menu',
@@ -26,7 +26,9 @@ export class OrganisationMenuComponent implements OnInit {
   ngOnInit(): void {
    const userId = JSON.parse(localStorage.getItem('account') || '{}')?.userId;
     if (userId) {
-      this.organisations$ = this.organisationService.getOrganisationsByUser(userId);
+      this.organisations$ = this.organisationService.getOrganisationsByUser(userId).pipe(
+        map(res => res.data)
+      );
     }
   }
 

@@ -48,7 +48,6 @@
   [title]="modalTitle"
   [fields]="modalFields"
   [formData]="modelFormData"
-  
+  (save)="onSave($event)"
   (close)="showModalForm=false"
 ></app-modal-form>
-<!-- (save)="onSave($event)" -->

@@ -50,13 +50,25 @@ export const routes: Routes = [
         data: { role: 'Organiser', allowDirect: false },
     },
     { 
-        path: 'create-online-event', 
+        path: 'online-event', 
         component: AddOnnlineEvent,
         canActivate: [AuthGuard],
         data: { role: 'Organiser', allowDirect: false },
     },
     { 
-        path: 'create-venue-event', 
+        path: 'online-event/:id', 
+        component: AddOnnlineEvent,
+        canActivate: [AuthGuard],
+        data: { role: 'Organiser', allowDirect: false },
+    },
+    { 
+        path: 'venue-event', 
+        component: AddVenueEvent,
+        canActivate: [AuthGuard],
+        data: { role: 'Organiser', allowDirect: false },
+    },
+    { 
+        path: 'venue-event/:id', 
         component: AddVenueEvent,
         canActivate: [AuthGuard],
         data: { role: 'Organiser', allowDirect: false },
