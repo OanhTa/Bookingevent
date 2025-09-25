@@ -2,10 +2,11 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { EventItem } from './eventItem/event-item';
 import { EventService } from '../../../services/EventService';
-import { EventType, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { getStatusText } from '../../../utils/event-status.helper';
+import { EventType } from '../../../models/EventDto';
 
 
 @Component({
@@ -25,6 +26,11 @@ export class EventComponent implements OnInit {
   events: any[] = [];
   orgId = localStorage.getItem('organisationId');
   
+  filterOptions = [
+  { label: 'Tất cả', value: undefined },
+  { label: 'Trực tuyến', value: EventType.Online },
+  { label: 'Trực tiếp', value: EventType.Offline }
+];
   constructor(
     private eventService: EventService,
     private cdr: ChangeDetectorRef,
@@ -40,16 +46,12 @@ export class EventComponent implements OnInit {
   }
 
   loadEvents(orgId: string, status?: number) {
-    if (!this.orgId) {
-     this.router.navigate(['/login']);
-    } else {
-      this.eventService.getEventsByOrg(orgId, status).subscribe({
+    this.eventService.getEventsByOrg(orgId, status).subscribe({
         next: (res: any[]) => {
           this.events = res;
           this.cdr.detectChanges();
-        }
-      });
-    }
+      }
+    });
   }
   
   filter(type?: EventType) {

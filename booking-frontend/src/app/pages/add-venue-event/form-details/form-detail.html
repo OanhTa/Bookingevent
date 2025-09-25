@@ -31,7 +31,7 @@
   <div class="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
     <div>
       <label class="block text-sm font-medium mb-2">Ngày diễn ra*</label>
-      <input type="date" formControlName="date" class="w-full border rounded-md p-3 focus:outline-green-500" />
+      <p-datepicker formControlName="date" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" />
       <small class="text-red-500" *ngIf="showError('date','required')">Vui lòng chọn ngày.</small>
     </div>
     <div>

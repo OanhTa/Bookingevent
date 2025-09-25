@@ -22,29 +22,8 @@
       <p-button 
         (click)="op.toggle($event)" 
         icon="pi pi-ellipsis-v" 
-        variant="text" 
-        rounded 
-        size="small" 
+        variant="text" rounded size="small" 
         title="Lựa chọn" />
-
-      <!-- Popover -->
-      <p-popover #op>
-        <button [routerLink]="['/online-event', event.id]" class="flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100">
-          <i class="fa-solid fa-gear"></i> Sửa
-        </button>
-        <button [routerLink]="['/detail-event', event.id]" class="flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100">
-          <i class="fa-solid fa-eye"></i> Xem sự kiện
-        </button>
-        <button (click)="onCopyDraft()" class="flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100">
-          <i class="fa-solid fa-copy"></i> Nhân bản
-        </button>
-        <button
-           *ngIf="event.status === 0  || event.status === 1"
-           (click)="this.showConfirm = true" class="flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100">
-          <i class="fa-solid" [ngClass]="event.status === 0 ? 'fa-trash' : 'fa-ban'"></i>
-          {{ event.status === 0 ? 'Xóa' : 'Hủy' }}
-        </button>
-      </p-popover>
     </div>
   </div>
 
@@ -59,6 +38,46 @@
     </div>
   </div>
 </div>
+
+
+
+<!-- Popover -->
+<p-popover #op>
+  <button 
+    [routerLink]="event.eventDetail?.type === 0 
+      ? ['/online-event', event.id] 
+      : ['/venue-event', event.id]" 
+    class="flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100">
+    <i class="fa-solid fa-gear"></i>
+    Sửa
+  </button>
+
+  <button 
+    *ngIf="event.status === 1"
+    [routerLink]="['/detail-event', event.id]" 
+    class="flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100">
+    <i class="fa-solid fa-eye"></i>
+    Xem sự kiện
+  </button>
+
+  <button 
+    (click)="onCopyDraft()" 
+    class="flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100">
+    <i class="fa-solid fa-copy"></i>
+    Nhân bản
+  </button>
+
+  <button
+    *ngIf="event.status === 0 || event.status === 1"
+    (click)="this.showConfirm = true" 
+    class="flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100">
+    <i 
+      class="fa-solid" 
+      [ngClass]="event.status === 0 ? 'fa-trash' : 'fa-ban'">
+    </i>
+    {{ event.status === 0 ? 'Xóa' : 'Hủy' }}
+  </button>
+</p-popover>
 
 <app-popup
   [show]="showConfirm"

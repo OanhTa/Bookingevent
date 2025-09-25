@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { CategoryServer } from '../../../services/CategoryService';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Select } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
 import { FluidModule } from 'primeng/fluid';
@@ -38,33 +38,18 @@ export class FormDetail{
   ngOnInit(): void {
     this.categories$ = this.categoryService.getCategory();
 
-    const detailGroup = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]], 
-      thumbnail: [''], 
-      categoryId: [null, [Validators.required]], 
-      date: ['', [Validators.required]], 
-      time: ['', [Validators.required]], 
-      duration: ['', [Validators.required]], 
-      location: ['Offline'], 
-      description: ['', [Validators.required, Validators.minLength(10)]],
-
-      // thêm địa điểm
-      venue: ['', [Validators.required]],
-      address1: ['', [Validators.required]],
-      state: ['', [Validators.required]],
-      city: ['', [Validators.required]],
-      zipCode: ['', [Validators.required]]
+    this.detailForm.get('thumbnail')?.valueChanges.subscribe(val => {
+      this.previewUrl = val;
     });
-
-    detailGroup.valueChanges.subscribe(values => {
-      const { venue, address1, city, state} = values;
-      const location = [venue, address1, city, state]
-        .filter(x => !!x) 
-        .join(', ');
+    // detailGroup.valueChanges.subscribe(values => {
+    //   const { venue, address1, city, state} = values;
+    //   const location = [venue, address1, city, state]
+    //     .filter(x => !!x) 
+    //     .join(', ');
       
-      detailGroup.get('location')?.setValue(location, { emitEvent: false });
-    });
-    this.parentForm.setControl('detail', detailGroup);
+    //   detailGroup.get('location')?.setValue(location, { emitEvent: false });
+    // });
+    // this.parentForm.setControl('detail', detailGroup);
   }
 
   showError(controlName: string, errorKey: string): boolean {

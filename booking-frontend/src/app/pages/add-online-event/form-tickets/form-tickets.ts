@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-form-ticket',
@@ -15,9 +15,6 @@ export class FormTickets {
 
   @Input() parentForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) {
-    
-  }
   ticketTypes = [
     { label: 'Vé Thường', value: 'Vé Thường' },
     { label: 'Vé VIP', value: 'Vé VIP' },
@@ -32,13 +29,5 @@ export class FormTickets {
     const group = this.tickets.at(index) as FormGroup;
     const control = group.get(controlName);
     return !!(control && control.touched && control.hasError(errorKey));
-  }
-
-  createTicket(): FormGroup {
-    return this.fb.group({
-      name: ['Vé Online'],
-      price: ['', [Validators.required, Validators.min(0)]],
-      quantity: ['', [Validators.required, Validators.min(1)]]
-    });
   }
 }

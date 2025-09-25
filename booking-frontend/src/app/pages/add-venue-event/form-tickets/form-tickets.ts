@@ -30,12 +30,6 @@ export class FormTickets {
     return this.parentForm.get('tickets') as FormArray;
   }
 
-  ngOnInit(): void {
-    if (this.parentForm.get('tickets') && this.tickets.length === 0) {
-      this.tickets.push(this.createTicket());
-    }
-  }
-
   showError(index: number, controlName: string, errorKey: string): boolean {
     const group = this.tickets.at(index) as FormGroup;
     const control = group.get(controlName);
