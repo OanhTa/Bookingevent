@@ -16,7 +16,7 @@ export class FormTickets {
   @Input() parentForm!: FormGroup;
 
   constructor(private fb: FormBuilder) {
-   
+    
   }
   ticketTypes = [
     { label: 'Vé Thường', value: 'Vé Thường' },

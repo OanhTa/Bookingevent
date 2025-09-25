@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { EventItem } from './eventItem/event-item';
 import { EventService } from '../../../services/EventService';
-import { Router } from '@angular/router';
+import { EventType, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { getStatusText } from '../../../utils/event-status.helper';
@@ -21,9 +21,10 @@ import { getStatusText } from '../../../utils/event-status.helper';
 })
 export class EventComponent implements OnInit {
   searchText = '';
-  selectedFilter: 'all' | 'online' | 'venue' = 'all';
+  selectedFilter?: EventType;
   events: any[] = [];
-    
+  orgId = localStorage.getItem('organisationId');
+  
   constructor(
     private eventService: EventService,
     private cdr: ChangeDetectorRef,
@@ -31,51 +32,31 @@ export class EventComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-   const orgId = localStorage.getItem('organisationId');
-   if (!orgId) {
+   if (!this.orgId) {
      this.router.navigate(['/login']);
     } else {
-      this.eventService.getEventsByOrg(orgId).subscribe({
+      this.loadEvents(this.orgId);
+    }
+  }
+
+  loadEvents(orgId: string, status?: number) {
+    if (!this.orgId) {
+     this.router.navigate(['/login']);
+    } else {
+      this.eventService.getEventsByOrg(orgId, status).subscribe({
         next: (res: any[]) => {
-          this.events = res.map(event => ({
-            ...event,
-            status: getStatusText(event.status)
-          }));
+          this.events = res;
           this.cdr.detectChanges();
         }
-      })
+      });
     }
   }
   
-  get totalEvents() {
-    return this.events.length;
-  }
-  get onlineEvents() {
-    return this.events.filter(e => e.type === 'online').length;
-  }
-  get venueEvents() {
-    return this.events.filter(e => e.type === 'venue').length;
-  }
-
-  get filteredEvents() {
-    let filtered = this.events;
-
-    if (this.selectedFilter !== 'all') {
-      filtered = filtered.filter(e => e.type === this.selectedFilter);
-    }
-
-    if (this.searchText.trim()) {
-      filtered = filtered.filter(e =>
-        e.title.toLowerCase().includes(this.searchText.toLowerCase()) ||
-        e.status.toLowerCase().includes(this.searchText.toLowerCase())
-      );
-    }
-
-    return filtered;
-  }
-
-  filter(type: 'all' | 'online' | 'venue') {
+  filter(type?: EventType) {
     this.selectedFilter = type;
+    if (this.orgId) {
+      this.loadEvents(this.orgId, type)
+    }
   }
 
   onSearch() {
@@ -83,10 +64,7 @@ export class EventComponent implements OnInit {
     this.eventService.getSearch(keyword)
       .subscribe({
         next: (res) => {
-          this.events = res.map(event => ({
-            ...event,
-            status: getStatusText(event.status)
-          }));
+          this.events = res
           this.cdr.detectChanges();
         },
         error: (err) => {

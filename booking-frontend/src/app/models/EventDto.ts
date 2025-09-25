@@ -16,3 +16,9 @@ export interface EventWithDetailDto {
   contactInfo?: string;
   gallery?: string;
 }
+
+export enum EventType {
+  Online = 0,
+  Offline = 1,
+  Hybrid = 2
+}

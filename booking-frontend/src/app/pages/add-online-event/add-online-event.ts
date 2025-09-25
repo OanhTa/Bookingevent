@@ -67,13 +67,13 @@ export class AddOnnlineEvent{
   loadEvent(id: string) {
     this.eventService.getEventById(id).subscribe({
       next: (res) => {
-        // patch vào form đã khởi tạo sẵn
+        // patch phần detail
         this.eventForm.patchValue({
           detail: {
             name: res.name,
             thumbnail: res.thumbnail,
             categoryId: res.categoryId,
-            date: res.date,
+            date: res.date ? new Date(res.date) : null,
             time: res.time,
             duration: res.duration,
             description: res.eventDetail?.description || '',
@@ -81,18 +81,22 @@ export class AddOnnlineEvent{
           }
         });
 
-        const tickets = res.ticketTypes.map((t: any) =>
-          this.fb.group({
-            id: [t.id],
-            name: [t.name],
-            price: [t.price],
-            quantity: [t.quantity]
-          })
+        // set lại FormArray tickets
+        const ticketsArray = this.fb.array(
+          res.ticketTypes.map((t: any) =>
+            this.fb.group({
+              id: [t.id],
+              name: [t.name],
+              price: [t.price, [Validators.required, Validators.min(0)]],
+              quantity: [t.quantity, [Validators.required, Validators.min(1)]]
+            })
+          )
         );
-        this.eventForm.setControl('tickets', this.fb.array(tickets));
+        this.eventForm.setControl('tickets', ticketsArray);
       }
     });
   }
+
 
   nextStep() {
     if (this.activeStep < 3) this.activeStep++;

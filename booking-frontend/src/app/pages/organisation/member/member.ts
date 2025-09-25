@@ -75,6 +75,7 @@ export class MemberComponent implements OnInit {
     { field: 'email', header: 'Email' },
     { field: 'role', header: 'Vai trò' },
     { field: 'loginAt', header: 'Đăng nhập mới  nhất' },
+    { field: 'status', header: 'Trạng thái' },
     ];
 
     this.actions = [

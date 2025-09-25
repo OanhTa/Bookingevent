@@ -20,9 +20,14 @@ export class EventService {
     return this.http.get<any[]>(`${this.apiUrl}/search?keyword=${keyword}`);
   }
 
-  getEventsByOrg(orgId: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/by-org/${orgId}`);
+  getEventsByOrg(orgId: string, status?: number): Observable<any[]> {
+    let url = `${this.apiUrl}/by-org/${orgId}`;
+    if (status !== undefined) {
+      url += `?status=${status}`;
+    }
+    return this.http.get<any[]>(url);
   }
+
   getEventsByUser(userId: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/by-user/${userId}`);
   }

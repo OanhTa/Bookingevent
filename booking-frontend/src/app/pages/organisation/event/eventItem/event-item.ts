@@ -8,6 +8,7 @@ import { PopupComponent } from '../../../../components/popup/popup-component';
 import { Popover } from 'primeng/popover';
 import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
+import { getStatusClass, getStatusText } from '../../../../utils/event-status.helper';
 
 
 @Component({
@@ -25,6 +26,8 @@ export class EventItem implements OnInit {
     @Input() event: any;
     customers: User[] = [];
     showConfirm = false;
+    getStatusClass = getStatusClass; 
+    getStatusText = getStatusText;
     
     ngOnInit(): void { 
 
@@ -34,6 +37,12 @@ export class EventItem implements OnInit {
       private messageService: MessageService,
     ) {}
    
+    onCopyDraft(){
+      this.eventService.createEvent({
+        ...this.event,
+        status: 0
+      }).subscribe()
+    }
     onDelete(){
       const eventId = this.event.id;
       this.eventService.deleteEvent(eventId).subscribe(res => this.messageService.add({severity: 'success',summary: 'Thành công',detail: 'Xóa sự kiện thành công'}));

@@ -18,3 +18,17 @@ export function getStatusText(status: EventStatus | number): string {
     default: return 'Không xác định';
   }
 }
+
+export function getStatusClass(status: EventStatus | number): string {
+  switch (status) {
+      case EventStatus.Draft: return 'bg-gray-500';
+      case EventStatus.Published: return 'bg-green-500';
+      case EventStatus.Ongoing: return 'bg-yellow-500';
+      case EventStatus.Completed: return 'bg-blue-500';
+      case EventStatus.Cancelled: return 'bg-red-500';
+      case EventStatus.Archived: return 'bg-indigo-500';
+      default: return 'bg-gray-300';
+    }
+  }
+
+

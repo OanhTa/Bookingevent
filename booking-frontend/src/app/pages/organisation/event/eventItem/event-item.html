@@ -9,7 +9,12 @@
     <div class="ml-4">
       <h2 class="text-l font-semibold">{{ event.name }}</h2>
       <div class="text-sm text-gray-500 mt-1">
-        Trang thái: {{ event.status }} | Bắt đầu vào: {{ event.date | date:'dd/MM/yyyy HH:mm' }}
+        <span 
+          class="px-2 py-1 mr-2 rounded text-white text-sm font-medium"
+          [ngClass]="getStatusClass(event.status)">
+          {{ getStatusText(event.status) }}
+        </span>
+        <span> Bắt đầu vào: {{ event.date | date:'dd/MM/yyyy HH:mm' }}</span>
       </div>
     </div>
     <div class="ml-auto">
@@ -27,14 +32,17 @@
         <button [routerLink]="['/online-event', event.id]" class="flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100">
           <i class="fa-solid fa-gear"></i> Sửa
         </button>
-        <button class="flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100">
+        <button [routerLink]="['/detail-event', event.id]" class="flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100">
           <i class="fa-solid fa-eye"></i> Xem sự kiện
         </button>
-        <button class="flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100">
+        <button (click)="onCopyDraft()" class="flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100">
           <i class="fa-solid fa-copy"></i> Nhân bản
         </button>
-        <button (click)="this.showConfirm = true" class="flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100">
-          <i class="fa-solid fa-trash"></i> Xóa
+        <button
+           *ngIf="event.status === 0  || event.status === 1"
+           (click)="this.showConfirm = true" class="flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100">
+          <i class="fa-solid" [ngClass]="event.status === 0 ? 'fa-trash' : 'fa-ban'"></i>
+          {{ event.status === 0 ? 'Xóa' : 'Hủy' }}
         </button>
       </p-popover>
     </div>
