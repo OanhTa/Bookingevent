@@ -5,8 +5,9 @@ import { EventService } from '../../../services/EventService';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
-import { getStatusText } from '../../../utils/event-status.helper';
 import { EventType } from '../../../models/EventDto';
+import { FilterFormComponent } from '../../../components/filter-form/filter-form';
+import { SearchComponent } from '../../../components/search/search-component';
 
 
 @Component({
@@ -16,7 +17,8 @@ import { EventType } from '../../../models/EventDto';
     CommonModule,
     EventItem,
     FormsModule,
-    ButtonModule
+    ButtonModule,
+    SearchComponent,
   ],
   templateUrl: './event.html',
 })
@@ -27,10 +29,11 @@ export class EventComponent implements OnInit {
   orgId = localStorage.getItem('organisationId');
   
   filterOptions = [
-  { label: 'Tất cả', value: undefined },
-  { label: 'Trực tuyến', value: EventType.Online },
-  { label: 'Trực tiếp', value: EventType.Offline }
-];
+    { label: 'Tất cả', value: undefined },
+    { label: 'Trực tuyến', value: EventType.Online },
+    { label: 'Trực tiếp', value: EventType.Offline }
+  ];
+
   constructor(
     private eventService: EventService,
     private cdr: ChangeDetectorRef,
@@ -61,16 +64,12 @@ export class EventComponent implements OnInit {
     }
   }
 
-  onSearch() {
-    const keyword = this.searchText.trim()|| '';
-    this.eventService.getSearch(keyword)
+  onSearchHandler(data: string) {
+    this.eventService.getSearch(data)
       .subscribe({
         next: (res) => {
-          this.events = res
-          this.cdr.detectChanges();
-        },
-        error: (err) => {
-          console.error('Search error:', err);
+          this.events = res;
+          this.cdr.markForCheck();
         }
       });
     }

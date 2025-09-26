@@ -22,3 +22,7 @@
   (save)="onSave($event)"
   (close)="showModalForm=false"
 ></app-modal-form>
+
+<p-blockUI [blocked]="loading" [autoZIndex]="true">
+  <p-progressSpinner styleClass="w-12 h-12"></p-progressSpinner>
+</p-blockUI>

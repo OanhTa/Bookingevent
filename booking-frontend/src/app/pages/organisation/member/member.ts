@@ -3,15 +3,14 @@ import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { ButtonModule } from "primeng/button";
 import { TableComponent } from "../../../components/table/table-component";
-import { SearchComponent } from "../../../components/search/search-component";
 import { TableAction } from "../../../models/TableAction";
 import { FormField } from "../../../models/FormField";
-import { FilterFormComponent } from "../../../components/filter-form/filter-form";
 import { OrganisationService } from "../../../services/OrganisationService";
 import { ModalFormComponent } from "../../../components/model/form-model/model-components";
 import { InviteUserDto } from "../../../models/CreateOrganisationDto";
-
-
+import { getRoleText, getStatusText } from "../../../utils/organisation-user-enum";
+import { ProgressSpinner } from "primeng/progressspinner";
+import { BlockUI } from "primeng/blockui";
 
 @Component({
   selector: 'app-member',
@@ -22,13 +21,16 @@ import { InviteUserDto } from "../../../models/CreateOrganisationDto";
     ButtonModule,
     FormsModule, 
     TableComponent,
-    ModalFormComponent
+    ModalFormComponent,
+    ProgressSpinner,BlockUI
   ]
 })
 export class MemberComponent implements OnInit {
   members: any[] = [];
   columns: any[] = [];
   actions: TableAction<any>[] = [];
+
+  loading = false
 
   roleSelect: any | null = null;
   showModal = false;
@@ -37,29 +39,19 @@ export class MemberComponent implements OnInit {
   modalTitle = '';
   modalFields : FormField[] = [
     { label: 'Bạn muốn mời thành viên nào trong nhóm?*', name: 'email', type: 'email', required: true, validators: ['required'] },
-    { label: 'Bạn muốn giao vai trò gì?*', name: 'role', type: 'select'
-      ,required: true, validators: ['required']
+    { label: 'Bạn muốn giao vai trò gì?*', name: 'role', type: 'select', required: true, validators: ['required']
       ,options: [
-      { label: 'Chủ tổ chức', value: 'owner' },
-      { label: 'Người quản lý', value: 'manager' },
-      { label: 'Nhân viên', value: 'staff' }
-    ]},
-    { 
-      label: 'Gửi email hệ thống tới thành viên nhóm này*', 
-      name: 'isSend', 
-      type: 'checkbox', 
-      options: [
-        { label: 'Có', value: "1" },
-        { label: 'Không', value: "0" }
-      ]
-    }
+      { label: 'Chủ tổ chức', value: '0' },
+      { label: 'Người quản lý', value: '1' },
+      { label: 'Nhân viên', value: '2' }
+    ]}
   ];
   modelFormData: any = null;
   showConfirm = false;
   currentAction = ''
 
   orgId = localStorage.getItem('organisationId') || "";
-
+  
   constructor(
     public organisationService : OrganisationService,
     public cdr : ChangeDetectorRef
@@ -74,21 +66,26 @@ export class MemberComponent implements OnInit {
     { field: 'userName', header: 'Tên' },
     { field: 'email', header: 'Email' },
     { field: 'role', header: 'Vai trò' },
-    { field: 'loginAt', header: 'Đăng nhập mới  nhất' },
     { field: 'status', header: 'Trạng thái' },
+    { field: 'loginAt', header: 'Đăng nhập mới  nhất' },
     ];
 
     this.actions = [
-      { label: 'Bật 2FA', callback: (r) => this.showDeletePopup(r) },
-      { label: 'Hoạt động', callback: (r) => this.showDeletePopup(r) },
+      { label: 'Khóa tạm thời', callback: (r) => this.showDeletePopup(r) },
+      { label: 'Xóa', callback: (r) => this.showDeletePopup(r) },
     ];
 
     this.loadUserByOrg();
   }
   loadUserByOrg(){
     this.organisationService.getUsersByOrganisation(this.orgId).subscribe(
-      (res)=>{
-        this.members = res.data; 
+      (res: any)=>{
+        this.members = res.data.map( (m: any)  => ({
+          ...m,
+          role: getRoleText(m.role),
+          status: getStatusText(m.status)
+        }));
+
         this.cdr.detectChanges()
       } 
     )
@@ -101,13 +98,18 @@ export class MemberComponent implements OnInit {
   }
 
   onSave(data: any) {
+    this.loading = true
     const a: InviteUserDto = {
       email: data.email,
       orgId: this.orgId,
-      RoleInOrg: data.role,
+      RoleInOrg: Number(data.role),
     };
     this.organisationService.inviteMember(a).subscribe({
-        next: (res) => this.loadUserByOrg()
+        next: (res) => {
+          this.loadUserByOrg()
+          this.showModalForm = false;
+          this.loading = false
+        }
     });
   }
 }

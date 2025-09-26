@@ -3,6 +3,7 @@ import { OrganisationService } from '../../../services/OrganisationService';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { map, Observable, of } from 'rxjs';
+import { getRoleText } from '../../../utils/organisation-user-enum';
 
 @Component({
   selector: 'app-organisation-menu',
@@ -15,7 +16,8 @@ import { map, Observable, of } from 'rxjs';
 })
 export class OrganisationMenuComponent implements OnInit {
   organisations$: Observable<any[]> = of([]);
-
+  getRoleText = getRoleText;
+  
   constructor(
     private organisationService: OrganisationService,
     private router: Router,

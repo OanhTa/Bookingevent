@@ -8,6 +8,16 @@ export interface User {
   roleIds?: [],
   organisationIds?: []
 }
+
+export interface UserOrg {
+  id ?: string;
+  userName: string;
+  email:string;
+  phone: string;
+  role: number;
+  status: number;
+}
+
 export interface UserFilter {
   id?: string;
   userName?: string;

@@ -8,7 +8,7 @@ import { PopupComponent } from '../../../../components/popup/popup-component';
 import { Popover } from 'primeng/popover';
 import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
-import { getStatusClass, getStatusText } from '../../../../utils/event-status.helper';
+import { getStatusClass, getStatusText } from '../../../../utils/event-status-enum';
 
 
 @Component({

@@ -19,9 +19,16 @@
   </ng-template>
 
   <ng-template pTemplate="end">
-    <div class="flex items-center">
+    <div class="flex items-center gap-1">
       <p-button size="small" label="Tạo sự kiện" icon="fa-solid fa-calendar" routerLink="/create"/>
-      <p-button link (onClick)="toggle()">
+      <div class="relative">
+        <p-button icon="pi pi-bell" [rounded]="true" severity="warn" [text]="true" (click)="op.toggle($event)" title="Thông báo"/>
+        <span *ngIf="unreadCount > 0" 
+          class="absolute top-0 right-0 w-4 h-4 text-xs flex items-center justify-center bg-red-500 text-white rounded-full">
+            {{ unreadCount }}
+        </span>
+      </div>
+      <p-button link (onClick)="toggle()" title="Tài khoản">
         <div class="w-8 h-8 mx-auto rounded-full overflow-hidden border-2 border-green-400">
           <img [src]="user.avatarUrl" alt="avatar large" class="w-full h-full object-cover" />
         </div>
@@ -69,3 +76,33 @@
     </ul>
   </div>
 </div>
+
+ <p-popover #op>
+    <div class="flex flex-col gap-2 min-w-[280px] max-w-[350px] max-h-[400px] overflow-y-auto">
+      <ng-container *ngIf="notifications.length > 0; else noNotification">
+        <div *ngFor="let n of notifications" 
+             class="p-3 border-b last:border-b-0 rounded hover:bg-gray-50 flex gap-2 items-start"
+             [ngClass]="{'bg-gray-100': !n.isRead}"
+             (click)="markAsRead(n)">      
+          <!-- Icon trạng thái -->
+          <div class="flex-shrink-0 mt-1">
+            <i *ngIf="!n.isRead" class="pi pi-bell text-blue-500 text-sm"></i>
+            <i *ngIf="n.isRead" class="pi pi-check-circle text-gray-400 text-sm"></i>
+          </div>
+
+          <!-- Nội dung thông báo -->
+          <div class="flex-1">
+            <p class="font-semibold text-sm text-gray-800">{{ n.notification?.title }}</p>
+            <p class="text-gray-700 text-sm">{{ n.notification?.message }}</p>
+            <p class="text-gray-400 text-xs mt-1">
+              {{ n.createdAt | date:'short' }}
+            </p>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-template #noNotification>
+        <div class="text-center text-gray-500">Chưa có thông báo</div>
+      </ng-template>
+    </div>
+  </p-popover>

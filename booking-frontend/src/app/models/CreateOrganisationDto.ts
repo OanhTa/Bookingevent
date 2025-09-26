@@ -7,5 +7,5 @@ export interface CreateOrganisationDto {
 export interface InviteUserDto {
   email: string;
   orgId: string;
-  RoleInOrg: string;
+  RoleInOrg: number;
 }

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../environments/environments';
 import { CreateOrganisationDto, InviteUserDto } from '../models/CreateOrganisationDto';
 import { ApiResponse } from '../models/ApiResponseDto';
-import { User } from '../models/UserDto';
+import { User, UserOrg } from '../models/UserDto';
 
 @Injectable({
   providedIn: 'root'
@@ -30,8 +30,8 @@ export class OrganisationService {
     return this.http.get<ApiResponse<any[]>>(`${this.apiUrl}/by-user/${userId}`);
   }
 
-  getUsersByOrganisation(orgId: string): Observable<ApiResponse<User[]>> {
-    return this.http.get<ApiResponse<User[]>>(
+  getUsersByOrganisation(orgId: string): Observable<ApiResponse<UserOrg[]>> {
+    return this.http.get<ApiResponse<UserOrg[]>>(
       `${this.apiUrl}/users-by-organisation?orgId=${orgId}`
     );
   }
