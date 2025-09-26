@@ -19,6 +19,8 @@ import { ForgotPasswordComponent } from './pages/login/forgot-password/forgot-pa
 import { ResetPasswordComponent } from './pages/login/reset-password/reset-password';
 import { MyAccount } from './pages/admin/my-account/my-account';
 import { EventDetail } from './pages/event-detail/event-detail';
+import { Checkout } from './pages/checkout/checkout';
+import path from 'path';
 export const routes: Routes = [
     {
         path: '',
@@ -48,6 +50,7 @@ export const routes: Routes = [
     { path: 'create', component: AddEvent },
     { path: 'create-online-event', component: AddOnnlineEvent },
     { path: 'create-venue-event', component: AddVenueEvent },
-    {path:'eventDetail/:id',component:EventDetail}
+    {path:'eventDetail/:id',component:EventDetail},
+    {path:'checkout/:id',component:Checkout}
 
 ];

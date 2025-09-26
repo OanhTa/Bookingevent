@@ -53,15 +53,34 @@ export class Login {
     const body: LoginRequestDto = { email : data.email, password: data.password };
     this.authServices.login(body).subscribe({
       next: (res) => {
-        this.loading = false
-        localStorage.setItem('account', JSON.stringify(res));
-        this.messageService.add({severity: 'success',summary: res.message,detail: 'Chào mừng bạn quay lại!'});
-        
-        if (res.roles.includes('Administrator')) {
-          this.router.navigate(['/admin']);
-        } else {
-          this.router.navigate(['/']);
-        }
+        this.loading = false;
+
+// ✅ Lưu vào localStorage
+localStorage.setItem('account', JSON.stringify(res));
+
+// ✅ Gọi service để set current user (để header biết bạn đã đăng nhập)
+this.authServices.setCurrentUser({
+  UserId: Number(res.userId),  // hoặc res.UserId nếu API trả về kiểu khác
+  ho: res.ho || '',
+  ten: res.ten || '',
+  email: res.email,
+  token: res.token      // 👈 nhớ thêm token nếu có
+});
+
+// ✅ Thông báo
+this.messageService.add({
+  severity: 'success',
+  summary: res.message,
+  detail: 'Chào mừng bạn quay lại!'
+});
+
+// ✅ Điều hướng
+if (res.roles.includes('Administrator')) {
+  this.router.navigate(['/admin']);
+} else {
+  this.router.navigate(['/']);
+}
+
       },
       error: (err) => {
         this.loading = false

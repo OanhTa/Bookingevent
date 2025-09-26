@@ -1,104 +1,184 @@
 <app-header></app-header>
 
-<div *ngIf="eventDetail; else loading" class="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 py-10 grid grid-cols-1 lg:grid-cols-3 gap-10">
+<div *ngIf="eventDetail; else loading" class="w-full mx-auto px-6 sm:px-8 lg:px-32 py-10  gap-10  bg-gray-100">
+  <!-- Date + Title -->
+  <div class="flex items-start space-x-6  ">
+    <div class="bg-green-500 text-white text-center px-5 py-3 rounded-lg">
+      <p class="text-sm font-bold uppercase">{{ eventDetail.date | date:'MMM' }}</p>
+      <p class="text-3xl font-extrabold">{{ eventDetail.date | date:'dd' }}</p>
+    </div>
 
-  <!-- LEFT: Main Info -->
-  <div class="lg:col-span-2 space-y-6">
+    <div>
+      <h2 class="text-3xl lg:text-4xl font-bold leading-tight">{{ eventDetail.name }}</h2>
 
-    <!-- Date + Title -->
-    <div class="flex items-start space-x-6">
-      <div class="bg-green-500 text-white text-center px-5 py-3 rounded-lg">
-        <p class="text-sm font-bold uppercase">{{ eventDetail.date | date:'MMM' }}</p>
-        <p class="text-3xl font-extrabold">{{ eventDetail.date | date:'dd' }}</p>
+      <p class="text-gray-600 mt-2 text-sm lg:text-base flex flex-wrap items-center gap-4">
+        <!-- Location -->
+        <span class="flex items-center gap-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-green-600" fill="currentColor"
+            viewBox="0 0 20 20">
+            <path fill-rule="evenodd"
+              d="M10 2a6 6 0 00-6 6c0 4.418 6 10 6 10s6-5.582 6-10a6 6 0 00-6-6zm0 8a2 2 0 110-4 2 2 0 010 4z"
+              clip-rule="evenodd" />
+          </svg>
+          {{ eventDetail.eventDetail.location }}
+        </span>
+
+        <!-- Time -->
+        <span class="flex items-center gap-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-green-600" fill="currentColor"
+            viewBox="0 0 20 20">
+            <path fill-rule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-12.25a.75.75 0 00-1.5 0V10c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5.75z"
+              clip-rule="evenodd" />
+          </svg>
+          {{ eventDetail.time }}
+        </span>
+
+        <!-- Duration -->
+        <span class="flex items-center gap-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-green-600" fill="currentColor"
+            viewBox="0 0 24 24">
+            <path
+              d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm0-18a8 8 0 100 16 8 8 0 000-16zm.75 4.5a.75.75 0 00-1.5 0v4.19l-2.22 2.22a.75.75 0 101.06 1.06l2.41-2.41a.75.75 0 00.25-.56V8.5z" />
+          </svg>
+          {{ eventDetail.duration }}
+        </span>
+      </p>
+    </div>
+  </div>
+  <div class="w-full mx-auto  py-10 grid grid-cols-1 xl:grid-cols-3 gap-6">
+    <!-- LEFT: Main Info -->
+    <div class=" xl:col-span-2  rounded-lg ">
+
+
+
+      <!-- Main Image -->
+      <img *ngIf="eventDetail.thumbnail" [src]="eventDetail.thumbnail" alt="{{ eventDetail.name }}"
+        class="w-full h-96 lg:h-[32rem] object-cover rounded-lg shadow-lg">
+
+
+      <!-- Price & Buy Button -->
+      <div class="flex items-center justify-between mt-4">
+        <p class="text-2xl font-bold text-green-600">From {{ eventDetail.priceFrom }}</p>
+
       </div>
+
+      <!-- Description -->
       <div>
-        <h2 class="text-3xl lg:text-4xl font-bold leading-tight">{{ eventDetail.name }}</h2>
-        <p class="text-gray-600 mt-2 text-sm lg:text-base">
-          📍 {{ eventDetail.eventDetail.location }} · 🕒 {{ eventDetail.time }} · ⏱️ {{ eventDetail.duration }}
-        </p>
+        <h3 class="text-lg font-semibold mb-2">Description</h3>
+        <p class="text-gray-700">{{ eventDetail.eventDetail.description }}</p>
+      </div>
+
+
+
+    </div>
+
+
+    <!-- RIGHT: Event Details Box -->
+    <div class="col-span-1 bg-white p-10 rounded-lg shadow border">
+      <h3 class="text-2xl font-bold mb-10">Event Details</h3>
+
+      <div class="space-y-10">
+        <!-- Organiser -->
+        <div class="flex items-start">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 90" class="w-7 h-7 text-green-600">
+              <circle cx="45" cy="45" r="45" fill="#3cb22b" />
+              <path
+                d="M 45 54.287 c -8.9 0 -16.14 -7.24 -16.14 -16.14 S 36.1 22.007 45 22.007 c 8.899 0 16.14 7.241 16.14 16.14 S 53.899 54.287 45 54.287 z"
+                fill="white" />
+              <path
+                d="M 72.957 71.22 c -3.177 -5.75 -8.143 -10.477 -14.049 -13.341 c -2.008 -0.974 -4.352 -0.959 -6.436 0.041 c -2.343 1.126 -4.857 1.696 -7.473 1.696 c -2.616 0 -5.13 -0.571 -7.473 -1.696 c -2.081 -0.999 -4.426 -1.015 -6.435 -0.041 c -5.906 2.864 -10.872 7.59 -14.05 13.341 C 23.877 78.957 33.865 83.843 45 83.843 C 56.135 83.843 66.123 78.957 72.957 71.22 z"
+                fill="white" />
+            </svg>
+          </div>
+          <div class="ml-5">
+            <p class="text-base font-medium text-gray-500">Organised by</p>
+            <p class="text-lg font-semibold text-gray-900">{{ eventDetail.eventDetail.speakerOrPerformer }}</p>
+            <a href="#" class="text-green-600 text-base font-semibold hover:underline">View Profile</a>
+          </div>
+        </div>
+
+        <!-- Date and Time -->
+        <div class="flex items-start">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 90" class="w-7 h-7">
+              <path d="M64.654 14.951H25.345c-1.657 0-3-1.343-3-3s1.343-3 3-3h39.309c1.657 0 3 1.343 3 3s-1.342 3-3 3z"
+                fill="#16a34a" />
+              <path
+                d="M87 31.837H3c-1.657 0-3-1.343-3-3v-8.87C0 13.893 4.942 8.951 11.016 8.951h6.398c1.657 0 3 1.343 3 3s-1.343 3-3 3h-6.398C8.25 14.951 6 17.201 6 19.967v5.87h78v-5.87c0-2.766-2.25-5.017-5.017-5.017h-6.397c-1.657 0-3-1.343-3-3s1.343-3 3-3h6.397C85.058 8.951 90 13.893 90 19.967v8.87c0 1.657-1.343 3-3 3z"
+                fill="#16a34a" />
+              <path
+                d="M78.983 89.123H11.016C4.942 89.123 0 84.181 0 78.106V28.837c0-1.657 1.343-3 3-3h84c1.657 0 3 1.343 3 3v49.269c0 6.075-4.942 11.017-11.017 11.017zM6 31.837v46.269c0 2.767 2.25 5.017 5.016 5.017h67.967c2.767 0 5.017-2.25 5.017-5.017V31.837H6z"
+                fill="#16a34a" />
+              <path
+                d="M22.734 20.025h-2.708c-1.442 0-2.612-1.169-2.612-2.612V6.489c0-1.442 1.169-2.612 2.612-2.612h2.708c1.442 0 2.612 1.169 2.612 2.612v10.924c0 1.442-1.169 2.612-2.612 2.612zM69.975 20.025h-2.708c-1.442 0-2.612-1.169-2.612-2.612V6.489c0-1.442 1.169-2.612 2.612-2.612h2.708c1.442 0 2.612 1.169 2.612 2.612v10.924c0 1.442-1.169 2.612-2.612 2.612z"
+                fill="#16a34a" />
+            </svg>
+          </div>
+          <div class="ml-5">
+            <p class="text-base font-medium text-gray-500">Date and Time</p>
+            <p class="text-lg font-semibold text-gray-900">
+              {{ eventDetail.date | date:'EEE, MMM d, y' }} {{ eventDetail.time }}
+            </p>
+            <a href="#" class="text-green-600 text-base font-semibold hover:underline">Add to Calendar</a>
+          </div>
+        </div>
+
+        <!-- Duration -->
+        <div class="flex items-start">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 90" class="w-7 h-7">
+              <path
+                d="M45 90C20.187 90 0 69.813 0 45S20.187 0 45 0s45 20.187 45 45-20.187 45-45 45zm0-82C24.598 8 8 24.598 8 45s16.598 37 37 37 37-16.598 37-37S65.402 8 45 8z"
+                fill="#16a34a" />
+              <path
+                d="M58.059 61.43c-.99 0-1.982-.365-2.757-1.103l-13.06-12.43C41.449 47.143 41 46.095 41 45V22.75c0-2.209 1.791-4 4-4s4 1.791 4 4v20.535l11.817 11.247c1.6 1.523 1.663 4.055.14 5.655-.79.827-1.845 1.243-2.898 1.243z"
+                fill="#16a34a" />
+            </svg>
+          </div>
+          <div class="ml-5">
+            <p class="text-base font-medium text-gray-500">Duration</p>
+            <p class="text-lg font-semibold text-gray-900">{{ eventDetail.duration }}</p>
+          </div>
+        </div>
+
+        <!-- Location -->
+        <div class="flex items-start">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
+            <span class="text-green-600 text-2xl">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" class="w-6 h-6 fill-green-600">
+                <path
+                  d="M128 12C85 12 50 47 50 90c0 67 78 154 78 154s78-87 78-154c0-43-35-78-78-78zm0 106c-15 0-28-13-28-28s13-28 28-28 28 13 28 28-13 28-28 28z" />
+              </svg>
+            </span>
+          </div>
+          <div class="ml-5">
+            <p class="text-base font-medium text-gray-500">Location</p>
+            <p class="text-lg font-semibold text-gray-900">{{ eventDetail.eventDetail.location }}</p>
+            <a href="#" class="text-green-600 text-base font-semibold hover:underline">View Map</a>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Tickets -->
+      <div class="mt-12 flex items-center justify-between">
+        <p class="text-3xl font-extrabold text-green-600">AUD {{ eventDetail.priceFrom }}</p>
+      </div>
+
+      <!-- Mua ngay -->
+      <div class="mt-10 text-center">
+        <button (click)="goToCheckout(eventDetail.id)"
+          class="w-full px-8 py-4 bg-green-500 text-white text-lg font-bold rounded-lg hover:bg-green-600 transition">
+          Mua ngay
+        </button>
       </div>
     </div>
 
-    <!-- Main Image -->
-    <img *ngIf="eventDetail.thumbnail"
-         [src]="eventDetail.thumbnail"
-         alt="{{ eventDetail.name }}"
-         class="w-full h-96 lg:h-[32rem] object-cover rounded-lg shadow-lg">
-
-    <!-- Gallery -->
-    <div *ngIf="getGalleryImages().length > 0" class="flex space-x-3 overflow-x-auto py-2">
-      <img *ngFor="let img of getGalleryImages()" [src]="img" alt="Gallery" class="h-24 w-24 object-cover rounded-md flex-shrink-0">
-    </div>
-
-    <!-- Price & Buy Button -->
-    <div class="flex items-center justify-between mt-4">
-      <p class="text-2xl font-bold text-green-600">From ${{ eventDetail.priceFrom }}</p>
-      <button (click)="goToTicketPage(eventDetail.id)"
-              class="px-6 py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition">
-        Mua ngay
-      </button>
-    </div>
-
-    <!-- Description -->
-    <div>
-      <h3 class="text-lg font-semibold mb-2">Description</h3>
-      <p class="text-gray-700">{{ eventDetail.eventDetail.description }}</p>
-    </div>
-
-    <!-- Speaker / Performer -->
-    <div *ngIf="eventDetail.eventDetail?.speakerOrPerformer">
-      <h3 class="text-lg font-semibold mb-1">Speaker / Performer</h3>
-      <p>{{ eventDetail.eventDetail.speakerOrPerformer }}</p>
-    </div>
-
-    <!-- Contact Info -->
-    <div *ngIf="eventDetail.eventDetail?.contactInfo">
-      <h3 class="text-lg font-semibold mb-1">Contact Info</h3>
-      <p>{{ eventDetail.eventDetail.contactInfo }}</p>
-    </div>
 
   </div>
 
-  <!-- RIGHT: Event Details Box -->
-  <div class="bg-white shadow-lg rounded-lg p-6 space-y-4">
-    <h3 class="text-lg font-semibold mb-4">Event Details</h3>
-
-
-    <div>
-      <p class="font-medium">📅 Date</p>
-      <p>{{ eventDetail.date | date:'EEE, MMM d, y' }}</p>
-    </div>
-
-    <div *ngIf="eventDetail.time">
-      <p class="font-medium">🕒 Time</p>
-      <p>{{ eventDetail.time }}</p>
-    </div>
-
-    <div *ngIf="eventDetail.duration">
-      <p class="font-medium">⏱️ Duration</p>
-      <p>{{ eventDetail.duration }}</p>
-    </div>
-
-    <div *ngIf="eventDetail.eventDetail?.location">
-      <p class="font-medium">📍 Location</p>
-      <p>{{ eventDetail.eventDetail.location }}</p>
-    </div>
-
-    <div *ngIf="eventDetail.categoryId">
-      <p class="font-medium">📂 Category</p>
-      <p>{{ getCategoryName(eventDetail.categoryId) }}</p>
-    </div>
-
-    <div *ngIf="eventDetail.ticketTypes?.length">
-      <p class="font-medium">🎟️ Tickets Available</p>
-      <ul class="list-disc pl-5">
-        <li *ngFor="let ticket of eventDetail.ticketTypes">
-          {{ ticket.name }} - {{ ticket.quantity }} tickets - ${{ ticket.price }}
-        </li>
-      </ul>
-    </div>
-
-  </div>
 
 </div>
 

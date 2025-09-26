@@ -1,4 +1,7 @@
 export interface LoginResponseDto {
+  ten: string;
+  ho: string;
+  user(user: any): unknown;
   data(data: any): string;
   message: string | undefined;
   token: string;

@@ -1,0 +1,162 @@
+<app-header></app-header>
+<div class="w-full mx-auto px-6 sm:px-8 lg:px-32 py-10 gap-10">
+  <div class="flex items-start space-x-6">
+    <h2 class="text-3xl lg:text-4xl font-bold leading-tight">{{ eventDetail?.name }}</h2>
+  </div>
+
+  <div class="w-full mx-auto py-10 grid grid-cols-1 xl:grid-cols-3 gap-6">
+    <!-- Bảng 1: Thông tin thanh toán -->
+    <div class="xl:col-span-2 rounded-lg">
+      <div class="bg-white shadow rounded-lg p-6">
+        <h2 class="text-xl font-bold mb-6">Thông tin thanh toán</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-gray-700 font-semibold mb-2">Tên*</label>
+            <input type="text" [(ngModel)]="formData.firstName"
+              class="w-full border rounded-md px-4 py-2 bg-gray-100" />
+          </div>
+
+          <div>
+            <label class="block text-gray-700 font-semibold mb-2">Họ*</label>
+            <input type="text" [(ngModel)]="formData.lastName" class="w-full border rounded-md px-4 py-2 bg-gray-100" />
+          </div>
+
+          <div>
+            <label class="block text-gray-700 font-semibold mb-2">Email*</label>
+            <input type="email" [(ngModel)]="formData.email" class="w-full border rounded-md px-4 py-2" />
+          </div>
+
+          <div>
+            <label class="block text-gray-700 font-semibold mb-2">Địa chỉ*</label>
+            <input type="text" [(ngModel)]="formData.address" class="w-full border rounded-md px-4 py-2" />
+          </div>
+
+          <div>
+            <label class="block text-gray-700 font-semibold mb-2">Quốc gia*</label>
+            <select [(ngModel)]="formData.country" class="w-full border rounded-md px-4 py-2">
+              <option value="">Chọn quốc gia</option>
+              <option value="USA">USA</option>
+              <option value="UK">UK</option>
+              <option value="VN">Việt Nam</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-gray-700 font-semibold mb-2">Ghi chú</label>
+            <input type="text" [(ngModel)]="formData.state" class="w-full border rounded-md px-4 py-2" />
+          </div>
+
+          <div>
+            <label class="block text-gray-700 font-semibold mb-2">Tỉnh/Thành phố*</label>
+            <input type="text" [(ngModel)]="formData.city" class="w-full border rounded-md px-4 py-2" />
+          </div>
+
+          <div>
+            <label class="block text-gray-700 font-semibold mb-2">Mã zip/Bưu điện*</label>
+            <input type="text" [(ngModel)]="formData.zip" class="w-full border rounded-md px-4 py-2" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Bảng 2: Thông tin thẻ -->
+      <div class="bg-white shadow rounded-lg p-6 mt-8">
+        <h2 class="text-lg font-bold mb-6">Tổng số tiền phải trả</h2>
+        <div class="mb-6">
+          <label class="block text-gray-700 font-semibold mb-2">Số Thẻ*</label>
+          <input type="text" [(ngModel)]="formData.cardNumber" placeholder="XXXX-XXXX-XXXX-XXXX"
+            class="w-full border rounded-md px-4 py-2 bg-gray-100" />
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <label class="block text-gray-700 font-semibold mb-2">Ngày hết hạn*</label>
+            <input type="text" [(ngModel)]="formData.expiry" placeholder="MM/YY"
+              class="w-full border rounded-md px-4 py-2 bg-gray-100" />
+          </div>
+          <div>
+            <label class="block text-gray-700 font-semibold mb-2">CVV*</label>
+            <input type="text" [(ngModel)]="formData.cvv" placeholder="XXX"
+              class="w-full border rounded-md px-4 py-2 bg-gray-100" />
+          </div>
+        </div>
+
+        <button (click)="confirmPayment()" 
+          class="w-full bg-green-500 text-white py-3 rounded-md text-lg font-semibold hover:bg-green-600 transition-colors">
+          Xác nhận và thanh toán
+        </button>
+      </div>
+    </div>
+
+    <!-- Bảng 3: Thông tin sự kiện -->
+    <div class="bg-white shadow rounded-lg p-6 mt-8 col-span-1 border text-xl font-bold">
+      <h2 class="text-lg font-bold mb-6">Thông tin sự kiện</h2>
+
+      <!-- Thông tin cơ bản -->
+      <div class="flex items-start gap-4 mb-6" *ngIf="eventDetail; else loading">
+        <img [src]="eventDetail?.thumbnail" alt="Event" class="w-20 h-20 rounded-md object-cover" />
+        <div>
+          <h3 class="font-semibold text-gray-900">{{ eventDetail?.name }}</h3>
+          <p class="text-sm text-gray-500">
+            {{ eventDetail?.date | date:'EEE, MMM d, y' }} {{ eventDetail?.time }}
+          </p>
+          <p class="text-sm text-green-600 font-medium">{{ eventDetail?.eventDetail?.location }}</p>
+        </div>
+      </div>
+
+
+
+      <ng-template #loading>
+        <p class="text-gray-500">Đang tải thông tin sự kiện...</p>
+      </ng-template>
+
+      <!-- Số lượng vé -->
+      <div class="flex items-center justify-between py-2 text-gray-700 font-medium border-b">
+
+
+        <span>Tổng số vé</span>
+        <div class="flex items-center space-x-2">
+          <button (click)="decreaseTicket()"
+            class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300">-</button>
+          <input type="text" [value]="ticketCount" (input)="onTicketInput($event)"
+            class="w-16 text-center border rounded px-2 py-1 focus:outline-none focus:ring focus:ring-blue-300" />
+
+          <button (click)="increaseTicket()"
+            class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300">+</button>
+        </div>
+      </div>
+      <!-- thông báo chưa có số lượng -->
+      <div class="flex items-center justify-between py-2 text-gray-700 font-medium border-b">
+        <p *ngIf="ticketCount === 0" class="text-red-500 mt-1 text-sm">Vui lòng nhập số lượng vé</p>
+      </div>
+
+
+
+      <!-- Giá vé 1 vé -->
+      <div class="flex justify-between py-2 text-gray-700 font-medium border-b">
+        <span>Giá vé</span>
+        <span class="text-right">{{ eventDetail?.priceFrom | currency:'VND' }}</span>
+      </div>
+
+
+
+      <!-- Tổng tiền -->
+      <div class="flex justify-between py-2 text-gray-700 font-medium border-b">
+        <span>Tổng tiền thanh toán</span>
+        <span class="text-right font-bold">{{ totalPrice | currency:'VND' }}</span>
+      </div>
+
+      <!-- Mã giảm giá -->
+      <hr class="my-4" />
+      <div class="flex mb-6">
+        <input type="text" [(ngModel)]="formData.coupon" placeholder="Nhập mã giảm giá"
+          class="flex-grow border rounded-l-md px-4 py-2 bg-gray-100" />
+        <button (click)="applyCoupon()"
+          class="bg-green-500 text-white px-5 rounded-r-md hover:bg-green-600 transition-colors">
+          Sử dụng
+        </button>
+      </div>
+    </div>
+
+
+  </div>
+</div>

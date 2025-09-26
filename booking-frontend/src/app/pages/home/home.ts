@@ -36,7 +36,7 @@ export class Home implements OnInit {
   loadEvents(): void {
     this.eventService.getEvents().subscribe({
       next: (data) => {
-        console.log("Events loaded:", data);
+        // console.log("Events loaded:", data);
         this.eventDtos = data;
         this.filteredEvents = [...this.eventDtos];
         this.cdr.detectChanges();
@@ -48,7 +48,7 @@ export class Home implements OnInit {
   loadCategories(): void {
     this.categoryService.getCategory().subscribe({
       next: (data) => {
-        console.log("Categories loaded:", data);
+        // console.log("Categories loaded:", data);
         // ép kiểu id về string để khớp với event.categoryId (UUID)
         this.categories = [{ id: 0, name: 'All' }, ...data.map(c => ({ ...c, id: String(c.id) }))];
         this.cdr.detectChanges();

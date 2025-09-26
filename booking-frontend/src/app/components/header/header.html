@@ -1,11 +1,11 @@
 <nav class="bg-white shadow-md">
-  <div class="max-w-[80%] mx-auto px-6 sm:px-8 lg:px-12">
-    <div class="flex items-center justify-between h-20"> <!-- tăng chiều cao -->
+  <div class="w-full mx-auto px-6 sm:px-8 lg:px-32">
+    <div class="flex items-center justify-between h-20">
 
       <!-- Logo + Desktop Menu -->
-      <div class="flex items-center gap-12"> <!-- tăng gap -->
+      <div class="flex gap-12">
         <!-- Logo -->
-        <a routerLink="/" class="flex items-center gap-3 font-bold text-2xl"> <!-- font to hơn -->
+        <a routerLink="/" class="flex items-center gap-3 font-bold text-2xl">
           <span class="bg-green-600 text-white rounded-full flex items-center justify-center w-10 h-10 text-lg">
             B
           </span>
@@ -13,7 +13,7 @@
         </a>
 
         <!-- Desktop Menu -->
-        <div class="hidden md:flex items-center gap-8"> <!-- tăng gap -->
+        <div class="hidden md:flex items-center gap-8">
           <a routerLink="/" class="text-gray-700 hover:text-green-600 transition-colors font-semibold text-lg">Trang chủ</a>
           <a routerLink="/events" class="text-gray-700 hover:text-green-600 transition-colors font-semibold text-lg">Sự kiện</a>
           <a routerLink="/about" class="text-gray-700 hover:text-green-600 transition-colors font-semibold text-lg">Giới thiệu</a>
@@ -22,29 +22,18 @@
 
       <!-- Right actions -->
       <div class="flex items-center gap-4">
-        <!-- Create Event button -->
-        <a
-          routerLink="/create"
-          class="bg-green-500 text-white px-4 py-3 rounded text-base hover:bg-green-600 transition-colors flex items-center gap-2"
-        >
+        <!-- <a routerLink="/create" class="bg-green-500 text-white px-4 py-3 rounded text-base hover:bg-green-600 transition-colors flex items-center gap-2">
           <i class="fa-solid fa-calendar text-sm"></i>
           Tạo sự kiện
-        </a>
+        </a> -->
 
-        <!-- Avatar dropdown -->
-        <div class="relative">
-          <button
-            (click)="toggle()"
-            class="w-10 h-10 rounded-full overflow-hidden border-2 border-green-400 focus:outline-none"
-          >
+        <div *ngIf="user" class="relative">
+          <button (click)="toggle()" class="w-10 h-10 rounded-full overflow-hidden border-2 border-green-400 focus:outline-none">
             <img [src]="user.avatarUrl" alt="avatar" class="w-full h-full object-cover" />
           </button>
 
-          <!-- Dropdown menu -->
-          <div
-            *ngIf="isOpen"
-            class="absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-lg ring-1 ring-black ring-opacity-5 z-50"
-          >
+          <!-- Dropdown -->
+          <div *ngIf="isOpen" class="absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-lg ring-1 ring-black ring-opacity-5 z-50">
             <div class="p-6 text-center">
               <div class="w-20 h-20 mx-auto rounded-full overflow-hidden border-2 border-green-400">
                 <img [src]="user.avatarUrl" alt="avatar" class="w-full h-full object-cover" />
@@ -56,29 +45,32 @@
             </div>
             <div class="border-t">
               <ul class="text-base">
-                <li>
-                  <button
-                    class="w-full text-left px-4 py-3 hover:bg-gray-50"
-                    (click)="toggleOrgMenu()"
-                  >
-                    Tổ chức của bạn
-                  </button>
-                </li>
+                <!-- <li>
+                  <button class="w-full text-left px-4 py-3 hover:bg-gray-50" (click)="toggleOrgMenu()">Tổ chức của bạn</button>
+                </li> -->
                 <li>
                   <button class="w-full text-left px-4 py-3 hover:bg-gray-50">Hồ sơ</button>
                 </li>
                 <li>
-                  <button
-                    (click)="onSignOut()"
-                    class="w-full text-left px-4 py-3 hover:bg-gray-50 text-red-600"
-                  >
-                    Đăng xuất
-                  </button>
+                  <button class="w-full text-left px-4 py-3 hover:bg-gray-50 text-red-600" (click)="onSignOut()">Đăng xuất</button>
                 </li>
               </ul>
             </div>
           </div>
         </div>
+
+        <!-- Nếu chưa login -->
+        <div *ngIf="!user" class="flex gap-2">
+         <a 
+    routerLink="/login" 
+    class="px-5 py-2 rounded-full text-sm font-semibold text-white bg-green-600 shadow-md hover:bg-green-700 transition duration-300">
+    Đăng nhập
+  </a>
+  <a 
+    routerLink="/register" 
+    class="px-5 py-2 rounded-full text-sm font-semibold text-green-600 border border-green-600 hover:bg-green-50 shadow-sm transition duration-300">
+    Đăng ký
+  </a></div>
       </div>
 
       <!-- Mobile menu button -->
@@ -87,6 +79,7 @@
           <i class="fa-solid" [ngClass]="mobileOpen ? 'fa-xmark' : 'fa-bars'"></i>
         </button>
       </div>
+
     </div>
   </div>
 
@@ -95,5 +88,8 @@
     <a routerLink="/" class="block py-3 text-gray-700 hover:text-green-600 font-semibold text-lg">Trang chủ</a>
     <a routerLink="/events" class="block py-3 text-gray-700 hover:text-green-600 font-semibold text-lg">Sự kiện</a>
     <a routerLink="/about" class="block py-3 text-gray-700 hover:text-green-600 font-semibold text-lg">Giới thiệu</a>
+    <ng-container *ngIf="user">
+      <button (click)="onSignOut()" class="w-full text-left py-3 text-red-600 hover:bg-gray-50">Đăng xuất</button>
+    </ng-container>
   </div>
 </nav>

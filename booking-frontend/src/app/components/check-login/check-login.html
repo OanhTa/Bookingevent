@@ -1,0 +1,7 @@
+<div *ngIf="isLoggedIn; else notLoggedIn">
+  <p>Đã đăng nhập ✅ - UserID: {{ user }}</p>
+</div>
+
+<ng-template #notLoggedIn>
+  <p>Chưa đăng nhập ❌</p>
+</ng-template>

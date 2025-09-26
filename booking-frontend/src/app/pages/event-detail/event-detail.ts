@@ -54,9 +54,9 @@ export class EventDetail implements OnInit {
   }
 
   // Chuyển trang ticket
-  goToTicketPage(eventId: string): void {
+  goToCheckout(eventId: string): void {
   if (!eventId) return;
-  this.router.navigate(['/ticket', eventId]);
+  this.router.navigate(['/checkout', eventId]);
 }
 
   // Lấy gallery ảnh
@@ -67,12 +67,5 @@ export class EventDetail implements OnInit {
 }
 
 
-  // Lấy tổng ticket còn lại
-  getTotalTickets(): number {
-    if (!this.eventDetail?.ticketTypes) return 0;
-    return this.eventDetail.ticketTypes.reduce(
-      (sum, t) => sum + (t.quantity - t.sold),
-      0
-    );
-  }
+  
 }
