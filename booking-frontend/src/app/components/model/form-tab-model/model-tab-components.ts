@@ -14,7 +14,7 @@ import { InputTextModule } from 'primeng/inputtext';
     FormsModule,
     ReactiveFormsModule,
     PasswordModule,
-    InputTextModule
+    InputTextModule,
   ]
 })
 export class ModalTabFormComponent implements OnInit {

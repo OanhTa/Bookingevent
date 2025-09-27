@@ -1,6 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @Component({
   selector: 'app-form-ticket',
@@ -9,6 +12,9 @@ import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    InputGroupAddonModule,
+    InputGroupModule,
+    InputNumberModule
   ]
 })
 export class FormTickets {

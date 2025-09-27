@@ -1,4 +1,3 @@
-<!-- Modal -->
 <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
   <div class="min-w-[420px] bg-white rounded-lg w-2/3 max-w-3xl p-6 relative">
     <!-- Header -->
@@ -13,38 +12,30 @@
 
     <div class="flex gap-6 p-5 rounded border mt-5">
       <div class="w-1/2 pr-4">
-        <div 
+        <div *ngFor="let group of filteredGroups"
           [ngClass]="{
-            'bg-green-100 text-green-600 hover:bg-green-100': selectedGroup === 'IdentityManagement',
-            'border border-gray-300 bg-white text-gray-700': selectedGroup !== 'IdentityManagement'
-          }"
+              'bg-green-100 text-green-600 hover:bg-green-100': selectedGroup === group.key,
+              'border border-gray-300 bg-white text-gray-700': selectedGroup !== group.key}"
           class="cursor-pointer rounded p-3 my-2 shadow"
-          (click)="selectGroup('IdentityManagement')">
-          Quản lý danh tính
-        </div>
-        <div 
-          [ngClass]="{
-            'bg-green-100 text-green-600 hover:bg-green-100': selectedGroup === 'AuditLogging',
-            'border border-gray-300 bg-white text-gray-700': selectedGroup !== 'AuditLogging'
-          }"
-          class="cursor-pointer rounded p-3 my-2 shadow"
-          (click)="selectGroup('AuditLogging')">
-          Ghi nhật ký
-        </div>
+          (click)="selectGroup(group.key)">
+        {{ group.label }}
+      </div>
+
       </div>
       <!-- Right: Permissions -->
       <div class="w-4/5 pr-4 max-h-60 overflow-y-auto scroll-left">
-        <label class="flex content-ltr ml-5 cursor-pointer border-b border-gray-300 pb-2">
-          <input type="checkbox" class="mr-2">
-          Chọn tất cả
-        </label>
-        <div *ngIf="selectedGroup === 'IdentityManagement'" class="content-ltr ml-5 mt-2">                  
+        <div *ngIf="selectedGroup === 'IdentityManagement'" class="content-ltr ml-5 mt-2"> 
+          <label class="flex content-ltr cursor-pointer border-b border-gray-300 pb-2">
+            <input type="checkbox" (change)="toggleAllPerm($event.target.checked)" class="mr-2">
+            Chọn tất cả
+          </label>                 
           <div *ngFor="let group of groupedPermissions | keyvalue">
             <div class="flex items-center space-x-2">
               <input 
                 type="checkbox"
                 [checked]="isGroupAllChecked(group.value)"
                 [disabled]="isGroupAllDisabled(group.value)"
+                (change)="toggleGroup(group.value, $event.target.checked)"
               />
               <h3 class="font-bold mb-2">{{ groupViMap[group.key] || group.key }}</h3>
             </div>

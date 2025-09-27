@@ -12,10 +12,11 @@
         class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 border-b pb-4">   
       <div>
         <label class="block text-sm font-medium mb-2">Giá*</label>
-        <input type="number" step="0.5"
-              formControlName="price"
-              class="w-full border rounded-md p-2 focus:outline-green-500"
-              placeholder="10" />
+        <p-inputgroup>
+            <p-inputgroup-addon>VNĐ</p-inputgroup-addon>
+            <p-inputnumber formControlName="price" placeholder="Giá" />
+            <p-inputgroup-addon>,000</p-inputgroup-addon>
+        </p-inputgroup>
         <div *ngIf="showError(i, 'price', 'required')" class="text-red-500 text-sm">
           Giá vé là bắt buộc
         </div>

@@ -20,6 +20,13 @@ import { groupViMap, permissionViMap } from '../../../utils/permission-vi-map';
 })
 export class PermissionsModalComponent implements OnInit, OnChanges {
   groupedPermissions: { [key: string]: PermissionTableItem[] } = {};
+  
+  groups = [
+    { key: 'IdentityManagement', label: 'Quản lý danh tính' },
+    { key: 'AuditLogging', label: 'Ghi nhật ký' }
+  ];
+  filteredGroups = [...this.groups]
+  
 
   @Input() selected!: any;              // user/role được chọn
   @Input() entityType!: 'user' | 'role';
@@ -55,8 +62,26 @@ export class PermissionsModalComponent implements OnInit, OnChanges {
     return perms.every(p => p.roleEnable);
   }
 
+  toggleGroup(perms: any[], checked: boolean) {
+    perms.forEach(p => (p.isGranted = checked));
+  }
+  toggleAllPerm(checked: boolean) {
+    Object.values(this.groupedPermissions).forEach((perms: any[]) => {
+      perms.forEach(p => {
+        if (!p.roleEnable) { 
+          p.isGranted = checked;
+        }
+      });
+    });
+  }
   onSearchHandler(data: any){
-    this.loadPermissions();
+    if (!data) {
+      this.filteredGroups = [...this.groups];
+    } else {
+      this.filteredGroups = this.groups.filter(item =>
+        item.label.toLowerCase().includes(data.toLowerCase())
+      );
+    }
   }
 
   private loadPermissions() {
