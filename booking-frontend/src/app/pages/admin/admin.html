@@ -6,31 +6,13 @@
       </span>
       <span class="text-2xl">Barren</span>
     </a>
-
-    <a class="menu-item" [routerLink]="['/admin/dashbord']" routerLinkActive="active">
-      <i class="pi pi-chart-line"></i>
-      <span>Tổng quan</span>
-    </a>
-
-    <a class="menu-item" [routerLink]="['/admin/users']" routerLinkActive="active">
-      <i class="pi pi-users"></i>
-      <span>Quản lý người dùng</span>
-    </a>
-
-    <a class="menu-item" [routerLink]="['/admin/roles']" routerLinkActive="active">
-      <i class="pi pi-lock"></i>
-      <span>Quản lý quyền</span>
-    </a>
-
-    <a class="menu-item" [routerLink]="['/admin/audit-log']" routerLinkActive="active">
-      <i class="pi pi-file"></i> <!-- icon log/nhật ký -->
-      <span>Nhật ký hệ thống</span>
-    </a>
-
-
-    <a class="menu-item" [routerLink]="['/admin/settings']" routerLinkActive="active">
-      <i class="pi pi-cog"></i>
-      <span>Cài đặt</span>
+    <a *ngFor="let item of menuItems"
+      class="menu-item"
+      [routerLink]="[item.link]"
+      routerLinkActive="active"
+    >
+      <i [class]="item.icon"></i>
+      <span>{{ item.label }}</span>
     </a>
   </div>
 

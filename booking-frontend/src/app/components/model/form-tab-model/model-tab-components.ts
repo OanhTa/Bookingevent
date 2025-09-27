@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RoleService } from '../../../services/RoleServices';
+import { PasswordModule } from 'primeng/password';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-modal-tab-form',
@@ -10,7 +12,9 @@ import { RoleService } from '../../../services/RoleServices';
   imports:[
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PasswordModule,
+    InputTextModule
   ]
 })
 export class ModalTabFormComponent implements OnInit {
@@ -33,12 +37,10 @@ export class ModalTabFormComponent implements OnInit {
       'userName', 'name', 'surname', 'password', 'email', 'phone', 
       'active', 'lockoutEnd', 'emailConfirmed', 'phoneConfirmed', 'forcePasswordChange'
     ] },
-    { label: 'Quyền', fields: ['roles'] },
-    { label: 'Tổ chức', fields: ['organizationUnits'] }
+    { label: 'Quyền', fields: ['roles'] }
   ];
 
   availableRoles: any[] = [];
-  availableOrgUnits = ['Unit A', 'Unit B', 'Unit C'];
 
   constructor(
     private fb: FormBuilder,
@@ -48,7 +50,7 @@ export class ModalTabFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      userName: ['', [Validators.required, Validators.pattern(/^[a-zA-Z]+(?: [a-zA-Z]+)*$/)]],
+      userName: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9!@#$%^&*(),.?":{}|<>_\-]+$/)]],
       fullName: [''],
       passwordHash: ['', this.currentAction === 'add' ? Validators.required : null],
       email: ['', [Validators.required, Validators.email]],

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TicketServer } from '../../../../services/TicketServer';
 import { User } from '../../../../models/UserDto';
 import { EventService } from '../../../../services/EventService';
@@ -24,6 +24,8 @@ import { getStatusClass, getStatusText } from '../../../../utils/event-status-en
 })
 export class EventItem implements OnInit {
     @Input() event: any;
+    @Output() updated = new EventEmitter<void>();
+
     customers: User[] = [];
     showConfirm = false;
     getStatusClass = getStatusClass; 
@@ -41,11 +43,18 @@ export class EventItem implements OnInit {
       this.eventService.createEvent({
         ...this.event,
         status: 0
-      }).subscribe()
-    }
+      }).subscribe(() => {
+      this.messageService.add({severity:'success', summary:'Thành công', detail:'Tạo bản nháp thành công'});
+      this.updated.emit(); 
+    });
+  }
     onDelete(){
       const eventId = this.event.id;
-      this.eventService.deleteEvent(eventId).subscribe(res => this.messageService.add({severity: 'success',summary: 'Thành công',detail: 'Xóa sự kiện thành công'}));
+      this.eventService.deleteEvent(eventId).subscribe(
+        res =>{
+          this.messageService.add({severity: 'success',summary: 'Thành công',detail: 'Xóa sự kiện thành công'})
+          this.updated.emit();
+        });
     }
     onDeleteCancelled() {
       this.showConfirm = false;

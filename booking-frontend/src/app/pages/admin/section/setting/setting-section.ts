@@ -13,7 +13,7 @@ import { AppSettingService } from "../../../../services/AppSettingService";
     CommonModule,
     AccountSettings,
     IdentitySettings,
-    EmailSettings
+    // EmailSettings
   ]
 })
 export class SettingSection{

@@ -89,10 +89,14 @@ export class RoleTable2 implements OnInit {
   }
 
   onSearchHandler(keyword: string) {
-    this.roleService.getSearchKey(keyword).subscribe((res: any) => {
-      this.roles = res
-      this.cdr.detectChanges();
-    });
+    if(keyword){
+      this.roleService.getSearchKey(keyword).subscribe((res: any) => {
+        this.roles = res.data
+        this.cdr.detectChanges();
+      });
+    }else{
+      this.loadRoles(); 
+    }
   }
 
   openAdd() {

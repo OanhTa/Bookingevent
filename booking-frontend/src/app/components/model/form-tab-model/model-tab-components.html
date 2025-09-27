@@ -1,7 +1,6 @@
 <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-  <div class="bg-white rounded-2xl shadow-xl w-1/3 relative">
+  <div class="min-w-[300px] bg-white rounded-2xl shadow-xl w-1/3 relative">
     <h2 class="text-xl font-bold text-gray-800 my-6 px-10">{{ modalTitle }}</h2>
-
     <!-- Tabs -->
     <div class="flex border-b mb-4 px-10">
       <button
@@ -21,7 +20,7 @@
         <ng-container *ngIf="currentTab === 0">
           <div class="space-y-2">
             <label class="block font-medium">Tên đăng nhập: *</label>
-            <input type="text" formControlName="userName" class="border rounded-lg px-4 py-2 w-full">
+            <input pInputText type="text" formControlName="userName" class="w-full">
             <div class="text-sm text-red-500 mt-1"  *ngIf="form.get('userName')?.errors?.['required'] && (form.get('userName')?.touched)">
               Tên đăng nhập là bắt buộc
             </div>
@@ -29,20 +28,19 @@
               Nhập tên hợp lệ
             </div>
 
-
             <label class="block font-medium">Họ và tên:</label>
-            <input type="text" formControlName="fullName" class="border rounded-lg px-4 py-2 w-full">
+            <input pInputText type="text" formControlName="fullName" class="w-full">
         
             <div *ngIf="currentAction === 'add'">
               <label class="block font-medium">Mật khẩu: *</label>
-              <input type="password" formControlName="passwordHash" class="border rounded-lg px-4 py-2 w-full">
+              <p-password formControlName="passwordHash" [toggleMask]="true" [feedback]="false" inputStyleClass="w-full" class="w-full"/>
               <div class="text-sm text-red-500 mt-1"  *ngIf="form.get('passwordHash')?.errors?.['required'] && (form.get('passwordHash')?.touched)">
                 Mật khẩu là bắt buộc
               </div>
             </div>
 
             <label class="block font-medium">Email: *</label>
-            <input type="email" formControlName="email" class="border rounded-lg px-4 py-2 w-full">
+            <input pInputText type="email" formControlName="email" class="w-full">
             <div class="text-sm text-red-500 mt-1"  *ngIf="form.get('email')?.errors?.['required'] && (form.get('email')?.touched)">
               Email là bắt buộc
             </div>
@@ -51,10 +49,10 @@
             </div>
 
             <label class="block font-medium">Số điện thoại:</label>
-            <input type="text" formControlName="phone" class="border rounded-lg px-4 py-2 w-full">
+            <input pInputText type="text" formControlName="phone" class="w-full">
 
             <label class="block font-medium">Địa chỉ:</label>
-            <input type="text" formControlName="address" class="border rounded-lg px-4 py-2 w-full">
+            <input pInputText type="text" formControlName="address" class="w-full">
 
             <div class="flex items-center gap-2">
               <input type="checkbox" formControlName="active" id="active" class="h-4 w-4">
@@ -68,7 +66,7 @@
           </div>
         </ng-container>
 
-        <!-- Roles Tab (change)="onRoleChange($event)"-->
+        <!-- Roles Tab-->
         <ng-container *ngIf="currentTab === 1">
           <div class="flex flex-col gap-2">
             <div *ngFor="let role of availableRoles">
@@ -82,15 +80,6 @@
           </div>
         </ng-container>
 
-        <!-- Organization Tab (change)="onOrgChange($event)"-->
-        <ng-container *ngIf="currentTab === 2">
-          <div class="flex flex-col gap-2">
-            <div *ngFor="let unit of availableOrgUnits">
-              <input type="checkbox" [value]="unit"  [checked]="form.value.organizationUnits.includes(unit)">
-              {{ unit }}
-            </div>
-          </div>
-        </ng-container>
       </div>
       <!-- Buttons -->
       <div class="flex justify-end gap-3 py-4 px-10 border-t">

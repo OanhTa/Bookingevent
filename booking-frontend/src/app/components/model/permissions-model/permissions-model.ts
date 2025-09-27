@@ -5,6 +5,7 @@ import { CheckPermission, Permission, PermissionService, PermissionTableItem } f
 import { MessageService } from 'primeng/api';
 import { SearchComponent } from '../../search/search-component';
 import { ButtonModule } from 'primeng/button';
+import { groupViMap, permissionViMap } from '../../../utils/permission-vi-map';
 
 @Component({
   selector: 'app-permissions-modal',
@@ -24,6 +25,9 @@ export class PermissionsModalComponent implements OnInit, OnChanges {
   @Input() entityType!: 'user' | 'role';
   @Input() checkPermissions: CheckPermission[] = [];   // quyền của user/role
   @Output() cancel = new EventEmitter();
+
+  groupViMap = groupViMap
+  permissionViMap = permissionViMap
 
   groupSearch: string = '';
   selectedGroup: string = 'IdentityManagement';
@@ -51,6 +55,10 @@ export class PermissionsModalComponent implements OnInit, OnChanges {
     return perms.every(p => p.roleEnable);
   }
 
+  onSearchHandler(data: any){
+    this.loadPermissions();
+  }
+
   private loadPermissions() {
     this.permissionService.getPermissions().subscribe({
       next: res => {
@@ -73,7 +81,7 @@ export class PermissionsModalComponent implements OnInit, OnChanges {
       return {
         ...p,
         isGranted: granted,
-        originalIsGranted: granted,// 🔹 lưu lại trạng thái gốc
+        originalIsGranted: granted,// lưu lại trạng thái gốc
         roleEnable: this.entityType === 'user' && userPerm?.fromRole === true
       };
     });
@@ -93,7 +101,7 @@ export class PermissionsModalComponent implements OnInit, OnChanges {
         name: p.name,
         action,
         isGranted: p.isGranted ?? false,
-        originalIsGranted: p.isGranted ?? false,// 🔹 lưu lại trạng thái gốc
+        originalIsGranted: p.isGranted ?? false,// lưu lại trạng thái gốc
         roleEnable: p.roleEnable ?? false
       });
     });

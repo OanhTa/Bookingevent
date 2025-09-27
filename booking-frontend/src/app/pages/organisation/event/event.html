@@ -18,10 +18,18 @@
           </ng-container>
         </div>
       </div>
-  <div>
-    <app-event-item  
-      *ngFor="let ev of events" 
-      [event]="ev">
-  </app-event-item>
+      <div *ngIf="events.length > 0; else emptyTemplate">
+        <app-event-item  
+          *ngFor="let ev of events" 
+          [event]="ev"
+          (updated)="reloadEvents()">
+        </app-event-item>
+      </div>
+
+      <ng-template #emptyTemplate>
+        <div class="p-6 text-center text-gray-500">
+          <i class="fa-regular fa-calendar-xmark text-4xl mb-2"></i>
+          <p>Không có sự kiện nào.</p>
+        </div>
+      </ng-template>
   </div>
-</div>

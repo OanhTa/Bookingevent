@@ -13,14 +13,6 @@
       </li>
       <li>
         <button 
-          class="w-full text-left p-2 rounded hover:bg-gray-100"
-          [ngClass]="{'bg-green-100 text-green-600 hover:bg-green-100': activeMenu === 'mail'}"
-          (click)="activeMenu = 'mail'">
-          Gửi mail
-        </button>
-      </li>
-      <li>
-        <button 
             class="w-full text-left p-2 rounded hover:bg-gray-100"
             [ngClass]="{'bg-green-100 text-green-600 hover:bg-green-100': activeMenu === 'identity'}"
             (click)="activeMenu = 'identity'">
@@ -38,10 +30,6 @@
 
     <ng-container *ngIf="activeMenu === 'identity'">
       <app-setting-identity></app-setting-identity>
-    </ng-container>
-
-    <ng-container *ngIf="activeMenu === 'mail'">
-      <app-setting-email></app-setting-email>
     </ng-container>
   </div>
 </div>

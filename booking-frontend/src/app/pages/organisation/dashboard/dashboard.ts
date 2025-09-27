@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Chart } from 'chart.js';
 import { ModalFormComponent } from '../../../components/model/form-model/model-components';
 import { FormField } from '../../../models/FormField';
+import { OrganisationService } from '../../../services/OrganisationService';
 
 @Component({
   selector: 'app-dashboard',
@@ -74,6 +75,10 @@ export class DashboardComponent {
   modelFormData: any = null;
   showConfirm = false;
 
+  constructor(
+    private organisationService: OrganisationService
+  ){}
+
   openAdd() {
     this.modalTitle = 'Thêm tổ chức';
     this.modelFormData = {};
@@ -132,7 +137,11 @@ export class DashboardComponent {
     }
   }
   onSave(data: any){
-    console.log("onsave")
-    console.log(data)
+    const user = JSON.parse(localStorage.getItem('account') || '{}')
+    this.organisationService.createOrganisation(data, user.userId).subscribe(
+      res =>{
+        this.showModalForm = false;
+      }
+    )
   }
 }

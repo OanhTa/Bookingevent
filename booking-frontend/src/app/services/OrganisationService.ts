@@ -14,8 +14,8 @@ export class OrganisationService {
 
   constructor(private http: HttpClient) {}
 
-   createOrganisation(dto: CreateOrganisationDto): Observable<ApiResponse<any>> {
-    return this.http.post<ApiResponse<any>>(this.apiUrl, dto);
+  createOrganisation(dto: CreateOrganisationDto, userId: string): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.apiUrl}/${userId}`, dto);
   }
 
   inviteMember(dto: InviteUserDto): Observable<ApiResponse<any>> {

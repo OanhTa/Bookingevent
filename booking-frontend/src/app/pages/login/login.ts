@@ -60,8 +60,8 @@ export class Login {
         if (res.data.roles.includes('Administrator')) {
           this.router.navigate(['/admin']);
         }else if (res.data.roles.includes('Organiser')) {
-          const organisationId = res.data.organisationUsers[0].organisationId
-          localStorage.setItem('organisationId', organisationId);
+          const organisationId = res.data.organisationUsers?.[0]?.organisationId ?? "111";
+          localStorage.setItem("organisationId", organisationId);
 
           this.router.navigate(['/organisation']);
         }else {

@@ -72,8 +72,8 @@ export class UserTable implements OnInit{
 
   showFilter   = false;
   filterFields = [
-    { key: 'creationDate', label: 'Ngày tạo', type: 'date' },
-    { key: 'modificationDate', label: 'Ngày xác thực', type: 'date' },
+    { key: 'createdFrom', label: 'Ngày tạo', type: 'date' },
+    { key: 'emailConfirmedFrom', label: 'Ngày xác thực', type: 'date' },
     { key: 'emailConfirmed', label: 'Email xác thực', type: 'select', options: [
       { name: 'Có', code: true },
       { name: 'Không', code: false },
@@ -143,10 +143,14 @@ export class UserTable implements OnInit{
   }
 
   onSearchHandler(keyword: string) {
-    this.userServices.getSearchKey(keyword).subscribe((res: any) => {
-      this.users = res.data
-      this.cdr.detectChanges();
-    });
+    if(keyword){
+      this.userServices.getSearchKey(keyword).subscribe((res: any) => {
+        this.users = res.data
+        this.cdr.detectChanges();
+      });
+    }else{
+      this.loadUsers();
+    }
   }
 
   openViewDetail(data: any) {
@@ -274,6 +278,7 @@ export class UserTable implements OnInit{
 
   private handleSuccess(res: any) {
     this.showModalForm = false;
+    this.showModalUser = false;
     this.messageService.add({severity: 'success',summary: 'Thành công',detail: res.message})
     this.loadUsers();
   }

@@ -44,7 +44,7 @@ export class FilterFormComponent {
 
   onClear() {
     Object.keys(this.filterData).forEach(key => {
-      this.filterData[key] = '';
+      this.filterData[key] = null;
     });
     this.submitFilter.emit({});
   }

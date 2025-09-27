@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { EventType } from '../../../models/EventDto';
-import { FilterFormComponent } from '../../../components/filter-form/filter-form';
 import { SearchComponent } from '../../../components/search/search-component';
 
 
@@ -46,6 +45,12 @@ export class EventComponent implements OnInit {
     } else {
       this.loadEvents(this.orgId);
     }
+  }
+  
+  reloadEvents() {
+   if (this.orgId) {
+      this.loadEvents(this.orgId);
+    } 
   }
 
   loadEvents(orgId: string, status?: number) {

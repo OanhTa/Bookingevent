@@ -37,7 +37,6 @@ export class SidebarRight{
   switchRole(role: string) {
     this.user.selectedRole = role;
     this.showRoleModal = false;
-    console.log('Đã chuyển sang quyền:', role);
   }
 
 
