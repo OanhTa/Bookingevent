@@ -11,35 +11,36 @@ import { tap, catchError } from 'rxjs/operators';
 
 // Định nghĩa interface cho đổi mật khẩu
 export interface ChangePasswordDto {
-    passwordCurrent: string,
-    passwordNew: string
+  passwordCurrent: string,
+  passwordNew: string
 }
 
-// Định nghĩa interface User
+//Định nghĩa interface User (sửa lại userId thành string)
 export interface User {
-    UserId: number;
-    ho: string;
-    ten: string;
-    email: string;
-    token?: string;
-    // thêm các trường khác nếu cần
+  userId: string;   // GUID dạng chuỗi
+  ho: string;
+  ten: string;
+  email: string;
+  token?: string;
+  // thêm các trường khác nếu cần
 }
-
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class AuthServices {
-    private apiUrl = environment.apiUrl + '/Auth';
 
-    // BehaviorSubject lưu thông tin user hiện tại
-    private currentUserSubject: BehaviorSubject<User | null>;
-    public currentUser$: Observable<User | null>;
+  private apiUrl = environment.apiUrl + '/Auth';
 
-    constructor(private httpClient: HttpClient) {
-        let savedUser: User | null = null;
+  // BehaviorSubject lưu thông tin user hiện tại
+  private currentUserSubject: BehaviorSubject<User | null>;
+  public currentUser$: Observable<User | null>;
 
-    if (typeof window !== 'undefined') {
+  constructor(private httpClient: HttpClient) {
+    let savedUser: User | null = null;
+
+    // ✅ Check để tránh lỗi SSR
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
       const saved = localStorage.getItem('account');
       if (saved) {
         try {
@@ -52,96 +53,126 @@ export class AuthServices {
 
     this.currentUserSubject = new BehaviorSubject<User | null>(savedUser);
     this.currentUser$ = this.currentUserSubject.asObservable();
-    }
+  }
 
-    
+  // Lấy user hiện tại từ API (nếu backend hỗ trợ)
+  private fetchCurrentUserFromApi(): Observable<User | null> {
+    return this.httpClient.get<User>(`${this.apiUrl}/me`).pipe(
+      tap(user => this.setCurrentUser(user)),
+      catchError(err => {
+        this.currentUserSubject.next(null);
+        return of(null);
+      })
+    );
+  }
 
+  // Getter truy cập giá trị hiện tại
+  public get currentUserValue(): User | null {
+    return this.currentUserSubject.value;
+  }
 
-    // Ví dụ fetch user từ backend
-    private fetchCurrentUserFromApi(): Observable<User | null> {
-        return this.httpClient.get<User>(`${this.apiUrl}/me`).pipe(
-            tap(user => this.setCurrentUser(user)),
-            catchError(err => {
-                this.currentUserSubject.next(null);
-                return of(null);
-            })
-        );
-    }
-
-    // Getter truy cập giá trị hiện tại
-    public get currentUserValue(): User | null {
-        return this.currentUserSubject.value;
-    }
-
-    // Login
-    login(loginRequest: LoginRequestDto): Observable<LoginResponseDto> {
+  // Login
+  login(loginRequest: LoginRequestDto): Observable<LoginResponseDto> {
     return this.httpClient.post<LoginResponseDto>(`${this.apiUrl}/login`, loginRequest).pipe(
       tap((res: LoginResponseDto) => {
-        // Giả sử backend trả về: { userId, email, token }
         const user: User = {
-            UserId: Number(res.userId),
-            email: res.email,
-            token: res.token,
-            ho: "",
-            ten: ""
+          userId: res.userId,
+          email: res.email,
+          token: res.token,
+          ho: res.ho || "",
+          ten: res.ten || ""
         };
-        localStorage.setItem('account', JSON.stringify(user));
+        if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+          localStorage.setItem('account', JSON.stringify(user));
+        }
         this.currentUserSubject.next(user);
       })
     );
   }
-    // Register
-    register(registerRequest: RegisterRequest): Observable<ApiResponse<RegisterResponse>> {
-        return this.httpClient.post<ApiResponse<RegisterResponse>>(`${this.apiUrl}/register`, registerRequest);
-    }
 
-    // Change password
-    changePassword(userId: string, dto: ChangePasswordDto): Observable<ApiResponse<any>> {
-        return this.httpClient.post<ApiResponse<any>>(`${this.apiUrl}/change-password?userId=${userId}`, dto);
-    }
+  // Register
+  register(registerRequest: RegisterRequest): Observable<ApiResponse<RegisterResponse>> {
+    return this.httpClient.post<ApiResponse<RegisterResponse>>(`${this.apiUrl}/register`, registerRequest);
+  }
 
-    // Request password reset
-    requestPasswordReset(dto: RequestPasswordResetDto): Observable<any> {
-        return this.httpClient.post<any>(`${this.apiUrl}/request-password-reset`, dto);
-    }
+  // Change password
+  changePassword(userId: string, dto: ChangePasswordDto): Observable<ApiResponse<any>> {
+    return this.httpClient.post<ApiResponse<any>>(`${this.apiUrl}/change-password?userId=${userId}`, dto);
+  }
 
-    // Reset password
-    resetPassword(dto: ResetPasswordDto): Observable<any> {
-        return this.httpClient.post<any>(`${this.apiUrl}/reset-password`, dto);
-    }
+  // Request password reset
+  requestPasswordReset(dto: RequestPasswordResetDto): Observable<any> {
+    return this.httpClient.post<any>(`${this.apiUrl}/request-password-reset`, dto);
+  }
 
-    // Confirm email
-    confirmEmail(token: string) {
-        return this.httpClient.get(`${this.apiUrl}/confirm-email?token=${token}`);
-    }
+  // Reset password
+  resetPassword(dto: ResetPasswordDto): Observable<any> {
+    return this.httpClient.post<any>(`${this.apiUrl}/reset-password`, dto);
+  }
 
-    // Ghi nhận user khi login thành công
-    setCurrentUser(user: User) {
-        if (typeof window !== 'undefined') {
-            localStorage.setItem('currentUser', JSON.stringify(user));
+  // Confirm email
+  confirmEmail(token: string) {
+    return this.httpClient.get(`${this.apiUrl}/confirm-email?token=${token}`);
+  }
+
+  // Ghi nhận user khi login thành công
+  setCurrentUser(user: User) {
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      localStorage.setItem('account', JSON.stringify(user));
+    }
+    this.currentUserSubject.next(user);
+  }
+
+  // Logout
+  logout() {
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      localStorage.removeItem('account');
+    }
+    this.currentUserSubject.next(null);
+  }
+
+  // Kiểm tra đã đăng nhập hay chưa
+  isLoggedIn(): boolean {
+    if (typeof window === 'undefined' || typeof localStorage === 'undefined') return false;
+
+    const userJson = localStorage.getItem('account');
+    console.log(' userJson:', userJson);
+
+    if (!userJson) return false;
+
+    const user = JSON.parse(userJson);
+    console.log(' userId:', user?.userId, 'token:', user?.token);
+
+    const hasUserId = !!user?.userId;
+    const hasToken = !!user?.token;
+    console.log(' hasUserId:', hasUserId, 'hasToken:', hasToken);
+
+    return hasUserId && hasToken;
+  }
+
+  // Hàm load user từ localStorage
+  loadCurrentUser(): User | null {
+    if (typeof window === 'undefined' || typeof localStorage === 'undefined') return null;
+    try {
+      const accountStr = localStorage.getItem('account');
+      if (accountStr) {
+        const accountObj = JSON.parse(accountStr);
+        if (accountObj.userId && accountObj.userId !== '') {
+          this.setCurrentUser(accountObj);
+          return accountObj;
         }
-        this.currentUserSubject.next(user);
+      }
+    } catch (e) {
+      console.warn('Lỗi khi parse user từ localStorage:', e);
     }
+    this.logout();
+    return null;
+  }
 
-    // Logout
-    logout() {
-        localStorage.removeItem('currentUser');
-        this.currentUserSubject.next(null);
-    }
-    // Kiểm tra đăng nhập
-    isLoggedIn(): boolean {
-        if (typeof window === 'undefined') return false; // tránh lỗi khi SSR
-
-        const userJson = localStorage.getItem('currentUser');
-        if (!userJson) return false; // chưa lưu user nào
-
-        const user = JSON.parse(userJson);
-
-        // Có userId và token (nếu bạn dùng token riêng) thì xem là đã login
-        const hasUserId = !!user?.UserId || !!user?.userId;
-        const token = localStorage.getItem('account'); // nếu bạn lưu token riêng
-
-        return hasUserId && !!token; // true nếu có cả userId và token
-    }
-
+  // Hàm public để component gọi
+  getCurrentUser(): User | null {
+    const current = this.currentUserSubject.value;
+    if (current && current.userId) return current; 
+    return this.loadCurrentUser();
+  }
 }

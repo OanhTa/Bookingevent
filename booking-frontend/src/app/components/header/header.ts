@@ -49,14 +49,14 @@ export class Header {
     private authService:AuthServices
   ) {
     if (isPlatformBrowser(this.platformId)) {
-      // ✅ kiểm tra user từ localStorage
+      // kiểm tra user từ localStorage
       const accountStr = localStorage.getItem('account');
 
       if (accountStr) {
         try {
           const accountObj = JSON.parse(accountStr);
 
-          // ✅ Kiểm tra thật sự có thông tin quan trọng, ví dụ userId hoặc token
+          //  Kiểm tra thật sự có thông tin quan trọng, ví dụ userId hoặc token
           if (accountObj.userId && accountObj.userId !== '') {
             this.user = accountObj;    // hợp lệ → set user
             this.isLoggedIn = true;    // bật trạng thái đăng nhập
@@ -82,7 +82,7 @@ export class Header {
   toggleOrgMenu() {
     this.showOrgMenu = !this.showOrgMenu;
   }
-
+ 
   // Toggle dropdown avatar
   toggle() {
     this.isOpen = !this.isOpen;
@@ -118,10 +118,11 @@ export class Header {
     this.checkLoginStatus();
   }
 
-  // ✅ Hàm kiểm tra trạng thái đăng nhập
+  //  Hàm kiểm tra trạng thái đăng nhập
   checkLoginStatus() {
     const current = this.authService.currentUserValue;
     this.user = current;
     // console.log(' User hiện tại:', this.user);
   }
+  
 }

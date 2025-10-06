@@ -1,4 +1,3 @@
-
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { Header } from "../../components/header/header";
@@ -20,59 +19,62 @@ export class Home implements OnInit {
   filteredEvents: EventWithDetailDto[] = [];
 
   categories: (CategoryDto & { id: string | number })[] = [];
-  activeCategoryId: string | number = 0; // "All"
+  activeCategoryId: string | number = 0; // 0 = All
 
   constructor(
     private eventService: EventService,
     private categoryService: CategoryService,
     private cdr: ChangeDetectorRef
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.loadEvents();
     this.loadCategories();
   }
 
+  //  Load danh sách sự kiện
   loadEvents(): void {
     this.eventService.getEvents().subscribe({
       next: (data) => {
-        // console.log("Events loaded:", data);
         this.eventDtos = data;
         this.filteredEvents = [...this.eventDtos];
         this.cdr.detectChanges();
       },
-      error: (err) => console.error('Lỗi khi load events:', err)
+      error: () => {} // Không in lỗi ra terminal
     });
   }
 
+  //  Load danh sách danh mục
   loadCategories(): void {
     this.categoryService.getCategory().subscribe({
       next: (data) => {
-        // console.log("Categories loaded:", data);
-        // ép kiểu id về string để khớp với event.categoryId (UUID)
-        this.categories = [{ id: 0, name: 'All' }, ...data.map(c => ({ ...c, id: String(c.id) }))];
+        this.categories = [
+          { id: 0, name: 'All' },
+          ...data.map(c => ({ ...c, id: String(c.id) }))
+        ];
         this.cdr.detectChanges();
       },
-      error: (err) => console.error('Lỗi khi load categories:', err)
+      error: () => {"lỗi"} 
     });
   }
 
+  //  Lọc theo danh mục
   filterByCategory(cat: CategoryDto & { id: string | number }): void {
     this.activeCategoryId = cat.id;
-
     if (cat.id === 0) {
       this.filteredEvents = [...this.eventDtos];
     } else {
-      this.filteredEvents = this.eventDtos.filter(ev => Number(ev.categoryId) === cat.id);
+      this.filteredEvents = this.eventDtos.filter(
+        ev => String(ev.categoryId) === String(cat.id)
+      );
     }
-    console.log("Filtered events:", this.filteredEvents);
     this.cdr.detectChanges();
   }
 
+  //  Lấy tên danh mục
   getCategoryName(categoryId: string | undefined): string {
     if (!categoryId) return '';
-    const cat = this.categories.find(c => c.id === Number(categoryId));
+    const cat = this.categories.find(c => String(c.id) === String(categoryId));
     return cat ? cat.name : '';
   }
 }
-

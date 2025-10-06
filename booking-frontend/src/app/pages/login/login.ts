@@ -55,26 +55,26 @@ export class Login {
       next: (res) => {
         this.loading = false;
 
-// ✅ Lưu vào localStorage
+//  Lưu vào localStorage
 localStorage.setItem('account', JSON.stringify(res));
 
-// ✅ Gọi service để set current user (để header biết bạn đã đăng nhập)
+//  Gọi service để set current user (để header biết bạn đã đăng nhập)
 this.authServices.setCurrentUser({
-  UserId: Number(res.userId),  // hoặc res.UserId nếu API trả về kiểu khác
+  userId: String(res.userId),  // hoặc res.UserId nếu API trả về kiểu khác
   ho: res.ho || '',
   ten: res.ten || '',
   email: res.email,
-  token: res.token      // 👈 nhớ thêm token nếu có
+  token: res.token      //  nhớ thêm token nếu có
 });
 
-// ✅ Thông báo
+//  Thông báo
 this.messageService.add({
   severity: 'success',
   summary: res.message,
   detail: 'Chào mừng bạn quay lại!'
 });
 
-// ✅ Điều hướng
+//  Điều hướng
 if (res.roles.includes('Administrator')) {
   this.router.navigate(['/admin']);
 } else {

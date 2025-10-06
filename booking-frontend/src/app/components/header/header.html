@@ -44,16 +44,22 @@
               </div>
             </div>
             <div class="border-t">
-              <ul class="text-base">
+              <ul class="text-base"> 
                 <!-- <li>
                   <button class="w-full text-left px-4 py-3 hover:bg-gray-50" (click)="toggleOrgMenu()">Tổ chức của bạn</button>
                 </li> -->
-                <li>
-                  <button class="w-full text-left px-4 py-3 hover:bg-gray-50">Hồ sơ</button>
-                </li>
-                <li>
+                <a href="" routerLink="/profile">
+                  <button class="w-full text-left px-4 py-3 hover:bg-gray-50" >Thông tin của tôi</button>
+                </a> 
+                <a href="" routerLink="/purchaseOrder">
+                  <button class="w-full text-left px-4 py-3 hover:bg-gray-50" >Vé đã mua</button>
+                </a> 
+                <a href="">
+                  <button class="w-full text-left px-4 py-3 hover:bg-gray-50">Sự kiện yêu thích</button>
+                </a> 
+                <a href="">
                   <button class="w-full text-left px-4 py-3 hover:bg-gray-50 text-red-600" (click)="onSignOut()">Đăng xuất</button>
-                </li>
+                </a> 
               </ul>
             </div>
           </div>

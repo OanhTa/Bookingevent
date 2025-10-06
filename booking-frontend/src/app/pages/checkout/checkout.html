@@ -28,7 +28,7 @@
 
           <div>
             <label class="block text-gray-700 font-semibold mb-2">Địa chỉ*</label>
-            <input type="text" [(ngModel)]="formData.address" class="w-full border rounded-md px-4 py-2" />
+            <input type="text" [(ngModel)]="formData.diachi" class="w-full border rounded-md px-4 py-2" />
           </div>
 
           <div>
@@ -53,7 +53,7 @@
 
           <div>
             <label class="block text-gray-700 font-semibold mb-2">Mã zip/Bưu điện*</label>
-            <input type="text" [(ngModel)]="formData.zip" class="w-full border rounded-md px-4 py-2" />
+            <input type="text" [(ngModel)]="formData.maZip" class="w-full border rounded-md px-4 py-2" />
           </div>
         </div>
       </div>
@@ -81,9 +81,10 @@
         </div>
 
         <button (click)="confirmPayment()" 
-          class="w-full bg-green-500 text-white py-3 rounded-md text-lg font-semibold hover:bg-green-600 transition-colors">
-          Xác nhận và thanh toán
-        </button>
+  class="w-full bg-green-500 text-white py-3 rounded-md text-lg font-semibold hover:bg-green-600 transition-colors">
+  Xác nhận và thanh toán
+</button>
+
       </div>
     </div>
 
@@ -128,7 +129,11 @@
       <div class="flex items-center justify-between py-2 text-gray-700 font-medium border-b">
         <p *ngIf="ticketCount === 0" class="text-red-500 mt-1 text-sm">Vui lòng nhập số lượng vé</p>
       </div>
-
+      
+      <div class="flex justify-between py-2 text-gray-700 font-medium border-b">
+        <span>Số lượng vé còn lại </span>
+        <span class="text-right">Chưa có thông tin</span>
+      </div>
 
 
       <!-- Giá vé 1 vé -->
@@ -145,16 +150,7 @@
         <span class="text-right font-bold">{{ totalPrice | currency:'VND' }}</span>
       </div>
 
-      <!-- Mã giảm giá -->
-      <hr class="my-4" />
-      <div class="flex mb-6">
-        <input type="text" [(ngModel)]="formData.coupon" placeholder="Nhập mã giảm giá"
-          class="flex-grow border rounded-l-md px-4 py-2 bg-gray-100" />
-        <button (click)="applyCoupon()"
-          class="bg-green-500 text-white px-5 rounded-r-md hover:bg-green-600 transition-colors">
-          Sử dụng
-        </button>
-      </div>
+     
     </div>
 
 

@@ -1,0 +1,60 @@
+<div>
+  <app-header></app-header>
+</div>
+
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-6 bg-gray-100 shadow-sm rounded-lg p-6 px-10">
+  <!-- Cột menu profile -->
+  <div class="col-span-1 bg-white p-10 rounded-lg shadow border max-h-[700px]">
+    <app-menu-profile></app-menu-profile>
+  </div>
+
+  <!-- Cột danh sách đơn hàng -->
+  <div class="xl:col-span-2 rounded-lg">
+    <div class="w-full bg-gray-100 rounded-lg space-y-6">
+
+      <!-- Lặp qua từng đơn hàng -->
+      <div 
+        *ngFor="let order of order" 
+        class="flex flex-col space-y-4 max-w-4xl mx-auto bg-white shadow-md border border-black rounded-lg overflow-hidden p-6">
+
+        <!-- Thông tin sự kiện -->
+        <div class="flex items-start gap-4">
+          <img 
+            [src]="order.eventDetail?.image || 'default.jpg'" 
+            alt="Event" 
+            class="w-32 h-24 object-cover rounded-md border border-gray-300">
+          <div class="flex-1">
+            <h2 class="text-xl font-bold text-gray-800">{{ order.eventDetail?.name }}</h2>
+            <p class="text-gray-500 mt-1">📄 Invoice ID: <span class="font-semibold">{{ order.event_Id }}</span></p>
+          </div>
+        </div>
+
+        <!-- Chi tiết đơn -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-6 text-center">
+          <div>
+            <p class="text-gray-500 text-sm">Event Starts On</p>
+            <p class="font-semibold text-gray-800">{{ order.eventDetail?.startDate | date }}</p>
+          </div>
+          <div>
+            <p class="text-gray-500 text-sm">Total Tickets</p>
+            <p class="font-semibold text-gray-800">{{ order.so_Luong }}</p>
+          </div>
+          <div>
+            <p class="text-gray-500 text-sm">Paid Amount</p>
+            <p class="font-semibold text-green-600">{{ order.tong_Tien | currency:'VND' }}</p>
+          </div>
+          <div>
+            <p class="text-gray-500 text-sm">Invoice</p>
+            <a href="#" class="text-blue-600 font-semibold hover:underline">Download</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nếu không có đơn hàng -->
+      <div *ngIf="order.length === 0" class="text-center text-gray-500 py-10">
+        Chưa có đơn hàng nào.
+      </div>
+
+    </div>
+  </div>
+</div>

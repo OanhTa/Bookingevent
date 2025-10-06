@@ -25,7 +25,7 @@ export class EventDetail implements OnInit {
     private eventService: EventService,
     private categoryService: CategoryService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // Lấy ID từ URL
@@ -53,19 +53,16 @@ export class EventDetail implements OnInit {
     return cat ? cat.name : '';
   }
 
-  // Chuyển trang ticket
+  // Chuyển trang Thanh toán
   goToCheckout(eventId: string): void {
-  if (!eventId) return;
-  this.router.navigate(['/checkout', eventId]);
-}
+    if (!eventId) return;
+    this.router.navigate(['/checkout', eventId]);
+  }
 
   // Lấy gallery ảnh
   getGalleryImages(): string[] {
-  return this.eventDetail?.eventDetail?.gallery
-    ? this.eventDetail.eventDetail.gallery.split(';')
-    : [];
-}
-
-
-  
+    return this.eventDetail?.eventDetail?.gallery
+      ? this.eventDetail.eventDetail.gallery.split(';')
+      : [];
+  }
 }

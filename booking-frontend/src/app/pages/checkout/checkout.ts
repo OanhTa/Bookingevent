@@ -24,11 +24,11 @@ export class Checkout implements OnInit {
     firstName: '',
     lastName: '',
     email: '',
-    address: '',
+    diachi: '',
     country: '',
     state: '',
     city: '',
-    zip: '',
+    maZip: '',
     cardNumber: '',
     expiry: '',
     cvv: '',
@@ -112,38 +112,109 @@ export class Checkout implements OnInit {
   }
 
   confirmPayment() {
-    // Lấy userId từ AuthService nếu có
-    const currentUser = this.authService.currentUserValue;
-
-    const payload: CheckoutDto = {
-      // userId: currentUser?.id,
-      eventId: this.eventDetail.id,
-      ho: this.formData.firstName,
-      ten: this.formData.lastName,
-      email: this.formData.email,
-      address: this.formData.address,
-      quocGia: this.formData.country,
-      thanhpho: this.formData.city,
-      zip: this.formData.zip,
-      soThe: this.formData.cardNumber,
-      ngayHetHan: this.formData.expiry,
-      cvv: this.formData.cvv,
-      maGiamGia: this.formData.coupon,
-      soLuong: this.ticketCount,
-      tongTien: this.totalPrice
-    };
-
-    console.log('Sending to API:', payload);
-
-    // Gọi API qua CheckoutService
-    this.checkoutService.checkout(payload).subscribe({
-      next: res => {
-        console.log('Thanh toán thành công', res);
-        this.router.navigate(['/checkout-success']);
-      },
-      error: err => {
-        console.error('Thanh toán thất bại', err);
-      }
-    });
+  //  Bước 1: Kiểm tra validate trước
+  if (
+    !this.formData.firstName ||
+    !this.formData.lastName ||
+    !this.formData.email ||
+    !this.formData.diachi ||
+    !this.formData.country ||
+    !this.formData.city ||
+    !this.formData.maZip ||
+    !this.formData.cardNumber ||
+    !this.formData.expiry ||
+    !this.formData.cvv ||
+    this.ticketCount <= 0
+  ) {
+    console.warn(' Thiếu thông tin! Vui lòng kiểm tra lại form.');
+    alert('Vui lòng điền đầy đủ thông tin thanh toán!');
+    return; //  Dừng lại, không gửi API
   }
+
+  //  Bước 2: Lấy thông tin người dùng
+  const user = this.authService.currentUserValue;
+  const userId = user?.userId || '';
+
+  //  Bước 3: Tạo payload
+  const payload: CheckoutDto = {
+    event_Id: this.eventDetail.id,
+    user_Id: userId,
+    ho: this.formData.firstName,
+    ten: this.formData.lastName,
+    email: this.formData.email,
+    diachi: this.formData.diachi,
+    quocGia: this.formData.country,
+    thanhpho: this.formData.city,
+    maZip: this.formData.maZip,
+    soThe: this.formData.cardNumber,
+    ngay_HetHan: this.formData.expiry,
+    cvv: this.formData.cvv,
+    ma_Giam_Gia: this.formData.coupon,
+    so_Luong: this.ticketCount,
+    tong_Tien: this.totalPrice
+  };
+
+  console.log('Dữ liệu gửi lên API:', payload);
+
+  //  Bước 4: Gọi API
+  this.checkoutService.createCheckout(payload).subscribe({
+    next: res => {
+      console.log(' Thanh toán thành công:', res);
+      this.router.navigate(['/checkout-success']);
+    },
+    error: err => {
+      console.error(' Thanh toán thất bại:', err);
+      alert('Thanh toán thất bại! Vui lòng thử lại sau.');
+    }
+  });
+}
+
+  validateForm(): boolean {
+  // Kiểm tra các trường bắt buộc
+  if (!this.formData.firstName || !this.formData.lastName || !this.formData.email ||
+      !this.formData.diachi || !this.formData.country || !this.formData.city ||
+      !this.formData.maZip || !this.formData.cardNumber || !this.formData.expiry ||
+      !this.formData.cvv) {
+    alert(' Vui lòng điền đầy đủ thông tin bắt buộc!');
+    return false;
+  }
+
+  // Kiểm tra định dạng email
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(this.formData.email)) {
+    alert(' Email không hợp lệ!');
+    return false;
+  }
+
+  // Kiểm tra số thẻ (ít nhất 12 số)
+  const cardRegex = /^[0-9]{12,19}$/;
+  if (!cardRegex.test(this.formData.cardNumber.replace(/\D/g, ''))) {
+    alert(' Số thẻ không hợp lệ!');
+    return false;
+  }
+
+  // Kiểm tra hạn thẻ
+  const expiryRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+  if (!expiryRegex.test(this.formData.expiry)) {
+    alert(' Ngày hết hạn phải đúng định dạng MM/YY!');
+    return false;
+  }
+
+  // CVV phải là 3 số
+  const cvvRegex = /^[0-9]{3}$/;
+  if (!cvvRegex.test(this.formData.cvv)) {
+    alert(' CVV phải là 3 số!');
+    return false;
+  }
+
+  // Kiểm tra số lượng vé
+  if (this.ticketCount <= 0) {
+    alert(' Vui lòng chọn ít nhất 1 vé!');
+    return false;
+  }
+
+  return true;
+}
+
+
 }

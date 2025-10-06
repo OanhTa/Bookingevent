@@ -1,0 +1,65 @@
+<div class="w-full h-auto bg-white p-4 ">
+  <!-- Thông tin người dùng -->
+  <div class="flex flex-col items-center text-center pb-4 border-b border-gray-200">
+    <div class="w-20 h-20 rounded-full overflow-hidden border border-gray-300">
+      <img src="assets/avatar-default.png" alt="avatar" class="w-full h-full object-cover">
+    </div>
+    <div class="mt-2 text-gray-800 font-semibold text-base">minhquangng...</div>
+    <a href=""  class="text-gray-500 text-sm mt-1 hover:text-blue-500 flex items-center gap-1" routerLink="/information">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+        stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M16.862 4.487a2.278 2.278 0 113.222 3.222L7.125 20.667l-4.5.5.5-4.5L16.862 4.487z" />
+      </svg>
+      Sửa Hồ Sơ
+    </a>
+  </div>
+
+  <!-- Menu chính -->
+  <div class="mt-4 space-y-3 text-sm">
+    <!-- Thông Báo -->
+    <div class="flex items-center gap-2 cursor-pointer hover:text-orange-500">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-orange-500" fill="none" viewBox="0 0 24 24"
+        stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M14.857 17.082a23.848 23.848 0 005.163-1.31A8.967 8.967 0 0018 9.75V8.25a6 6 0 10-12 0v1.5a8.967 8.967 0 00-2.02 6.022c1.65.63 3.392 1.08 5.163 1.31M14.857 17.082A3 3 0 0112 21a3 3 0 01-2.857-3.918" />
+      </svg>
+      <span>Thông Báo</span>
+    </div>
+
+    <!-- Tài Khoản Của Tôi -->
+    <div>
+      <div class="flex items-center justify-between cursor-pointer hover:text-blue-500" (click)="toggleSubMenu()">
+        <div class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24"
+            stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M15.75 7.5v-.75A3.75 3.75 0 0012 3a3.75 3.75 0 00-3.75 3.75v.75M4.5 9h15M8.25 9v9.75A2.25 2.25 0 0010.5 21h3a2.25 2.25 0 002.25-2.25V9" />
+          </svg>
+          <span class="font-medium">Tài Khoản Của Tôi</span>
+        </div>
+        <svg [ngClass]="{'rotate-180': isSubMenuOpen}" class="w-4 h-4 text-gray-400 transition-transform duration-300"
+          xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+
+      <!-- Submenu -->
+      <ul *ngIf="isSubMenuOpen" class="ml-7 mt-2 space-y-1 text-gray-600 transition-all">
+        <a class="cursor-pointer hover:text-orange-500" routerLink="/information">Hồ Sơ</a>
+        <li class="cursor-pointer hover:text-orange-500">Đổi Mật Khẩu</li>
+        <a class="cursor-pointer hover:text-orange-500" routerLink="/profileSetting">Cài Đặt</a>
+      </ul>
+    </div>
+
+    <!-- Đơn Mua -->
+    <a class="flex items-center gap-2 cursor-pointer hover:text-blue-500" routerLink="/purchaseOrder">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24"
+        stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M3 3h18v2H3V3zm2 4h14v2H5V7zm-2 4h18v2H3v-2zm2 4h14v2H5v-2zm-2 4h18v2H3v-2z" />
+      </svg>
+      <span>Vé đã mua</span>
+    </a>
+  </div>
+</div>

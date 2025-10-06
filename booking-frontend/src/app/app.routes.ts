@@ -20,7 +20,13 @@ import { ResetPasswordComponent } from './pages/login/reset-password/reset-passw
 import { MyAccount } from './pages/admin/my-account/my-account';
 import { EventDetail } from './pages/event-detail/event-detail';
 import { Checkout } from './pages/checkout/checkout';
+import { MenuProfile } from './components/menu-profile/menu-profile';
 import path from 'path';
+import { Information } from './pages/profile/information/information';
+import { Profile } from './pages/profile/profile';
+import { PurchaseOrder } from './pages/purchase-order/purchase-order';
+import { ProfileSetting } from './pages/profile/profile-setting/profile-setting';
+import { CheckoutSuccess } from './pages/checkout/checkout-success/checkout-success';
 export const routes: Routes = [
     {
         path: '',
@@ -51,6 +57,11 @@ export const routes: Routes = [
     { path: 'create-online-event', component: AddOnnlineEvent },
     { path: 'create-venue-event', component: AddVenueEvent },
     {path:'eventDetail/:id',component:EventDetail},
-    {path:'checkout/:id',component:Checkout}
-
+    {path:'checkout/:id',component:Checkout},
+    {path:'menuProfile',component:MenuProfile},
+    {path:'information',component:Information},
+    {path:'profile',component:Profile},
+    {path:'purchaseOrder',component:PurchaseOrder},
+    {path:'profileSetting',component:ProfileSetting},
+    {path:'checkout-success',component:CheckoutSuccess},
 ];
